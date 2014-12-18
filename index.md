@@ -13,7 +13,7 @@ such as IMAP servers.
 [Resources](resources) passed between computer nodes are [signed tar packages](signed-tar),
 which give a cryptographically strong verification of the publishing user.
 
-Resources are published with simple [CRUD-like actions](actions), and can
+Resources are published to other computers with simple [CRUD-like actions](actions), and can
 be created as "public" (the default) or [private and encrpyted](encrypted-resources).
 
 User relationships are created using [sdmp-specific controls](controls),
