@@ -3,21 +3,19 @@ layout: index
 ---
 
 
-The SDMP is a protocol for passing [strongly secure](/docs/cryptography) messages
+The `sdmp` is a protocol for passing [strongly secure](/docs/cryptography) messages
 between computers, without the requirement for central or third-party computers
-such as IMAP servers.
+such as IMAP servers. This is done using a [network protocol](/docs/network) which
+uses pre-distributed public/private keys.
 
-[Resources](/docs/resources) passed between computer nodes are [signed tar packages](/docs/signed-tar),
+User generate messages or other [resources](/docs/resources) and publish them directly
+to other users with simple [CRUD-like actions](/docs/actions).
+
+All resources passed through the `sdmp` are [signed tar packages](/docs/signed-tar),
 which give a cryptographically strong verification of the publishing user.
 
-Resources are published to other computers with simple [CRUD-like actions](/docs/actions), and can
-be created as "public" (the default) or [private and encrpyted](/docs/encrypted-resources).
-
-User relationships are created using [sdmp-specific controls](/docs/controls),
-which are descriptive YAML documents published as resources.
-
-A strongly secure [network protocol](/docs/network) is specified, which has
-some particular differences that guarantee end-to-end network traffic
-encryption.
+In place of the PGP "key signing", the `sdmp` uses a social network metaphor to establish
+key relationships. These relationships are created using [sdmp-specific controls](/docs/controls),
+which are documents published as resources.
 
 View the [complete docs](/docs/).
