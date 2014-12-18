@@ -1,0 +1,15 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Tobias Davis -- Lead Dev -- @saibotsivad
+
+# THANKS
+
+    Josh Duff -- @TehShrike
+
+# TECHNOLOGY COLOPHON
+
+    HTML5, CSS3
+    Normalize.css
