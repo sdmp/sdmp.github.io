@@ -1,7 +1,7 @@
 ---
 title: secure distributed messaging protocol
 description: Specifications and implementation for the secure distributed messaging protocol (sdmp).
-layout: default
+layout: index
 ---
 
 
