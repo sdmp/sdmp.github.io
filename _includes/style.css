@@ -15,15 +15,15 @@ h2,h3,h4,h5,h6 {
 a {
 	text-decoration: none;
 	color: #2a2a2a;
-	background-image: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.2) 50%);
+	background-image: linear-gradient(to bottom, #2a2a2a 0, #2a2a2a 0);
 	background-repeat: repeat-x;
-	background-size: 2px 2px;
+	background-size: 1px 1px;
 	background-position: 0 1em;
 }
 
 a:hover {
-	color: #000000;
-	background-image: linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 50%);
+	color: #929292;
+	background-image: linear-gradient(to bottom, #929292 0, #929292 0);
 }
 
 code, pre {
