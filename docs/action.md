@@ -21,7 +21,14 @@ Used when creating a new resource.
 
 Used when requesting an existing resource.
 
-> TODO: should it give back the latest, or all? updated vs deleted?
+If the node receiving the `read` action has previously confirmed that the
+requested resource has been deleted, they **must either** respond
+with the *delete* resource **or** with a *"resource not found"*
+[response](./response).
+
+If the node receiving the `read` action has previously confirmed that the
+requested resource has been updated, they **must** respond with the
+*"resource has been updated"* response.
 
 ## `action: update`
 
