@@ -8,9 +8,9 @@ peer-to-peer, and all transmissions are strongly encrypted.
 
 Read more:
 
-* [How to construct messages.](/docs/messages) (It's basically a signed [YAML](yaml) document.)
+* [How to construct messages.](/docs/message) (It's basically a signed [YAML](yaml) document.)
 * [How to connect to a peer.](/docs/connect) (A combination of [PGP](pgp) and [Diffie-Helman key exchange](diffiehelman).)
-* [How to send messages.](/docs/sync) (Like a distributed [WORM](worm)-meets-[CRUD](crud)-meets-[BitTorrent](bittorrent).)
+* [How to send messages.](/docs/sync) (Think of it as a distributed [WORM](worm)-meets-[CRUD](crud)-meets-[BitTorrent](bittorrent).)
 * If that's not enough, read [the entire documentation](/docs)!
 
 # The purpose
@@ -41,8 +41,10 @@ are published and released under the [Very Open License](vol).
 
 <3
 
-[sdmpcli]: TODO
-[sdmpnpm]: TODO
+[sdmpcli]: https://github.com/sdmp/sdmp-cli
+[sdmpnpm]: https://github.com/sdmp/sdmp-npm
+
+
 
 [relayreader]: http://relayreader.com
 [sdmpissues]: https://github.com/sdmp/sdmp.github.io/issues
