@@ -62,3 +62,9 @@ This property is **required** whenever the `action` property is `update` or `del
 The receiving node **must** send a [response message](./response) to the messaging node
 if the root `message` object contains the boolean property `response_required` and
 that value is `true`.
+
+### `control` (object, optional)
+
+This object describes the addition and updating of users and nodes, the relationships
+between users, and the trust level between user and node. See the [control specs](./control)
+for more information.
