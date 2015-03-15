@@ -9,19 +9,29 @@ layout: page
 connection, and the *remote node* is the node to which the
 local node is connecting.)
 
-Except for the 
+## Connection is per user-authorization
+
+Although there is nothing preventing a node from being [authorized](./control)
+by multiple users, a connection between nodes is established for a single
+user only.
+
+This means a node cannot perform [CRUD actions](./action) for multiple
+users under the same connection.
 
 ## Session key
 
-A symmetric connection-unique [AES key](./cryptography) is created
-for the session.
+A symmetric connection-unique [AES key](./cryptography) is created for
+the session. By using the Diffie-Helman key exchange protocol, this
+session key has as much uniqueness as the *local node* can guarantee.
 
-By using the Diffie-Helman key exchange protocol, this session key
-is has as much uniqueness as the *local node* can guarantee. (That is,
-the remote node could re-use values for the key exchange, but if the
-local node uses unique values the final key will be session-unique.)
+AThe SDMP **requires** session-unique keys, but there is no cryptographic
+function preventing the remote node from re-using values for the key exchange.
+However, if the local node uses session-unique values during the Diffie-Helman
+key exchange, the final key will still be session-unique.
 
 ### Typical Diffie-Helman
+
+A review of the general Diffie-Helman key exchange:
 
 1. Alice and Bob agree to use `p` and `g`
 2. Alice chooses secret `a` and sends Bob `A`, where `A=(g^a)%p`
@@ -33,7 +43,8 @@ local node uses unique values the final key will be session-unique.)
 ### "Wrapped" Diffie-Helman
 
 In order to avoid a MITM attack, the values used in the Diffie-Helman
-exchange are signed by the creator, and encrypted to the receiver.
+exchange are signed by the creator, and to increase security they are
+also encrypted to the receiver.
 
 1. Alice has previously acquired and verified Bob's public key `bp`
 2. Bob has previously acquired and verified Alice's public key `ap`
@@ -55,18 +66,20 @@ exchange are signed by the creator, and encrypted to the receiver.
 The node chooses a secret `n` and calculates `N` where `N=(g^n)%p`.
 
 The values of `g`, `p`, and `N`, along with the [key fingerprint](./cryptography) of
-the node public key, are placed inside a YAML stream constructed according to the
-following rules:
+the node public key, and the key fingerprint of the user the node represents, are
+placed inside a YAML stream constructed according to the following rules:
 
 * The YAML stream contains a single document.
 * At the root of the YAML stream is a single object named `connection`.
-* The `connection` object properties are: `g`, `p`, `N`, and `node` (the key fingerprint value).
+* The `connection` object properties are: `g`, `p`, `N`, `node` (the key fingerprint value
+	of the node's public key), and `user` (the key fingerprint value of the user's
+	public key).
 * The values of `g` and `p` are integer-encoded.
 * The value of `N` is `binary` encoded, according to [YAML specs](http://yaml.org/type/binary.html).
 * The value of `node` is the string-encoded hex value of the key fingerprint.
 
 This YAML stream is transformed into a [SYML](./signed-yaml) file, being signed using
-the key identified by the key fingerprint.
+the key identified by the `node` key fingerprint.
 
 Before being sent over the network, the SYML file is encrypted to the public key of the
 recipient node, using the following rules:
@@ -74,7 +87,7 @@ recipient node, using the following rules:
 * The SYML stream is zero-byte padded to the nearest `4096` byte block.
 * This stream is encrypted using the public key of the intended recipient node.
 
-This encrypted stream is the connection package, `{g,p,N,S_N,node}_pk`.
+This encrypted stream is the connection package, `{g,p,N,S_N,node,user}_pk`.
 
 ## Connection package validation
 
@@ -86,6 +99,8 @@ following circumstances:
 	- malformed data,
 	- an improperly generated signature, or
 	- the node does not have the public key of the node identified by the fingerprint.
+* If the node cannot verify that the connecting node has been authorized
+	by the user identified by the `user` value
 * If the node does not accept the values of `g`, `p`, or `N` for any reason.
 
 ## Connection dropping
@@ -110,4 +125,4 @@ The process for establishing a secure connection is as follows:
 5. The local node verifies the connection package, dropping the connection if there is an error.
 6. The local and remote node calculate the shared session key.
 
-All messages past this point are encrypted to this session key.
+All messages past this point **must** be encrypted to this session key.
