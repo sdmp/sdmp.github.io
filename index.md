@@ -41,6 +41,11 @@ part is actually secure.
 * [File issues](sdmpissues) if you find anything wrong.
 * Create [pull requests](sdmppullrequest) if you spot anything wrong or missing and want to propose a fix.
 
+## Release Cycles
+
+The SDMP is currently in **alpha** stage. Once development has moved to a **beta** stage, releases
+will be done using [Semantic Versioning 2.0.0](http://semver.org/).
+
 # License
 
 All code, documentation, and assets available under the entire [SDMP repo](sdmprepo)
