@@ -16,7 +16,7 @@ Prior to encryption, the SYML stream is zero-byte padded to the nearest `4096` b
 
 Unlike protocols like HTTP, responses to messages are **not** required by default. When
 a stream is sent over TCP, the node receiving the stream does **not** need to respond
-**unless* the sending node indicates this in the message.
+unless the sending node indicates this in the message.
 
 ## YAML restrictions
 
@@ -33,11 +33,10 @@ restrictions:
 
 The following properties of the `message` object are reserved for use within the SDMP:
 
-### `response_required` (boolean, optional)
+### `user` (string, required)
 
-The receiving node **must** send a [response message](./response) to the messaging node
-if the root `message` object contains the boolean property `response_required` and
-that value is `true`.
+The node sending a message **must** include the [key fingerprint](./cryptography) of
+the user that has authorized the node to create messages.
 
 ### `action` (string, required)
 
@@ -58,8 +57,8 @@ of previous versions of a resource.
 
 This property is **required** whenever the `action` property is `update` or `delete`.
 
-### `external` (string, optional)
+### `response_required` (boolean, optional)
 
-When a [resource](./resource) is a [signed tar file](./signed-tar), this property
-is **required**, and is the hex encoded string of the [hash](./cryptography) of the
-`manifest` file in the signed tar.
+The receiving node **must** send a [response message](./response) to the messaging node
+if the root `message` object contains the boolean property `response_required` and
+that value is `true`.
