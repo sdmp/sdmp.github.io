@@ -5,10 +5,10 @@ layout: page
 ---
 
 
-Inside the root [message object](./message) of a [resource](./resource)
-is an optional property named `control`. This property describes the
-addition and updating of users and nodes, the relationships between
-users, and the trust level between users and nodes.
+Inside the root [message object of a message](./message) is an optional
+property named `control`. This property describes the addition and
+updating of users and nodes, the relationships between users, and
+the trust level between users and nodes.
 
 The `control` property is an object containing the following fields:
 

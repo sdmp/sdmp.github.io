@@ -14,9 +14,9 @@ Prior to encryption, the SYML stream is zero-byte padded to the nearest `4096` b
 
 ## Message confirmation
 
-Unlike protocols like HTTP, responses to messages are **not** required by default. When
-a stream is sent over TCP, the node receiving the stream does **not** need to respond
-unless the sending node indicates this in the message.
+Unlike protocols like HTTP, [responses](./response) to messages are **not** required by
+default. When a stream is sent over TCP, the node receiving the stream does **not**
+need to respond unless the sending node indicates this in the message.
 
 ## YAML restrictions
 
@@ -40,7 +40,7 @@ the user that has authorized the node to create messages.
 
 ### `action` (string, required)
 
-The `action` property describes an [action](./action) to take regarding a [resource](./resource),
+The `action` property describes an [action](./action) to take regarding a message,
 and is a string containing one of the following **required** values:
 
 * `create` - Used when creating a new resource.
