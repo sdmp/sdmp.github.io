@@ -11,6 +11,9 @@ There are two identities: the *user* and the *node*.
 * The *user* is the actual person or organization, and has one master public/private key.
 * The *node* is the application used to create and transmit messages, and has a separate public/private key.
 
+A *user* authorizes a *node* to publish messages. This means a *node* operating on a laptop does
+not need to have the public/private key of the *user* accessible on that laptop.
+
 Read more:
 
 * [How to construct messages.](./docs/message) (It's basically a signed [YAML](yaml) document.)
