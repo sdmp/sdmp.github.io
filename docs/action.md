@@ -24,7 +24,8 @@ Used when requesting an existing resource.
 If the node receiving the `read` action has previously confirmed that the
 requested resource has been deleted, they **must either** respond
 with the *delete* resource **or** with a *"resource not found"*
-[response](./response).
+[response](./response). (See the [response specs](./response) for
+additional details.)
 
 If the node receiving the `read` action has previously confirmed that the
 requested resource has been updated, they **must** respond with the

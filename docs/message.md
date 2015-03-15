@@ -12,12 +12,6 @@ using the session key established during the [connection](./connect) procedure.
 
 Prior to encryption, the SYML stream is zero-byte padded to the nearest `4096` byte block.
 
-## Message confirmation
-
-Unlike protocols like HTTP, [responses](./response) to messages are **not** required by
-default. When a stream is sent over TCP, the node receiving the stream does **not**
-need to respond unless the sending node indicates this in the message.
-
 ## YAML restrictions
 
 All messages **must** be valid [SYML](./signed-yaml) streams, with the following additional
@@ -44,11 +38,17 @@ The `action` property describes an [action](./action) to take regarding a messag
 and is a string containing one of the following **required** values:
 
 * `create` - Used when creating a new resource.
-* `read` - Used when requesting a resource.
+* `read` - Used when requesting a resource. (Optionally uses the `have_version` property.)
 * `update` - Used when updating an existing resource. (Requires the `resources` property on
 	the `message` object.)
 * `delete` - Used when deleting an existing resource. (Requires the `resources` property on
 	the `message` object.)
+
+### `have_version` (string, optional)
+
+If the node already has a message, and is checking for updated versions, they **may**
+include this property. The `have_version` property is the hexadecimal value of the
+most recent version of the message that the node has.
 
 ### `resources` (collection of strings, optionally required)
 
@@ -57,14 +57,13 @@ of previous versions of a resource.
 
 This property is **required** whenever the `action` property is `update` or `delete`.
 
-### `response_required` (boolean, optional)
-
-The receiving node **must** send a [response message](./response) to the messaging node
-if the root `message` object contains the boolean property `response_required` and
-that value is `true`.
-
 ### `control` (object, optional)
 
 This object describes the addition and updating of users and nodes, the relationships
 between users, and the trust level between user and node. See the [control specs](./control)
 for more information.
+
+### `response` (object, optionally required)
+
+The `response` property is an object containing properties as described in
+the [response specs](./response), it is **required** on **all** response messages.
