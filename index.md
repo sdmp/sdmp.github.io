@@ -19,6 +19,7 @@ Read more:
 * [How to construct messages.](./docs/message) (It's basically a signed [YAML](yaml) document.)
 * [How one node connects to another node.](./docs/connect) (A spin on the [Diffie-Helman key exchange](diffiehelman).)
 * [How to send messages.](./docs/sync) (Think of it as a distributed [WORM](worm)-meets-[CRUD](crud)-meets-[BitTorrent](bittorrent).)
+* [How to reference other messages.](./docs/uri-scheme) (Use them in hyperlinks.)
 * If that's not enough, read [the entire documentation](./docs)!
 
 # The purpose
