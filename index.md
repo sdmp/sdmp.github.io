@@ -11,8 +11,8 @@ There are two identities: the *user* and the *node*.
 * The *user* is the actual person or organization, and has one master public/private key.
 * The *node* is the application used to create and transmit messages, and has a separate public/private key.
 
-A *user* authorizes a *node* to publish messages. This means a *node* operating on a laptop does
-not need to have the public/private key of the *user* accessible on that laptop.
+A *user* authorizes a *node* to publish messages. (This means a *node* operating on a laptop does
+not need to have the public/private key of the *user* accessible on that laptop.)
 
 Read more:
 
@@ -24,22 +24,22 @@ Read more:
 
 # The purpose
 
-At it's heart the SDMP is just a way for machines to communicate to each other in
-a very secure way that humans can understand.
+At it's heart the SDMP is just a way for machines to communicate messages to each
+other in a very secure way that humans can understand.
 
 If humans can understand it, they can debug it easier, and make sure the secure
 part is actually secure.
 
 # Use it
 
-* You can use it from the [command line](sdmpcli)
-* There's a JavaScript [module](sdmpnpm) you can use
-* Check out the [relayreader](relayreader) project
+* You can use it from the [command line](sdmpcli).
+* There's a JavaScript [module](sdmpnpm) you can use.
+* Check out the [relayreader](relayreader) project.
 
 # Get involved
 
 * You can read through the [docs](./docs) to make sure they are readable, consistent, and sane.
-* [File issues](sdmpissues) if you find anything wrong.
+* [File issues](sdmpissues) if you find anything wrong, anywhere on this site or in the docs.
 * Create [pull requests](sdmppullrequest) if you spot anything wrong or missing and want to propose a fix.
 
 ## Release Cycles
