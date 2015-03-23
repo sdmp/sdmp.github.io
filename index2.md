@@ -14,10 +14,12 @@ peer-to-peer network.
 * [License](#license) - Software license is basically public domain
 * [Overview](#overview) - General overview and terminology
 * [Cryptography](#cryptography) - The foundation of the SDMP is strong cryptography
-* [Messages](#messages) - Construction and format of messages
+* [Resources](#resources) - Resources available within the SDMP
 * [Controls](#controls) - Creating users and nodes, establishing trust levels and connections
+* [Documents](#documents) - Public or encrypted resources, typically with human-readable content
 * [Network](#network) - Establishing a network connection between peers
-* [Publish](#publish) - Passing and synchronizing messages between peers
+* [Request/Response](#request-response) - Making and responding to network requests
+* [Publish](#publish) - Publishing and synchronizing messages between peers
 
 ---
 
@@ -111,44 +113,45 @@ Where the phrase "session key" is used, it is meant an [AES][w_aes] compatible k
 
 ## Resources
 
-Resources passed between nodes are signed YAML ([SYML][syml]) streams. They **must** be signed
-by the node publishing the resource **or** by the user.
+Resources passed between nodes are signed YAML ([SYML][syml]) streams.
 
-### Two kinds
+### Resource types
 
-There are two kinds of resources published
+There are only two types of resources published within the SDMP: [controls](#controls)
+and [documents](#documents). Both of these are defined YAML/SYML streams.
+
+Control resources contain publically visible information about nodes, users, and relationships
+between the two.
+
+Document resources are the general message type, and may contain public data, or data that
+is visible only to the intended recipient.
 
 ### YAML restrictions
 
-All messages **must** be valid [SYML][syml] streams, with the following additional
+All resources **must** be valid [SYML][syml] streams, with the following additional
 **required** restrictions:
 
 * Multi-document YAML streams are **not** allowed.
 * Comments inside the YAML stream are **not** allowed.
 * More precisely, **only** values which are actual YAML properties or values are allowed.
-* A single property at the root of the YAML document named `message` is **required** and **reserved**.
-* It is **recommended** that properties not specified in this document not be placed in the `message` object.
+* A single property at the root of the YAML document named `resource` is **required** and **reserved**.
 
-### Properties of the `message` object
+### Properties of the `resource` object
 
-The following properties of the `message` object are reserved for use within the SDMP:
+The following properties of the `resource` object are reserved for use within the SDMP:
 
-* `user` *[string, required]* The node sending a message **must** include the key fingerprint
-	of the user that has authorized the node to create the message.
-* `action` *[string, required]* Describes an action to take regarding a message. **Must** be one
-	of the following values: `create`, `read`, `update`, or `delete`. See the [publish specifications](#publish)
-	for more details on these actions.
-* `have_version` *[string, optional]* Optionally included on a message where the `action`
-	property is `read`, this is the resource identifier of the most recent version which
-	the requesting node has.
-* `resources` *[string collection, optionally required]* This property is **required** when
-	the `action` property is `update` or `delete`, and is a YAML collection of resource identifiers
-	of previous versions of the resource.
+* `user` *[string, required]* The node sending a resource **must** include the key fingerprint
+	of the user that has authorized the node to create the resource.
+* `action` *[string, required]* Describes an action to take regarding a resource. **Must** be one
+	of the following values: `create`, `read`, `update`, or `delete`.
+* `versions` *[string collection, optionally required]* This property is **required** when
+	the `action` property is `update` or `delete`, and is a YAML collection of resource
+	identifiers of previous versions of the resource.
 * `control` *[object, optional]* Describes the addition and updating of users and nodes,
-	the relationships between users, and the trust level between user and node. See the
-	[control specifications](#controls) for more information.
-* `response` *[object, optionally required]* This object is **required** on **all** response
-	messages. See the [publish response specifications](#publish-response) for more details.
+	the relationships between users, and the trust level between user and node. This property
+	is **required** for all [control resources](#controls).
+* `document` *[object, optional]* This property is **required** for all non-control resources,
+	and is an object containing properties defined in the [document specifications](#documents).
 
 ### Resource identifier
 
@@ -158,28 +161,29 @@ The hash of the YAML file which is signed to generate the SYML signature is the 
 
 Linking between messages is possible using the [URI][w_uri], which is constructed as follows:
 
-	sdmp://<AUTHOR>[/<MESSAGE>]
+	sdmp://<AUTHOR>[/<RESOURCE>]
 
 * The URI scheme name is `sdmp`.
 * `AUTHOR` is the key hash of the public key of the user who authored the resource.
-* `MESSAGE` is **optional** and is the resource identifier of the message.
+* `RESOURCE` is **optional** and is the resource identifier.
 
-Requests have the two forms:
+URIs have the two possible forms:
 
-* `sdmp://\<AUTHOR>/` - Requests of this type should yield the `user-create` [control message](#controls)
-	of the user whose key hash is `AUTHOR`.
-* `sdmp://\<AUTHOR>/\<MESSAGE>` - Requests of this type should yield the message whose
-	resource identifier is `MESSAGE` and which has been published by the user
-	whose key hash is `AUTHOR`.
+* `sdmp://\<AUTHOR>/` - Requests of this type should yield the "create user" [control resource](#controls)
+	of the user whose key fingerprint is `AUTHOR`.
+* `sdmp://\<AUTHOR>/\<RESOURCE>` - Requests of this type should yield the resource whose
+	resource identifier is `RESOURCE` and which has been published by the user
+	whose key fingerprint is `AUTHOR`.
 
 ---
 
 ## Controls
 
 Creating users and connections, creating nodes, and establishing trust levels between
-nodes is done by publishing "control" messages. All control messages require the root
-`message` object to have a property named `control`, which is an object defining the
-type of control.
+nodes is done by publishing a "control" resource.
+
+All control resources require the root `resource` object to have a property
+named `control`, which is an object defining the type of control.
 
 The following control types are defined:
 
@@ -191,22 +195,22 @@ The `control` object has the following **required** properties:
 * `key` : The binary encoded public key of the node, which is equivalent to
 	an unarmored export of an OpenPGP public key.
 
-This message SYML **must** be signed by the node.
+This resource SYML **must** be signed by the node.
 
-Deleting this message indicates that this node is no longer secure, and
-the node **may not** be communicated with.
+Deleting this resource indicates that this node is no longer secure. Properly functioning
+nodes will **not** communicate with a node once this resource is deleted.
 
-Updating this message is **not** allowed.
+Updating this resource is **not** allowed.
 
 ### Node information
 
 The `control` object has the following **required** properties:
 
 * `type` : The exact string: `node-info`
-* `network` : A YAML string collection which are the network addresses for the node.
+* `network` : A YAML string collection of the network addresses for the node.
 * `name` : A human-friendly name for the node.
 
-This message SYML **must** be signed by the node.
+This resource SYML **must** be signed by the node.
 
 The network addresses **must** be either IPv4 **or** IPv6.
 
@@ -217,7 +221,7 @@ Network addresses **must** include the port number.
 ### Node permission levels
 
 Used to indicate a users level of trust in a node. This is what authorizes
-a node to publish messages on a users behalf, or synchronize messages that
+a node to publish resources on a users behalf, or synchronize resources that
 are intended for a user.
 
 The `control` object has the following **required** properties:
@@ -227,15 +231,15 @@ The `control` object has the following **required** properties:
 * `user` : The key fingerprint of the public key of the user.
 * `authority` : Currently only `host` and `publisher` are supported.
 	- A node given `host` permissions by a user is authorized to
-		synchronize messages for a user.
+		synchronize resources for a user.
 	- A node given `publisher` permissions by a user is authorized to
-		create messages on the users behalf (i.e., an application on
+		create resources on the users behalf (i.e., an application on
 		the users laptop).
 
-This message **must** be signed using the user's key.
+This resource **must** be signed by the user.
 
-Deleting this message indicates that the user no longer trusts that node,
-therefore messages from this node should **not** be synchronized.
+Deleting this resource indicates that the user no longer trusts that node,
+therefore resources from this node should **not** be synchronized.
 
 ### Creating a user
 
@@ -245,10 +249,10 @@ The `control` object has the following **required** properties:
 * `key` : The binary encoded public key of the user, which is equivalent to
 	an unarmored export of an OpenPGP public key.
 
-This message SYML **must** be signed by the created user.
+This resource SYML **must** be signed by the created user.
 
-Deleting this message indicates that the user wishes to delete
-*all* messages published by that user.
+Deleting this resource indicates that the user wishes to delete
+*all* resources published by that user.
 
 ### User information
 
@@ -260,28 +264,79 @@ The `control` object has the following **required** properties:
 	- `name` : The publicly visible name of the user.
 	- `about` : A brief description of the user.
 
-This message **must** be signed by the user **or** by any node
+This resource **must** be signed by the user **or** by any node
 authorized by the user as a `publisher`.
 
-### Creating a connection
+### Create connection
 
-When a user publishes this message, it indicates:
-
-* That the user publishing the message is allowing all its published messages
-	to be synchronized to the connected user.
-# That the user publishing the message is allowing all messages published by
-	the connection to be synchronized to any node authorized by the user.
+This resource is an indication of the users desire to subscribe to updates from
+the connection, and the users willingness to publish updates to that connection.
+See the [publication specifications](#publish) for additional details.
 
 The `control` object has the following **required** properties:
 
 * `type` : The exact string: `connection`
-* `connection` : The key fingerprint of the user being connected.
+* `user` : The key fingerprint of the user being connected.
+* `connection`: A YAML string collection containing at least one of the following strings:
+	- `publish` : Indicates that messages from the user publishing the resource **may**
+		be synchronized to the connection.
+	- `subscribe` : Indicates that messages published by the connection **may** be
+		synchronized to the user.
 
-This message **must** be signed by the user **or** by any node authorized by the
+This resource **must** be signed by the user **or** by any node authorized by the
 user as a `publisher`.
 
-Deleting this message indicates that the user no longer wishes to synchronize
-messages to or from that connection.
+Deleting this resource indicates that the user no longer wishes to synchronize
+resources to or from that connection.
+
+---
+
+## Documents
+
+Resources published to the SDMP which are not control resources are called "documents".
+
+All document resources require the root `resource` object to have a property
+named `document`, which is an object containing minimal metadata about the resource.
+
+There are two types of resources: *public* and *encrypted/mixed*.
+
+### Encrypted/mixed documents
+
+Documents containing encrypted data have the property `encrypted` on the `document`
+object, which is the binary encoded encrypted message, equivalent to PGP unarmored
+encryption output.
+
+Because there is additional information available in the resource, it would be
+misleading to indicate that the resource itself was encrypted, and a properly
+functioning node application will **not** allow additional private metadata to
+be inserted into the resource.
+
+**Note:** Although the focus of the SDMP is not on anonymity, a properly functioning
+node application will **not** make visible the recipients of any private message.
+Exposing the recipients of a message makes the privacy of the users needlessly
+difficult to protect.
+
+### Public documents
+
+Resources which contain additional metadata or content which is not encrypted are
+considered *public* documents.
+
+To further indicate that a resource is public, the boolean property `public` **must**
+be set on the `document` object, and it **must** be set to `true`.
+
+### Etiquette for public vs private
+
+Publishing a resource containing a public document should be interpreted in much
+the same way as publishing a public blog post. The information in the resource
+should be considered available for general public viewing.
+
+Publishing a resource which has not been marked as public is much like sending
+an email: the recipient of the document must determine by context and discretion
+whether a message should be relayed in whole, in part, or not at all.
+
+Applications should make the distinction of public vs private clear to the
+user, primarily so that a user does not accidentally send a private message
+marked as public.
 
 ---
 
@@ -408,6 +463,30 @@ The process for establishing a secure connection is as follows:
 All messages past this point **must** be encrypted to this session key.
 
 ---
+
+## Request/Response
+
+Request:
+	- resource
+	- message stack
+Response:
+	- resource not found
+	- the actual resource
+	- message stack unchanged
+	- additional elements on the message stack
+Publish:
+	- resource
+	- message stack
+Response:
+	- resource received
+	- message stack received
+
+---
+
+
+
+
+
 
 ## Publish
 
