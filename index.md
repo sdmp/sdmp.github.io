@@ -548,8 +548,8 @@ placed inside a YAML stream constructed according to the following rules:
 * The YAML stream contains a single document.
 * At the root of the YAML stream is a single object named `connection`.
 * The **required** `connection` object properties are: `g`, `p`, `N`, `node`, and `user`.
-* The values of `g` and `p` are integer-encoded.
-* The value of `N` is `binary` encoded, according to [YAML specs](http://yaml.org/type/binary.html).
+* The value of `g` is integer-encoded.
+* The values of `p` and `N` are `binary` encoded, according to [YAML specs](http://yaml.org/type/binary.html).
 * The value of `node` is the key fingerprint string of the node initializing the connection.
 * The value of `user` is the key fingerprint of the user which the node is representing.
 
