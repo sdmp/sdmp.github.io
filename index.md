@@ -1,29 +1,11 @@
 ---
 layout: index
-version: 0.7
+version: 0.9
 ---
 
 
 A protocol for distributing cryptographically secure messages across an encrypted
 peer-to-peer network.
-
----
-
-# Table of Contents
-
-* [Purpose](#purpose) - Purpose and goal of the protocol
-* [Related](#related) - Existing implementations, software using the protocol, and other related resources
-* [License](#license) - Software license is basically public domain
-* [Release Cycle](#release-cycle) - The SDMP uses the semver approach
-* [Overview](#overview) - General overview and terminology
-* [Message Format](#message-format) - Format of messages passed around the network
-* [Cryptography](#cryptography) - The foundation of the SDMP is strong cryptography
-* [Network](#network) - Establishing a network connection between peers
-* [Request/Response](#requestresponse) - Making and responding to network requests
-* [Resources](#resources) - Resources available within the SDMP
-* [Document Resources](#document-resources) - Public or encrypted resources, typically with human-readable content
-* [Control Resources](#control-resources) - Creating users and nodes, establishing trust levels and connections
-* [Publish/Synchronize](#publishsynchronize) - Publishing and synchronizing messages between peers
 
 ---
 
@@ -49,6 +31,21 @@ part is actually secure.
 
 All code, documentation, and assets available under the entire [SDMP repo](sdmprepo) (including
 this document) are published and released under the [Very Open License](vol).
+
+---
+
+# Table of Contents
+
+* [Release Cycle](#release-cycle) - The SDMP uses the semver approach
+* [Overview](#overview) - General overview and terminology
+* [Message Format](#message-format) - Format of messages passed around the network
+* [Cryptography](#cryptography) - The foundation of the SDMP is strong cryptography
+* [Network](#network) - Establishing a network connection between peers
+* [Request/Response](#requestresponse) - Making and responding to network requests
+* [Resources](#resources) - Resources available within the SDMP
+* [Document Resources](#document-resources) - Public or encrypted resources, typically with human-readable content
+* [Control Resources](#control-resources) - Creating users and nodes, establishing trust levels and connections
+* [Publish/Synchronize](#publishsynchronize) - Publishing and synchronizing messages between peers
 
 ---
 
@@ -355,19 +352,10 @@ information provided should be enough that the requesting node could recreate th
 
 ## Resources
 
-Resources [published/synchronized](#publishsynchronize) between nodes **must** be [SYML][syml] streams
-conforming to the [YAML message](#message-format) restrictions. There are two types of resources
-published within the SDMP:
-
-* [Document Resources](#document-resources) are the general message type, and may contain
-	public data, or data that is visible only to the intended recipient.
-* [Control Resources](#control-resources) are specific resource types, and contain information
-	establishing node and user identities, and authorizing relationships between the two.
-
-### Shared properties
-
-All resources have `resource` as a reserved property at the root of the YAML message. This property
-has the following reserved values:
+Resources [published/synchronized](#publishsynchronize) between nodes are [SYML][syml] streams
+conforming to the [YAML message](#message-format) restrictions. Additionally, all resources
+have at the root of the YAML message the property named `resource`,  with the following
+reserved values:
 
 * `user` *[string, required]* The key fingerprint of the user creating the resource.
 * `action` *[string, required]* Describes an action to take regarding a resource. **Must** be one
@@ -375,11 +363,16 @@ has the following reserved values:
 * `versions` *[string collection, optionally required]* This property is **required** when
 	the `action` property is `update` or `delete`, and is a YAML collection of resource
 	identifiers of previous versions of the resource.
+* `encrypted` *[binary, optional]* Available to any resource. If the resource contains an encrypted
+	message, the encrypted data would be in this property. This data is equivalent to an unarmored
+	PGP encryption,	encoded as YAML binary.
+* `public` *[string, optional]* Public markdown text, e.g. like a blog post. If this property is
+	present and not `false`, it indicates that this resource should be considered fully public, e.g.
+	like a public facing website page. If this property is not present, it should be interpreted
+	as equivalent to being false.
 * `control` *[object, optional]* Describes the addition and updating of users and nodes,
 	the relationships between users, and the trust level between user and node. This property
 	is **required** for all [control resources](#control-resources).
-* `document` *[object, optional]* This property is **required** for all non-control resources,
-	and is an object containing properties defined in the [document specifications](#document-resources).
 
 ### Resource identifier
 
@@ -403,82 +396,45 @@ URIs have the two possible forms:
 	resource identifier is `RESOURCE` and which has been published by the user
 	whose key fingerprint is `AUTHOR`.
 
----
+### Notes on privacy
 
-
-TODO stopped here
-
-
-
-
-
-## Document Resources
-
-All resources published to the SDMP which are *not* control resources are called by
-the general name *document resource*.
-
-All document resources require the root `resource` object to have a property
-named `document`, which is an object containing minimal metadata about the resource.
-
-There are two types of resources: *public* and *encrypted/mixed*.
-
-### Encrypted/mixed documents
-
-Documents containing encrypted data have the property `encrypted` on the `document`
-object, which is the binary encoded encrypted message, equivalent to PGP unarmored
-encryption output.
-
-Because there is additional information available in the resource, it would be
-misleading to indicate that the resource itself was encrypted, and a properly
-functioning node application will **not** allow additional private metadata to
-be inserted into the resource.
-
-**Note:** Although the focus of the SDMP is not on anonymity, a properly functioning
-node application will **not** make visible the recipients of any private message.
-Exposing the recipients of a message makes the privacy of the users needlessly
-difficult to protect.
-
-### Public documents
-
-Resources which contain additional metadata or content which is not encrypted are
-considered *public* documents.
-
-To further indicate that a resource is public, the boolean property `public` **must**
-be set on the `document` object, and it **must** be set to `true`.
+Although the focus of the SDMP is not specifically on anonymity, a properly functioning
+node application will **not** make visible the recipients of any private message,  for
+example by including the recipient user fingerprint. Exposing the recipients of a message
+makes the privacy of the users needlessly difficult to protect.
 
 ### Etiquette for public vs private
 
-Publishing a resource containing a public document should be interpreted in much
-the same way as publishing a public blog post. The information in the resource
-should be considered available for general public viewing.
+Publishing a resource where the property `public` is present should be interpreted in much
+the same way as publishing a public blog post. The information in the resource should be
+considered available for general public viewing.
 
-Publishing a resource which has not been marked as public is much like sending
-an email: the recipient of the document must determine by context and discretion
+When the property `public` is not present, this case is much like reading an email: the recipient
+of the email (or in this case the user viewing the resource) must determine by context and discretion
 whether a message should be relayed in whole, in part, or not at all.
 
-Applications should make the distinction of public vs private clear to the
-user, primarily so that a user does not accidentally send a private message
-marked as public.
+Applications should make clear to the user the distinction of public vs private, primarily so
+that a user does not accidentally send a private message marked as public.
 
 ---
 
 ## Control Resources
 
-Creating users and connections, creating nodes, and establishing trust levels between
-nodes is done by publishing a "control" resource.
+Control resources are special cases of resources which indicate new users and connections,
+creating nodes, and establishing trust levels between nodes.
 
-All control resources require the root `resource` object to have a property
-named `control`, which is an object defining the type of control.
+All control resources **require** the property `control` set on the `resource` object, and
+that property is defined by the type of control message.
 
-The following control types are defined:
+The following control resources are defined:
 
 ### Create a node
 
 The `control` object has the following **required** properties:
 
-* `type` : The exact string: `node`
-* `key` : The binary encoded public key of the node, which is equivalent to
-	an unarmored export of an OpenPGP public key.
+* `type` *[string, required]* The exact string: `node`
+* `key` *[binary, required]* The public key of the node, encoded as YAML binary data, which
+	is equivalent to an unarmored export of an OpenPGP public key.
 
 This resource **must** be signed by the node.
 
@@ -491,9 +447,9 @@ Updating this resource is **not** allowed.
 
 The `control` object has the following **required** properties:
 
-* `type` : The exact string: `node-info`
-* `network` : A YAML string collection of the network addresses for the node.
-* `name` : A human-friendly name for the node.
+* `type` *[string, required]* The exact string: `node-info`
+* `network` *[list of strings, required]* A list of the network addresses for the node.
+* `name` *[string, required]* A human-friendly name for the node.
 
 This resource **must** be signed by the node.
 
@@ -511,10 +467,10 @@ are intended for a user.
 
 The `control` object has the following **required** properties:
 
-* `type` : The exact string: `node-permission`
-* `node` : The key fingerprint of the public key of the node.
-* `user` : The key fingerprint of the public key of the user.
-* `authority` : Currently only `host` and `publisher` are supported.
+* `type` *[string, required]* The exact string: `node-permission`
+* `node` *[string, required]* The key fingerprint of the public key of the node.
+* `user` *[string, required]* The key fingerprint of the public key of the user.
+* `authority` *[string, required]* Currently only `host` and `publisher` are supported.
 	- A node given `host` permissions by a user is authorized to
 		synchronize resources for a user.
 	- A node given `publisher` permissions by a user is authorized to
@@ -530,9 +486,9 @@ therefore resources from this node should **not** be synchronized.
 
 The `control` object has the following **required** properties:
 
-* `type` : The exact string: `user`
-* `key` : The binary encoded public key of the user, which is equivalent to
-	an unarmored export of an OpenPGP public key.
+* `type` *[string, required]* The exact string: `user`
+* `key` *[binary, required]* The public key of the user, encoded to YAML binary, which is
+	equivalent to an unarmored export of an OpenPGP public key.
 
 This resource **must** be signed by the created user.
 
@@ -543,26 +499,27 @@ Deleting this resource indicates that the user wishes to delete
 
 The `control` object has the following **required** properties:
 
-* `type` : The exact string: `user-info`
-* `info` : Any publicly visible information about the user. **Requires**
+* `type` *[string, required]* The exact string: `user-info`
+* `info` *[object, required]* Any publicly visible information about the user. **Requires**
 	at least the following fields:
-	- `name` : The publicly visible name of the user.
-	- `about` : A brief description of the user.
+	- `name` *[string, required]* The publicly visible name of the user.
+	- `about` *[string, required]* A brief description of the user.
 
 This resource **must** be signed by the user **or** by any node
 authorized by the user as a `publisher`.
 
 ### Create connection
 
-This resource is an indication of the users desire to subscribe to updates from
-the connection, and the users willingness to publish updates to that connection.
-See the [publication specifications](#publishsynchronize) for additional details.
+When published by a user, this resource indicates that users desire to subscribe to updates
+from the connection, and the users willingness to publish updates to that connection.
+(See the [publication specifications](#publishsynchronize) for additional details.)
 
 The `control` object has the following **required** properties:
 
-* `type` : The exact string: `connection`
-* `user` : The key fingerprint of the user being connected.
-* `connection`: A YAML string collection containing at least one of the following strings:
+* `type` *[string, required]* The exact string: `connection`
+* `user` *[string, required]* The key fingerprint of the user being connected.
+* `connection` *[list of strings, required]* A YAML string collection containing at
+	least one of the following strings:
 	- `publish` : Indicates that messages from the user publishing the resource **may**
 		be synchronized to the connection.
 	- `subscribe` : Indicates that messages published by the connection **may** be
@@ -582,14 +539,14 @@ The primary difficulty of publishing messages across a decentralized network is 
 messages must account for nodes being unpredictably offline.
 
 Since the SDMP is primarily between personal computers instead of dedicated network servers,
-this difficulty is the primary concern, and is addressed with the publishing/synchronization
+this difficulty is a primary concern, and is addressed with the publishing/synchronization
 scheme described here.
 
 ### Node resource stack
 
-Each node maintains an ordered list of the *resource identifiers* of all resources it publishes,
-as well as all resources published by any connection. This list is the pairs of resource identifier
-and key fingerprint of the user who published the resource.
+Each node maintains an ordered list of the [resource identifiers](#resource-identifier) of all
+resources it publishes, as well as all resources published by any connection. This list is the
+pairs of resource identifier and key fingerprint of the user who published the resource.
 
 This list, which is the *node resource stack*, is ordered by knowledge of the resource, instead
 of clock time of resource publication. For example, if a node receives knowledge of a published
