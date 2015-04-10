@@ -30,7 +30,7 @@ part is actually secure.
 ## License
 
 All code, documentation, and assets available under the entire [SDMP repo](sdmprepo) (including
-this document) are published and released under the [Very Open License](vol).
+this document) are published and released under the [Very Open License](vol). ♥
 
 ---
 
