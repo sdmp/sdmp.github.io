@@ -53,7 +53,7 @@ encoded to lower-case hexadecimal.
 There are three fundamental resource types used within the SDMP: identity documents, relationship documents,
 and all others.
 
-Of general documents, there are three document schemas which are used within this protocol, and may be used
+Of general documents, there are three document schemas which are specified within this protocol, and may be used
 individually or combined within a single resource: User Information, Node Information, and Encrypted Content.
 
 ### Identity Documents
@@ -320,7 +320,7 @@ A resource with public content:
 			This is an imagined *markdown* formatted thing, like a blog post or whatnot.
 	...
 
-An update to the previous resource, if it had two other versions:
+An update to the previous resource, if it had two existing versions:
 
 	---
 	sdmp:
@@ -353,7 +353,7 @@ To remove a resource, simply create an update with no content:
 			- 615f92603372ae3fe302860098a019e15927551fee3b7a5179eecc0fe18760ba
 	...
 
-Mixing encrypted and visible content is allowed, but unlikely:
+Mixing encrypted and visible content is allowed:
 
 	---
 	sdmp:
