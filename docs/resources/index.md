@@ -1,6 +1,8 @@
 ---
 layout: index
 version: 0.9
+
+things: more things
 ---
 
 
