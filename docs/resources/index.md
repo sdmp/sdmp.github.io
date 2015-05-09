@@ -11,7 +11,7 @@ within the SDMP.
 
 ## Resource
 
-Where the term `resource` is used, it is meant a valid [SYML][syml] stream with the
+Where the term "resource" is used, it is meant a valid [SYML][syml] stream with the
 following additional restrictions:
 
 * Multi-document YAML streams are **not** allowed.
@@ -20,6 +20,11 @@ following additional restrictions:
 	the boundary characters.)
 * Comments inside the YAML stream are **not** allowed.
 * More precisely, **only** values which are actual YAML properties or values are allowed.
+
+## Resource Identifier
+
+Where the term "resource identifier" is used, it is meant the *message digest* as
+specified by the [SYML][syml] specifications.
 
 ## Resource Properties
 
@@ -33,7 +38,7 @@ value is the number `0.9` exactly.
 
 ###### `sdmp.publisher` *(string, required)*
 
-The [key fingerprint][TODO] of the user or node that published the resource. This is
+The [key fingerprint][crypto] of the user or node that published the resource. This is
 equivalent to the SHA-256 hash of the public key, encoded to lower-cased hexadecimal.
 
 ###### `sdmp.created` *(string, required)*
@@ -46,7 +51,7 @@ since it cannot be cryptographically verified.
 
 Used to indicate a revocation of a previous resource, being replaced with this resource.
 
-Each element of the list is the [resource identifier][TODO] of the resource being identified,
+Each element of the list is the [resource identifier](#resource-identifier) of the resource being identified,
 encoded to lower-case hexadecimal.
 
 ## Resource Types
@@ -82,7 +87,7 @@ messages signed with this key to be valid if they are believed to be generated a
 
 ###### `sdmp.identity.key` *(binary, required)*
 
-The public key of a unique [RSA][w_rsa] key-pair of at least 2048 bits in length, encoded
+The public key of a unique [RSA key-pair][crypto] of at least 2048 bits in length, encoded
 to [YAML binary][yaml_binary].
 
 ### Relationship Documents
@@ -106,13 +111,13 @@ publishing privileges).
 
 When the relationship type is `connection`, this property is required.
 
-The [key fingerprint][TODO] of the user the resource publisher is connecting to.
+The [key fingerprint][crypto] of the user the resource publisher is connecting to.
 
 ###### `sdmp.relationship.node` *(string)*
 
 When the relationship type is `host` or `publisher`, this property is required.
 
-The [key fingerprint][TODO] of the node the resource publisher is authorizing.
+The [key fingerprint][crypto] of the node the resource publisher is authorizing.
 
 ### User Information Documents
 
@@ -158,9 +163,9 @@ node is reachable. This address may be IPv4 or IPv6.
 ### Encrypted Content
 
 Used to transmit encrypted data in a secure form, this document contains the content encrypted using
-a single-use [session key][TODO], and that key is encrypted using each recipients public identity key.
+a single-use [session key][crypto], and that key is encrypted using each recipients public identity key.
 
-The [session key][TODO] must be an [AES][w_aes] compatible key of at least 256 bits.
+The [session key][crypto] must be an [AES compatible key][crypto] of at least 256 bits.
 
 For encrypted content, the `sdmp` object in the resource's YAML document has the following reserved properties:
 
@@ -170,12 +175,12 @@ Holds the keys and encrypted content. This contains the following reserved prope
 
 ###### `sdmp.encrypted.keys` *(list, binary, required)*
 
-Each element of the list contains the single-use [session key][TODO], encrypted using the recipients
+Each element of the list contains the single-use [session key][crypto], encrypted using the recipients
 public identity key, and encoded to [YAML binary][yaml_binary].
 
 ###### `sdmp.encrypted.data` *(binary, required)*
 
-The content, encrypted to the single-use [session key][TODO].
+The content, encrypted to the single-use [session key][crypto].
 
 ### Visible Content
 
@@ -383,6 +388,7 @@ Mixing encrypted and visible content is allowed:
 			This is a *markdown* formatted blog post that I wrote.
 	...
 
+[crypto]: /docs/cryptography
 [syml]: http://github.com/sdmp/signed-yaml
 [yamlboundaries]: http://www.yaml.org/spec/1.2/spec.html#id2760395
 [yaml_binary]: http://yaml.org/type/binary.html
