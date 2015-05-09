@@ -1,6 +1,7 @@
 ---
-layout: index
-version: 0.9
+layout: docs
+title: Resources
+subtitle: Core protocol resources and how to interpret them.
 ---
 
 
