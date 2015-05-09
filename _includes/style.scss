@@ -72,6 +72,10 @@ article code {
 article pre {
 	background-color: #f9f2f4;
 	overflow-x: scroll;
+	-moz-tab-size: 2;
+	-o-tab-size: 2;
+	tab-size: 2;
+	line-height: 1.4em;
 }
 blockquote {
 	padding: 0.1em 1.5em;
