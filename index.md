@@ -25,6 +25,7 @@ part is actually secure.
 * [Network Communication](/docs/network): How nodes communicate with each other, via UDP broadcasts.
 * [Node Journal](/docs/journal): Each node maintains a journal of messages it publishes.
 * [Request/Response](/docs/communication): How nodes request messages and respond to requests.
+* [Cryptography](/docs/cryptography): Cryptographic standards used in the protocol.
 
 ---
 
