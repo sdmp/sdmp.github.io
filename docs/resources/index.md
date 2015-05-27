@@ -11,20 +11,27 @@ within the SDMP.
 
 ## Resource
 
-Where the term "resource" is used, it is meant a valid [SYML][syml] stream with the
-following additional restrictions:
+Where the term "resource" is used, it is meant a valid [SYML][syml] stream, except with the
+following additional YAML stream restrictions:
 
+## YAML Stream Restrictions
+
+All YAML streams in the SDMP must conform to the following restrictions:
+
+* The YAML stream must start with three dashes (e.g., `---`) as shown in
+	[YAML 1.0][yaml_10_delimiter], [YAML 1.1][yaml_11_delimiter], and [YAML 1.2][yaml_12_delimiter].
+* The YAML stream must be terminated with the three periods (e.g. `...`) as shown in
+	[YAML 1.0][yaml_10_delimiter], [YAML 1.1][yaml_11_delimiter], and [YAML 1.2][yaml_12_delimiter].
+* Characters prior to the initiating three dashes (`---`) and after the three periods (`...`) are not allowed.
 * Multi-document YAML streams are **not** allowed.
-* The YAML stream must use the start and end boundary characters, `---` and `...`,
-	respectively. (See the [YAML specs][yamlboundaries] for more information on
-	the boundary characters.)
 * Comments inside the YAML stream are **not** allowed.
 * More precisely, **only** values which are actual YAML properties or values are allowed.
 
 ## Resource Identifier
 
-Where the term "resource identifier" is used, it is meant the *message digest* as
-specified by the [SYML][syml] specifications.
+Where the term "resource identifier" is used, it is meant the [message digest](../cryptography)
+generated from the characters in the YAML stream, including the starting dashes (`---`) and
+the ending three periods (`...`).
 
 ## Resource Properties
 
@@ -51,16 +58,16 @@ since it cannot be cryptographically verified.
 
 Used to indicate a revocation of a previous resource, being replaced with this resource.
 
-Each element of the list is the [resource identifier](#resource-identifier) of the resource being identified,
-encoded to lower-case hexadecimal.
+Each element of the list is the [resource identifier](#resource-identifier) of the resource
+being identified, encoded to lower-case hexadecimal.
 
 ## Resource Types
 
-There are three fundamental resource types used within the SDMP: identity documents, relationship documents,
-and all others.
-
-Of general documents, there are three document schemas which are specified within this protocol, and may be used
-individually or combined within a single resource: User Information, Node Information, and Encrypted Content.
+There are three fundamental resource types used within the SDMP:
+[identity documents](#identity-documents),
+[relationship documents](#relationship-documents), and
+[general documents](#general-documents),
+which covers all other resource types.
 
 ### Identity Documents
 
@@ -119,11 +126,20 @@ When the relationship type is `host` or `publisher`, this property is required.
 
 The [key fingerprint][crypto] of the node the resource publisher is authorizing.
 
-### User Information Documents
+### General Documents
+
+Of general documents, there are three document schemas which are specified within
+this protocol, and may be used individually or combined within a single resource:
+[user information](#user-information-documents),
+[node information](#node-information-documents), and
+[encrypted content](#encrypted-content-documents).
+
+Other [general information](#general-information) may be stored inside a resource, but
+must conform to all other protocol specifications.
+
+#### User Information Documents
 
 Used to store information about a user.
-
-(Note: A resource containing a user information document may also contain encrypted content.)
 
 The `sdmp` object in the resource's YAML document has the following reserved properties:
 
@@ -139,11 +155,9 @@ A human-readable name for the user.
 
 A human-readable description of the user. Meant to differentiate between users with similar names.
 
-### Node Information Documents
+#### Node Information Documents
 
 Used to store information about a node.
-
-(Note: A resource containing a node information document may also contain encrypted content.)
 
 The `sdmp` object in the resource's YAML document has the following reserved properties:
 
@@ -158,16 +172,17 @@ A human-readable description of the node type.
 ###### `sdmp.node.ips` *(list, string)*
 
 Each element of the list is the string representation of the IP address and port at which the
-node is reachable. This address may be IPv4 or IPv6.
+node is reachable. This address may be IPv4 or IPv6, and the port is **required**.
 
-### Encrypted Content
+#### Encrypted Content Documents
 
-Used to transmit encrypted data in a secure form, this document contains the content encrypted using
-a single-use [session key][crypto], and that key is encrypted using each recipients public identity key.
+Used to transmit encrypted data in a secure form.
 
-The [session key][crypto] must be an [AES compatible key][crypto] of at least 256 bits.
+This resource contains a YAML stream conforming to the [SDMP YAML restrictions](#yaml-stream-restrictions)
+that has been encrypted using a single-use [session key][crypto]. That key is
+encrypted using each recipients public identity key.
 
-For encrypted content, the `sdmp` object in the resource's YAML document has the following reserved properties:
+The `sdmp` object in the resource's YAML document has the following reserved properties:
 
 ###### `sdmp.encrypted` *(object)*
 
@@ -182,11 +197,13 @@ public identity key, and encoded to [YAML binary][yaml_binary].
 
 The content, encrypted to the single-use [session key][crypto].
 
-### Visible Content
+#### General Information
 
-Used to transmit any general data in an insecure form (such as a public blog or similar).
+General information may be transmitted in an unencrypted form, such as for a public blog or
+similar public broadcast.
 
-For visible content, the `sdmp` object in the resource's YAML document has the following reserved properties:
+For general visible content, the `sdmp` object in the resource's YAML document has the
+following reserved properties:
 
 ###### `sdmp.document` *(object)*
 
@@ -390,8 +407,12 @@ Mixing encrypted and visible content is allowed:
 
 [crypto]: /docs/cryptography
 [syml]: http://github.com/sdmp/signed-yaml
+[syml_restrictions]: https://github.com/sdmp/signed-yaml#yaml-requirements
 [yamlboundaries]: http://www.yaml.org/spec/1.2/spec.html#id2760395
 [yaml_binary]: http://yaml.org/type/binary.html
+[yaml_10_delimiter]: http://yaml.org/spec/1.0/#id2489959
+[yaml_11_delimiter]: http://yaml.org/spec/1.1/#id857577
+[yaml_12_delimiter]: http://www.yaml.org/spec/1.2/spec.html#id2760395
 [w_aes]: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
 [w_iso8601]: https://en.wikipedia.org/wiki/ISO_8601
 [w_rsa]: https://en.wikipedia.org/wiki/RSA_(cryptosystem)
