@@ -20,14 +20,18 @@ part is actually secure.
 
 # Documentation
 
+The core specifications are:
+
 * [Cryptography](/docs/cryptography): Cryptographic standards used in the protocol.
 * [Resources](/docs/resources): Core protocol resources and how to interpret them.
 * [Node Journal](/docs/journal): Each node maintains a journal of messages it publishes.
 * [Communication](/docs/communication): How nodes publish journal updates, and request
 	and respond with resources.
-* [TCP Network](/docs/network): Core implementation of communication, via TCP.
 
-<!-- * [Social](/docs/social): Person to person interactions, public or encrypted, and how to interpret them. -->
+Some implementations and extensions of the SDMP are:
+
+* [TCP Network](/docs/network): Core implementation of communication, via TCP.
+* [Social](/docs/social): Person to person interactions, public or encrypted, and how to interpret them.
 
 ---
 
