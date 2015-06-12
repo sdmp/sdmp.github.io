@@ -33,6 +33,8 @@ the [network encryption](../cryptography/#network-encryption) specifications. A 
 a communication document without first encrypting is *must* be treated as though its keys
 have been compromised.
 
+XXXXXXX TODO: Basically it's like PGP, with the AES keys and stuff.
+
 ## Communication document properties
 
 All communication documents have, at the root of the YAML document, a single object
@@ -154,7 +156,11 @@ However, the following guidelines should be followed for any implementation:
 * Since nodes may have other nodes resources, a distributed approach should be sought for
 	requesting published resources. Doing so will alleviate network traffic from the node
 	publishing a resource.
+* Every attempt should be made to implement [forward secrecy][w_forward]. This means that
+	network communications should use session-based encryption keys. See the
+	[basic network specifications](../network/) for an implementation over TCP.
 
+[w_forward]: https://en.wikipedia.org/wiki/Forward_secrecy
 [syml]: http://github.com/sdmp/signed-yaml
 [w_iso8601]: https://en.wikipedia.org/wiki/ISO_8601
 [yaml_10_delimiter]: http://yaml.org/spec/1.0/#id2489959

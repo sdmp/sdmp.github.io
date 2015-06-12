@@ -27,10 +27,11 @@ The core specifications are:
 * [Node Journal](/docs/journal): Each node maintains a journal of messages it publishes.
 * [Communication](/docs/communication): How nodes publish journal updates, and request
 	and respond with resources.
+* [Session Keys](/docs/session): Establishing a session key for network communications.
+* [TCP Network](/docs/tcp): Implementation of communication and session specifications over TCP.
 
-Some implementations and extensions of the SDMP are:
+TODO:
 
-* [TCP Network](/docs/network): Core implementation of communication, via TCP.
 * [Social](/docs/social): Person to person interactions, public or encrypted, and how to interpret them.
 
 ---
