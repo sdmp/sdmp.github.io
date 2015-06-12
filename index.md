@@ -29,10 +29,7 @@ The core specifications are:
 	and respond with resources.
 * [Session Keys](/docs/session): Establishing a session key for network communications.
 * [TCP Network](/docs/tcp): Implementation of communication and session specifications over TCP.
-
-TODO:
-
-* [Social](/docs/social): Person to person interactions, public or encrypted, and how to interpret them.
+* [Social](/docs/social): "Social network" interactions, and how to interpret them.
 
 ---
 
