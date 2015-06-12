@@ -19,45 +19,36 @@ message.
 
 After this, the nodes send all data over the network as [specified](../session/#transmitting-data).
 
-
-
-
-
-
-
-
 ### Connection message validation
 
-When a node receives a connection message, it drops the connection under the
+After a node receives a connection message, it drops the connection under the
 following circumstances:
 
 * If the connection message cannot be decrypted by the receiving node.
-* If the node cannot verify the signature in the message for **any** reason, including but not limited to:
-	- malformed data,
-	- an improperly generated signature, or
+* If the node cannot verify the signature in the message for any reason, including but not limited to:
+	- malformed data
+	- an improperly generated signature
 	- the node does not have the public key of the node which generated the message.
-* If the node does not accept the values of `g`, `p`, or `N` for any reason.
+* If the node does not accept the values given in the [connection message](../session/#connection-message)
+	for anyh reason.
 
 ### Connection dropping
 
 When dropping a connection during connection message validation, the following process
-is followed in **all** cases:
+is followed in all cases:
 
 1. The plaintext message `nope` is transmitted.
 2. The connection is then dropped.
 
-It is **not** permitted that a node transmit **any** other information concerning
-the cause of the drop.
+It is not permitted that a node transmit any other information concerning the cause of the drop.
 
 ### Network traffic
 
 After both nodes have exchanged connection messages, they have the necessary information to calculate
 the shared session key.
 
-All network traffice past this point for this connection **must** be encrypted using this session key.
-
-Prior to encryption, network data must be padded to the nearest 256 bytes with the method specified
-in [RFC 5652][rfc5652].
+All network traffice past this point for this connection must be encrypted using this session key,
+[as specified](../session/#transmitting-data).
 
 ### Connection overview
 
