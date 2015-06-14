@@ -26,15 +26,6 @@ by the [SYML specifications][syml], with the following additional restrictions:
 * Comments inside the YAML stream are **not** allowed.
 * More precisely, **only** values which are actual YAML properties or values are allowed.
 
-## Communication document encryption
-
-Prior to sending a communication document, the sending node *must* encrypt it according to
-the [network encryption](../cryptography/#network-encryption) specifications. A node sending
-a communication document without first encrypting is *must* be treated as though its keys
-have been compromised.
-
-XXXXXXX TODO: Basically it's like PGP, with the AES keys and stuff.
-
 ## Communication document properties
 
 All communication documents have, at the root of the YAML document, a single object
@@ -159,6 +150,9 @@ However, the following guidelines should be followed for any implementation:
 * Every attempt should be made to implement [forward secrecy][w_forward]. This means that
 	network communications should use session-based encryption keys. See the
 	[basic network specifications](../network/) for an implementation over TCP.
+* At no point should a node send message data over the network in an unencrypted form. A node
+	sending a communication document without first encrypting it *must* be treated as though
+	its keys have been compromised.
 
 [w_forward]: https://en.wikipedia.org/wiki/Forward_secrecy
 [syml]: http://github.com/sdmp/signed-yaml
