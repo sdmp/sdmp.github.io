@@ -10,7 +10,8 @@ is ever compromised, all previous messages may be decrypted. This problem is wel
 known, and is sometimes referred to as the problem of [forward secrecy][w_forward].
 
 Arguably, one of the most well known solution to this problem is the [Diffie-Helman][w_diffiehelman]
-key exchange. This is used in the SDMP to establish session keys.
+key exchange. A method for establishing a network session key using the Diffie-Helman exchange
+is specified, and is suggested as the primary mechanism for establishing session keys.
 
 ## Diffie-Helman key exchange review
 
@@ -104,7 +105,7 @@ permitted that the node transmit any information concerning the cause of the dro
 After both nodes have exchanged connection messages, they have the necessary information to calculate
 the shared session key and to verify the signature of the message.
 
-For the connection, all traffic after this point must be encrypted using this calculated key.
+After this point, all connection network traffic must be encrypted using this established key.
 
 ### Transmitting data
 
