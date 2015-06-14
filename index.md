@@ -20,8 +20,6 @@ part is actually secure.
 
 # Documentation
 
-The core specifications are:
-
 * [Cryptography](/docs/cryptography): Cryptographic standards used in the protocol.
 * [Resources](/docs/resources): Core protocol resources and how to interpret them.
 * [Node Journal](/docs/journal): Each node maintains a journal of messages it publishes.
@@ -29,17 +27,15 @@ The core specifications are:
 	and respond with resources.
 * [Session Keys](/docs/session): Establishing a session key for network communications.
 * [TCP Network](/docs/tcp): Implementation of communication and session specifications over TCP.
-* [Social](/docs/social): "Social network" interactions, and how to interpret them.
 
 ---
 
 ## Get involved
 
 * Read through this entire document and make sure it is human-readable, consistent, and sane.
-* [File issues][issues] if you find anything wrong or questionable, anywhere on this page.
-* Create [pull requests][pullrequest] if you spot anything wrong or missing and you want to
-	propose a fix, including spelling or grammar errors! (Please make pull requests against
-	the `development` branch.)
+* [File issues][issues] if you find anything wrong or questionable.
+* Create [pull requests][pullrequest] if you want to propose a fix, including spelling
+	or grammar errors!
 * If you have questions, you can even [file issues][issues] for those, too!
 
 ---
