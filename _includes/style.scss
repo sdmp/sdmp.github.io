@@ -1,0 +1,110 @@
+body {
+	max-width: 30em;
+	padding: 1em;
+	margin: auto;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 1.3em;
+	font-weight: 200;
+}
+header.index {
+	text-align: center;
+	svg {
+		margin-top: 1em;
+		width: 18em;
+		height: 18em;
+	}
+	h1 {
+		font-size: 3em;
+		margin: 0;
+	}
+}
+header.docs {
+	svg {
+		width: 25%;
+		float: left;
+		margin-bottom: 1em;
+	}
+	h1 {
+		width: 75%;
+		float: left;
+		margin-top: 0.9em;
+		code {
+			padding-left: 0.4em;
+			font-size: 2em;
+			word-spacing: -0.3em;
+		}
+	}
+	hr:first-of-type {
+		clear: both;
+	}
+	h2 {
+		font-size: 2em;
+		margin: 0;
+	}
+	h2, p {
+		text-align: center;
+	}
+}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 500;
+}
+h6 {
+	font-size: 1em;
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+	font-weight: 700;
+}
+a {
+	color: #428bca;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+article code {
+	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+	padding: 0.1em 0.2em;
+	font-size: 90%;
+	color: #c7254e;
+	background-color: #f9f2f4;
+	border-radius: 0.2em;
+}
+article pre {
+	background-color: #f9f2f4;
+	overflow-x: scroll;
+	-moz-tab-size: 2;
+	-o-tab-size: 2;
+	tab-size: 2;
+	line-height: 1.4em;
+}
+blockquote {
+	padding: 0.1em 1.5em;
+	border-left: 0.2em solid #eeeeee;
+	font-style: italic;
+}
+footer {
+	text-align: center;
+	padding-bottom: 4em;
+}
+#github-link {
+	border: 0 none;
+	position: absolute;
+	right: 0;
+	top: 3.2em;
+	-moz-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+#github-link a {
+	color: #808080;
+	text-decoration: none;
+	font-size: x-large;
+	font-family: "Georgia", "Cambria", "Times New Roman", "Times", "serif";
+}
+@media only screen and (max-width: 800px) {
+	#github-link {
+		display: none;
+	}
+}
