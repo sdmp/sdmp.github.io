@@ -14,25 +14,25 @@ between nodes.
 After the TCP connection has been established, the node initiating the connection
 sends a [connection message](../session/#connection-message).
 
-The receiving node validates the signature, and responds with its own connection
-message.
+The receiving node validates the signature, and responds with its own connection message.
 
-After this, the nodes send all data over the network as [specified](../session/#transmitting-data).
+After this, the nodes send all data over the network [as specified](../session/#transmitting-data).
 
-### Connection message validation
+## Connection message validation
 
-After a node receives a connection message, it drops the connection under the
+After any node receives a connection message, it immediately drops the connection under the
 following circumstances:
 
 * If the connection message cannot be decrypted by the receiving node.
-* If the node cannot verify the signature in the message for any reason, including but not limited to:
+* If the node cannot verify the signature of the [SYML][syml] for any reason, including
+	but not limited to:
 	- malformed data
 	- an improperly generated signature
 	- the node does not have the public key of the node which generated the message.
 * If the node does not accept the values given in the [connection message](../session/#connection-message)
 	for anyh reason.
 
-### Connection dropping
+## Connection dropping
 
 When dropping a connection during connection message validation, the following process
 is followed in all cases:
@@ -42,15 +42,17 @@ is followed in all cases:
 
 It is not permitted that a node transmit any other information concerning the cause of the drop.
 
-### Network traffic
+## Network traffic encryption
 
-After both nodes have exchanged connection messages, they have the necessary information to calculate
-the shared session key.
+After both nodes have exchanged connection messages, all network traffic for this connection must
+be encrypted using the established session key, [as specified](../session/#transmitting-data).
 
-All network traffice past this point for this connection must be encrypted using this session key,
-[as specified](../session/#transmitting-data).
+## Network communication
 
-### Connection overview
+Each node may at any time transmit to the other node. All transmitted communications must be in
+the format of a valid [communication document](../communication/#communication-document-format).
+
+## Connection overview
 
 The process for establishing a secure connection is as follows:
 
@@ -61,3 +63,6 @@ The process for establishing a secure connection is as follows:
 5. The local node verifies the connection message, dropping the connection if there is an error.
 6. The local and remote node calculate the shared session key.
 7. All future messages are padded and then encrypted using the shared session key.
+
+[syml]: http://github.com/sdmp/signed-yaml
+[newissue]: https://github.com/sdmp/sdmp.github.io/issues/new
