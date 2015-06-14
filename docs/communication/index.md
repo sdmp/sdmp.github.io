@@ -123,6 +123,49 @@ The [resource identifier](../resources/#resource-identifier) of the resource bei
 
 The resource request response is the exact, unmodified [resource](../resource/).
 
+### General node response
+
+There are potentially many cases where a node wishes to respond with additional or different
+data, e.g. with rate limiting information, or if a requested resource is unavailable.
+
+When this occurs, the node may respond with a resource response. These have the following
+additional properties on the `sdmp.communication` object.
+
+###### `sdmp.communication.response` *(object)*
+
+Indicates that the document is a node-to-node response, used for network traffic control
+or other internal information.
+
+###### `sdmp.communication.response.request` *(string, optional)*
+
+If the response is related to a request, this field is used to indicate which request this
+document is in response to.
+
+This is equivalent to the resource identifier of the request, that is, the [hash](../cryptography)
+of the YAML request encoded as lower cased hexadecimal.
+
+###### `sdmp.communication.response.status` *(integer, required)*
+
+A [status code](#response-status-codes), similar to HTTP status codes, which
+indicate the type of response.
+
+###### `sdmp.communication.response.description` *(string, optional)*
+
+A human readable description of the returned status.
+
+## Response status codes
+
+The SDMP specifies the meaning of the following status codes, which are similar to HTTP
+status codes. If you desire additional status codes for your application and want more
+widespread adoption, please make a request by [filing an "issue" on Github][newissue].
+
+* `400` **"Bad request"** - Used to indicate that a received communication document was
+	not interpretable. The property `sdmp.communication.response.request` is *required* here.
+* `404` **"Not found"** - This status is used in all cases where a requested resource
+	is unavailable or when the resource has been deleted.
+* `408` **"Request timeout"** - If no data has been received by a node within some reasonable
+	time, it may transmit this status and then drop the connection.
+
 ## Journal update broadcast
 
 After a node publishes a new resource and updates it's [journal list](../journal/), it *may*
