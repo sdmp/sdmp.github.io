@@ -1,30 +1,65 @@
+TODO: Those JSON objects should be made into schemas and be published over at sdmp-schema.
 ---
 layout: docs
-title: Communication
+title: Synchronization
 subtitle: How nodes publish journal updates, and request and respond with resources.
 ---
 
 
-The communications within the SDMP are network-agnostic. They can be communicated over
-HTTP, plain TCP, sent in an email, or even sent over SMS.
+The synchronization process for the SDMP is defined in a way that makes it network agnostic.
+Publishing and requesting resources can be done over HTTPS, plain TCP, sent in an email, or
+(at least theoretically) even sent over SMS.
 
-Communication between nodes is done by transmitting and receiving the following signed
-and encrypted document types: journal list requests, journal list responses and updates,
-and resource requests and responses.
+This document describes the method of publishing and requesting resources, and the JSON
+objects used to communicate those actions.
 
-## Communication document format
+## Overview
 
-All communication between SDMP nodes must be valid SYML streams, as described
-by the [SYML specifications][syml], with the following additional restrictions:
+Communication between nodes is done by transmitting and receiving the following message types:
 
-* The YAML stream must start with three dashes (e.g., `---`) as shown in
-	[YAML 1.0][yaml_10_delimiter], [YAML 1.1][yaml_11_delimiter], and [YAML 1.2][yaml_12_delimiter].
-* The YAML stream must be terminated with the three periods (e.g. `...`) as shown in
-	[YAML 1.0][yaml_10_delimiter], [YAML 1.1][yaml_11_delimiter], and [YAML 1.2][yaml_12_delimiter].
-* Characters prior to the initiating three dashes (`---`) and after the three periods (`...`) are not allowed.
-* Multi-document YAML streams are **not** allowed.
-* Comments inside the YAML stream are **not** allowed.
-* More precisely, **only** values which are actual YAML properties or values are allowed.
+* journal list updates
+* journal list request/response
+* resource request/response
+
+### Journal list updates
+
+When a node publishes a resource, and when it becomes aware of resources published by
+[connections](../resource/#relationship), it writes those as entries in its
+[journal](../journal/#journal-entries).
+
+Periodically, a node will send out the "most recent" list of journal entries to all other
+known nodes. It is this "most recent" list that is the  main data of the *journal list update*.
+
+If the sending node receives confirmation that the receiving node has received the journal
+entry list, the last [journal line number](../journal/#journal-line-number) is recorded for
+that node. Each node maintains the last journal line number sent to every other known node.
+
+### Most recent list
+
+Because the publishing node knows the last journal line number transmitted to the receiving
+node, when a node sends the "most recent list", it sends 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Communication document properties
 

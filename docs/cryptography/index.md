@@ -18,8 +18,10 @@ The bit length of the RSA key must be at least 2048 bits.
 ## Hashing
 
 Where the phrase `hash` or `digest` is used, it is meant
-the [SHA-256][w_sha2] hashing algorithm as specified in [FIPS PUB 180-2][fips180],
-encoded to lower-case hexadecimal.
+the [SHA-512][w_sha2] hashing algorithm as specified in [FIPS PUB 180-2][fips180].
+
+Where a string representation of a hash is specified, it is meant the output of
+the SHA-512 hashing algorithm, whose octets are [unpadded base64url][base64] encoded.
 
 ## Key hashing
 
@@ -49,3 +51,4 @@ The data must be padded to the nearest 1024 bytes.
 [w_sha2]: https://en.wikipedia.org/wiki/SHA-2
 [w_aes]: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
 [fips180]: http://csrc.nist.gov/publications/fips/fips180-2/fips180-2.pdf
+[base64]: https://tools.ietf.org/html/rfc4648#section-5

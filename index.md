@@ -21,12 +21,12 @@ part is actually secure.
 # Documentation
 
 * [Cryptography](/docs/cryptography): Cryptographic standards used in the protocol.
-* [Resources](/docs/resources): Core protocol resources and how to interpret them.
-* [Node Journal](/docs/journal): Each node maintains a journal of messages it publishes.
-* [Communication](/docs/communication): How nodes publish journal updates, and request
-	and respond with resources.
+* [Container](/docs/container): Containers used to publish resources and communicate between nodes.
+* [Resource](/docs/resource): Resources passed between nodes and how to interpret them.
+* [Node Journal](/docs/journal): Each node maintains a journal of resources.
+* [Synchronization](/docs/synchronization): How nodes publish, request, and respond with resources.
 * [Session Keys](/docs/session): Establishing a session key for network communications.
-* [TCP Network](/docs/tcp): Implementation of communication and session specifications over TCP.
+* [TCP Network](/docs/tcp): Specifications for a synchronization implementation over TCP.
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: docs
-title: Network
-subtitle: Core implementation of communication, via TCP.
+title: TCP
+subtitle: Specifications for a synchronization implementation over TCP.
 ---
 
 
