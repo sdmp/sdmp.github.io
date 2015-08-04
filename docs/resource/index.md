@@ -6,8 +6,8 @@ subtitle: Resources passed between nodes and how to interpret them.
 
 
 All resources published in the SDMP are valid [SDMP containers](../container/),
-and require the [resource](#resource) schema as the *first* schema in the
-container `sdmp.schemas` property.
+and require the [resource](#resource) schema as the *first* schema in the payload
+container object `sdmp.schemas` property.
 
 ---
 
@@ -140,9 +140,10 @@ References of the form `sdmp://<HOST>` should be interpreted to be a
 reference to the [identity resource](#identity) of the user identified by
 the `<HOST>` value.
 
-*Note:* This is equivalent to a request of the form `sdmp://<HOST>/<PATH>`
-where `<PATH>` is the resource identifier of the identity resource. Or in
-other words, if `h6FWg...jgusYA` references the [identity resource](#identity)
+These are equivalent to a request of the form `sdmp://<HOST>/<PATH>`
+where `<PATH>` is the resource identifier of the identity resource.
+
+E.g., if `h6FWg...jgusYA` references the [identity resource](#identity)
 for the user `GlvAre...U91A8Q`, the following URIs would be equivalent:
 
 ```
@@ -157,19 +158,7 @@ sdmp://GlvAre...U91A8Q/h6FWg...jgusYA
 Contains metadata about the resource. All resources published in the SDMP contain
 the following additional properties:
 
-###### `sdmp.publisher` *(string, required)*
-
-The [key fingerprint](../cryptography/#key-fingerprint) of the user or node that published
-the resource. This is equivalent to the SHA-512 hash of the public key, whose octets
-are [unpadded base64url](https://tools.ietf.org/html/rfc4648#section-5) encoded.
-
-###### `sdmp.created` *(string, required)*
-
-Timestamp the resource was published. The time must be the local time of the publisher,
-translated to UTC. The timestamp is [ISO 8601][w_iso8601] formatted, with granularity
-to the millisecond. E.g., `2015-07-26T15:48:37.703Z`.
-
-###### `sdmp.updates` *(array of strings)*
+###### `sdmp.updates` *(array of strings, optional)*
 
 Used to indicate a revocation of a previously published resource. The previous
 resource(s) are to be replaced with this resource. Each array element is the

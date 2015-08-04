@@ -10,6 +10,8 @@ a [JSON Web Signature (JWS)](http://self-issued.info/docs/draft-ietf-jose-json-w
 object. This JSON object is the SDMP *container*, and must be used for all communication
 and for all published content in the SDMP.
 
+---
+
 ## Container Payload Object
 
 The [JWS payload](http://self-issued.info/docs/draft-ietf-jose-json-web-signature.html#rfc.section.2)
@@ -17,7 +19,9 @@ is a string. This string is a JSON object which has been
 [stringified](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify),
 and whose octets are [unpadded base64url](https://tools.ietf.org/html/rfc4648#section-5) encoded.
 
-This JSON object is referred to as the *payload object*.
+This JSON object is referred to as the *container payload object*, or simply *payload object*.
+
+---
 
 ## Payload Schema
 
@@ -38,6 +42,17 @@ The root property of the object, which describes the payload object.
 The version of the SDMP specifications used to generate and validate the payload
 object. The property must be a valid [semver number](http://semver.org/).
 
+###### `sdmp.publisher` *(string, required)*
+
+The [key fingerprint](../cryptography/#key-fingerprint) of the user or node that generated
+and signed the container.
+
+###### `sdmp.created` *(string, required)*
+
+Timestamp the resource was published. The time must be the local time of the publisher,
+translated to UTC. The timestamp is [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+formatted, with granularity to the millisecond. E.g., `2015-07-26T15:48:37.703Z`.
+
 ###### `sdmp.schemas` *(array of strings, required)*
 
 An ordered array of strings. Each array element of this property must be *either* a
@@ -52,6 +67,8 @@ reserved strings:
 * `user_information` (Which references [this schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/user_information.json).)
 * `encrypted` (Which references [this schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/encrypted.json).)
 * `post` (Which references [this schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/post.json).)
+
+---
 
 ## Validating Payloads
 

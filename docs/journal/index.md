@@ -5,11 +5,11 @@ subtitle: Each node maintains a journal of resources it publishes.
 ---
 
 
-## Node journal
-
 Each node maintains an ordered list of the [resources](../resource/) it publishes,
 as well as all resources published by any [connection](../resource/#relationship).
 This list is called the *node journal*, and is unique per node.
+
+---
 
 ## Journal entries
 
@@ -23,6 +23,8 @@ of the node, and each following line of the node journal is constructed by appen
 * a single forward slash character (`/`), then
 * the [resource identifier](../resource/#resource-identifier).
 
+---
+
 ## Journal line number
 
 Except for the very first line of the journal, the first hash for each entry in the
@@ -31,6 +33,8 @@ node journal is the *journal line number*.
 This hash is the [hash](../cryptography/#hashing) of the previous line's characters, excluding any
 newline characters, whose octets are [unpadded base64url](https://tools.ietf.org/html/rfc4648#section-5)
 encoded.
+
+---
 
 ## Writing to the journal
 
@@ -47,6 +51,8 @@ knowledge of the resource.
 For example, if a node receives notice of a published resource several days after the publication,
 the resource identifier for that resource is added to the *end* of the journal.
 
+---
+
 ## Connection node journal status
 
 For the purposes of synchronization, each node must maintain knowledge of each connection's
@@ -61,6 +67,8 @@ are appended to the journal.
 After synchronization is done, the node would then request for unknown resources.
 
 In this way, the node maintains knowledge of the state of all known nodes.
+
+---
 
 ## Node journal example
 
