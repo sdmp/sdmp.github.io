@@ -1,4 +1,3 @@
-TODO: Those JSON objects should be made into schemas and be published over at sdmp-schema.
 ---
 layout: docs
 title: Synchronization
@@ -230,3 +229,7 @@ However, the following guidelines should be followed for any implementation:
 
 
 [w_forward]: https://en.wikipedia.org/wiki/Forward_secrecy
+[schema_journal_request]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/journal_request.json
+[schema_journal_update]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/journal_update.json
+[schema_resource_request]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/resource_request.json
+[schema_resource_response]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/resource_response.json
