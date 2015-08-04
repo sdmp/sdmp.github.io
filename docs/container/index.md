@@ -49,7 +49,7 @@ and signed the container.
 
 ###### `sdmp.created` *(string, required)*
 
-Timestamp the resource was published. The time must be the local time of the publisher,
+Timestamp the container was created. The time must be the local time of the publisher,
 translated to UTC. The timestamp is [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
 formatted, with granularity to the millisecond. E.g., `2015-07-26T15:48:37.703Z`.
 
