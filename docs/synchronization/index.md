@@ -18,10 +18,9 @@ and [resources](../resource/).
 
 The two core actions of the SDMP are:
 
-* Nodes may request journal list updates from other nodes, and may
-  periodically send journal list updates to other nodes.
-* Nodes may request specific resources from other nodes, and respond
-  with those resources.
+* Nodes may request journal list updates from other nodes, and may periodically send
+  journal list updates to other nodes.
+* Nodes may request specific resources from other nodes, and respond with those resources.
 
 ---
 
@@ -59,7 +58,7 @@ line number to the last line number of the transmitted journal update.
 
 ---
 
-## Journal Request
+## Journal Request ([schema: `journal_request`][schema_journal_request])
 
 Nodes may request journal entries from other nodes. This may be done if a node
 has been offline for a while, or other technical reasons. The expected response
@@ -89,36 +88,36 @@ request, the responding node may choose whatever limit it decides is appropriate
 
 ---
 
-## Journal Update
+## Journal Update ([schema: `journal_update`][schema_journal_update])
 
 This schema is used when a node responds to a [journal request](#journal-request), or when
 a node periodically sends a journal update to other nodes.
 
 Journal responses have the following properties:
 
-###### `response` *(object, required)*
+###### `data` *(object, required)*
 
-Holds the response properties. This contains the following reserved properties:
+Holds the data properties. This contains the following reserved properties:
 
-###### `response.type` *(string, required)*
+###### `data.type` *(string, required)*
 
-Indicates the response type. For the journal response schema, this must be the string `journal`.
+Indicates the data type. For the journal update schema, this must be the string `journal`.
 
-###### `response.since` *(string, required)*
+###### `data.since` *(string, required)*
 
 This property is the [journal line number](../journal/#journal-line-number) of the line
-immediately preceding the first entry in the journal entries list of this response.
+immediately preceding the first entry in the journal entries list of this object.
 
-(E.g., if the first entry of the journal entry list in this response were line
+(E.g., if the first entry of the journal entry list in this object were line
 number `n`, this value would be `n-1`.)
 
-###### `response.entries` *(ordered string list, required)*
+###### `data.entries` *(ordered string list, required)*
 
 An ordered list of valid [journal entries](../journal/#journal-entries).
 
 ---
 
-### Resource Request
+### Resource Request ([schema: `resource_request`][schema_resource_request])
 
 Nodes may request specific resources from other nodes.
 
@@ -150,40 +149,41 @@ The [resource identifier](../resource/#resource-identifier) of the resource bein
 
 ---
 
-## Resource Response
+## Resource Response ([schema: `resource_response`][schema_resource_response])
 
 This schema is used when a node responds to a [resource request](#resource-request), and
 any time a node sends a resource to another node.
 
 Resource responses have the following properties:
 
-###### `response` *(object, required)*
+###### `data` *(object, required)*
 
-Holds the response properties. This contains the following reserved properties:
+Holds the data properties. This contains the following reserved properties:
 
-###### `response.type` *(string, required)*
+###### `data.type` *(string, required)*
 
-Indicates the response type. For the resource response schema, this must be the string `resource`.
+Indicates the data type. For the resource response schema, this must be the string `resource`.
 
-###### `response.status` *(number, required)*
+###### `data.description` *(string, optional)*
 
-A [status code](#response-status-code), similar to HTTP status codes, which
-indicate the type of response.
-
-###### `response.description` *(string, optional)*
-
-An optional string to hold a human-readable description of the response object. The string
+An optional string to hold a human-readable description of the data object. The string
 may contain only up to 40 ASCII characters.
 
-###### `response.request` *(string)*
+###### `data.status` *(number)*
 
-If the response object is in response to a [resource request](#resource-request), this
+If the data object is in response to a [resource request](#resource-request), this property
+must be a valid [status code](#response-status-code), which is similar to HTTP status codes
+in that it indicates the status of the response.
+
+###### `data.request` *(string)*
+
+If the data object is in response to a [resource request](#resource-request), this
 property must be the value of the `request.identifier`. In all other cases, this
 property must not be set.
 
-###### `response.content` *(object)*
+###### `data.content` *(object)*
 
-If the response contains a valid [resource object](../resource/), this object is the
+If the object contains a valid [resource object](../resource/), this object is the
 complete [SDMP container](../container/). In all other cases, this property must not
 be set.
 
