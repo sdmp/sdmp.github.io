@@ -7,6 +7,7 @@
 
 # THANKS
 
+	John Hobbes --- @jmhobbs
     Josh Duff -- @TehShrike
 
 # TECHNOLOGY COLOPHON
