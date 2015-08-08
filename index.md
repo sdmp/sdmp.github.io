@@ -20,13 +20,13 @@ part is actually secure.
 
 # Documentation
 
-* [Cryptography](/docs/cryptography): Cryptographic standards used in the protocol.
-* [Container](/docs/container): Containers used to publish resources and communicate between nodes.
-* [Resource](/docs/resource): Resources passed between nodes and how to interpret them.
-* [Node Journal](/docs/journal): Each node maintains a journal of resources.
-* [Synchronization](/docs/synchronization): How nodes publish, request, and respond with resources.
-* [Session Keys](/docs/session): Establishing a session key for network communications.
-* [TCP Network](/docs/tcp): Specifications for a synchronization implementation over TCP.
+* [Cryptography](/docs/cryptography/): Cryptographic standards used in the protocol.
+* [Container](/docs/container/): Containers used to publish resources and communicate between nodes.
+* [Resource](/docs/resource/): Resources passed between nodes and how to interpret them.
+* [Node Journal](/docs/journal/): Each node maintains a journal of resources.
+* [Synchronization](/docs/synchronization/): How nodes publish, request, and respond with resources.
+* [Session Keys](/docs/session/): Establishing a session key for network communications.
+* [TCP Network](/docs/tcp/): Specifications for a synchronization implementation over TCP.
 
 ---
 
