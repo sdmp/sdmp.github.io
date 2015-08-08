@@ -93,24 +93,10 @@ permitted that the node transmit any information concerning the cause of the dro
 ## Network traffic
 
 After both nodes have exchanged connection containers, they have the necessary information to
-calculate the shared session key. After this point, all connection network traffic must be
+calculate the shared session key. After this point, all connection network traffic *must* be
 encrypted using this established key.
-
----
-
-## Transmitting data
-
-The following ordered steps must be performed prior to transmitting any data across the network:
-
-1. The data must be compressed using the [DEFLATE][deflate] algorithm specified in [RFC 1951][rfc1951].
-2. The compressed data must be [zero-byte padded](../cryptography.) to the nearest **256 bytes**.
-3. The compressed and padded data must be encrypted using the calculated session key.
-
-Received data follows the reverse of those steps.
 
 
 [w_diffiehelman]: https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange
 [w_forward]: https://en.wikipedia.org/wiki/Forward_secrecy
-[deflate]: https://en.wikipedia.org/wiki/DEFLATE
-[rfc1951]: https://www.ietf.org/rfc/rfc1951.txt
 [schema_connection]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/connection.json
