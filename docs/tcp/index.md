@@ -1,68 +1,72 @@
 ---
 layout: docs
-title: Network
-subtitle: Core implementation of communication, via TCP.
+title: TCP
+subtitle: Specifications for a synchronization implementation over TCP.
 ---
 
 
-Implementing the protocol over TCP is done by establishing [session keys](../session)
-and afterward sending and receiving [request/response messages](../communication)
+Implementing the protocol over TCP is done by establishing [session keys](../session/)
+and afterward sending and receiving [synchronization messages](../synchronization/)
 between nodes.
+
+---
 
 ## Overview
 
 After the TCP connection has been established, the node initiating the connection
-sends a [connection message](../session/#connection-message).
+sends a [connection object](../session/#connection-object). The receiving node
+validates the signature and responds with its own connection object.
 
-The receiving node validates the signature, and responds with its own connection message.
+After this, the nodes send all data over the network as specified in the
+[session specs](../session/#network-traffic).
 
-After this, the nodes send all data over the network [as specified](../session/#transmitting-data).
+---
 
-## Connection message validation
+## Connection Dropping
 
-After any node receives a connection message, it immediately drops the connection under the
-following circumstances:
-
-* If the connection message cannot be decrypted by the receiving node.
-* If the node cannot verify the signature of the [SYML][syml] for any reason, including
-	but not limited to:
-	- malformed data
-	- an improperly generated signature
-	- the node does not have the public key of the node which generated the message.
-* If the node does not accept the values given in the [connection message](../session/#connection-message)
-	for anyh reason.
-
-## Connection dropping
-
-When dropping a connection during connection message validation, the following process
-is followed in all cases:
+When dropping a connection during [connection validation](../session/#connection-validation),
+the following process is followed in all cases:
 
 1. The plaintext message `nope` is transmitted.
 2. The connection is then dropped.
 
-It is not permitted that a node transmit any other information concerning the cause of the drop.
+It is *not* permitted that a node transmit any other information concerning the cause of the drop.
 
-## Network traffic encryption
+---
 
-After both nodes have exchanged connection messages, all network traffic for this connection must
-be encrypted using the established session key, [as specified](../session/#transmitting-data).
-
-## Network communication
+## Network Communication
 
 Each node may at any time transmit to the other node. All transmitted communications must be in
-the format of a valid [communication document](../communication/#communication-document-format).
+the format of a valid [SDMP container](../container/).
 
-## Connection overview
+---
+
+## Connection Overview
 
 The process for establishing a secure connection is as follows:
 
 1. The local node creates a TCP connection to the remote node.
-2. The local node sends a connection message to the remote node.
-3. The remote node verifies the connection message, dropping the connection if there is an error.
-4. The remote node sends a connection message to the local node.
-5. The local node verifies the connection message, dropping the connection if there is an error.
+2. The local node sends a connection object to the remote node.
+3. The remote node verifies the connection object, dropping the connection if there is an error.
+4. The remote node sends a connection object to the local node.
+5. The local node verifies the connection object, dropping the connection if there is an error.
 6. The local and remote node calculate the shared session key.
-7. All future messages are padded and then encrypted using the shared session key.
 
-[syml]: http://github.com/sdmp/signed-yaml
-[newissue]: https://github.com/sdmp/sdmp.github.io/issues/new
+All messages after this point are transmitted using the calculated session key, according to
+the *data transmission* algorithm.
+
+---
+
+## Data Transmission
+
+The following ordered steps must be performed prior to transmitting any data across the network:
+
+1. The data must be compressed using the [DEFLATE][deflate] algorithm specified in [RFC 1951][rfc1951].
+2. The compressed data must be [zero-byte padded](../cryptography.) to the nearest **256 bytes**.
+3. The compressed and padded data must be encrypted using the calculated session key.
+
+Received data follows the reverse of those steps.
+
+
+[deflate]: https://en.wikipedia.org/wiki/DEFLATE
+[rfc1951]: https://www.ietf.org/rfc/rfc1951.txt

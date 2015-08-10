@@ -10,32 +10,31 @@ peer-to-peer network.
 
 # Purpose
 
-At it's heart the SDMP is just a way for machines to communicate messages to each
-other in a very secure way that humans can understand.
+At its heart the SDMP is just a way for machines to communicate messages to each
+other in a secure way that humans can understand.
 
-If humans can understand it, they can debug it easier, and make sure the secure
-part is actually secure.
+If humans can understand it, it's easier to make sure the secure part is actually secure.
 
 ---
 
 # Documentation
 
-* [Cryptography](/docs/cryptography): Cryptographic standards used in the protocol.
-* [Resources](/docs/resources): Core protocol resources and how to interpret them.
-* [Node Journal](/docs/journal): Each node maintains a journal of messages it publishes.
-* [Communication](/docs/communication): How nodes publish journal updates, and request
-	and respond with resources.
-* [Session Keys](/docs/session): Establishing a session key for network communications.
-* [TCP Network](/docs/tcp): Implementation of communication and session specifications over TCP.
+* [Cryptography](/docs/cryptography/): Cryptographic standards used in the protocol.
+* [Container](/docs/container/): Containers used to publish resources and communicate between nodes.
+* [Resource](/docs/resource/): Resources passed between nodes and how to interpret them.
+* [Node Journal](/docs/journal/): Each node maintains a journal of resources.
+* [Synchronization](/docs/synchronization/): How nodes publish, request, and respond with resources.
+* [Session Keys](/docs/session/): Establishing a session key for network communications.
+* [TCP Network](/docs/tcp/): Specifications for a synchronization implementation over TCP.
 
 ---
 
 ## Get involved
 
 * Read through this entire document and make sure it is human-readable, consistent, and sane.
-* [File issues][issues] if you find anything wrong or questionable.
-* Create [pull requests][pullrequest] if you want to propose a fix, including spelling
-	or grammar errors!
+* [File issues][issues] if you find anything wrong or questionable and just want to let us know.
+* Create [pull requests][pullrequest] if you want to propose a fix. Spelling and grammar
+  corrections are welcome!
 * If you have questions, you can even [file issues][issues] for those, too!
 
 ---
@@ -48,7 +47,7 @@ Updates to the specifications will follow the [Semantic Versioning 2.0.0][semver
 * Minor: Changes which are fully backwards compatible.
 * Patch: Changes which do not affect functionality.
 
-Note also, from the semver specs:
+Note from the semver specs:
 
 > Major version zero (`0.y.z`) is for initial development. Anything may change at any
 > time. The public API should not be considered stable.
