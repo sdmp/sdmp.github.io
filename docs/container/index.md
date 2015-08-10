@@ -27,7 +27,7 @@ This JSON object is referred to as the *container payload object*, or simply *pa
 
 The payload object is defined using [JSON Schema](http://json-schema.org/), and the different
 schema definitions are available [here](https://github.com/sdmp/sdmp-schema). This document
-discusses the meaning of the different fields in more depth.
+discusses the meaning of the different fields in a human readable format.
 
 *All* payload objects are JSON objects which must conform to the
 [payload schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/payload.json),
@@ -51,7 +51,9 @@ and signed the container.
 
 Timestamp the container was created. The time must be the local time of the publisher,
 translated to UTC. The timestamp is [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
-formatted, with granularity to the millisecond. E.g., `2015-07-26T15:48:37.703Z`.
+formatted, with granularity to the millisecond.
+
+E.g., `2015-07-26T15:48:37.703Z`.
 
 ###### `sdmp.schemas` *(array of strings, required)*
 
@@ -60,13 +62,48 @@ valid [URI](https://tools.ietf.org/html/rfc3986), which should resolve to a vali
 [JSON schema file](http://json-schema.org/), *or* one of the following exact
 reserved strings:
 
-* `resource` (Which references [this schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/resource.json).)
-* `identity` (Which references [this schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/identity.json).)
-* `relationship` (Which references [this schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/relationship.json).)
-* `node_information` (Which references [this schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/node_information.json).)
-* `user_information` (Which references [this schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/user_information.json).)
-* `encrypted` (Which references [this schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/encrypted.json).)
-* `post` (Which references [this schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/post.json).)
+* `connection`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/connection.json),
+  [specs](../session/#connection))
+* `encrypted`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/encrypted.json),
+  [specs](../resource/#encrypted))
+* `identity`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/identity.json),
+  [specs](../resource/#identity))
+* `journal_request`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/journal_request.json),
+  [specs](../synchronization/#journal-request))
+* `journal_update`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/journal_update.json),
+  [specs](../synchronization/#journal-update))
+* `message`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/message.json),
+  [specs](../resource/#message))
+* `message_receipt`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/message_receipt.json),
+  [specs](../resource/#message-receipt))
+* `node_information`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/node_information.json),
+  [specs](../resource/#node-information))
+* `post`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/post.json),
+  [specs](../resource/#post))
+* `relationship`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/relationship.json),
+  [specs](../resource/#relationship))
+* `resource`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/resource.json),
+  [specs](../resource/#resource))
+* `resource_request`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/resource_request.json),
+  [specs](../synchronization/#resource-request))
+* `resource_response`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/resource_response.json),
+  [specs](../synchronization/#resource-response))
+* `user_information`
+  ([schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/user_information.json),
+  [specs](../resource/#user-information))
 
 ---
 

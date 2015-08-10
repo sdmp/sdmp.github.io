@@ -27,7 +27,7 @@ The generalized [Diffie-Helman][w_diffiehelman] key exchange looks like:
 
 ---
 
-## Connection Object
+## Connection Payload Object
 
 Establishing a connection session key is done by sharing the necessary values between
 nodes in order to calculate the secret `s` using the Diffie-Helman key exchange. This

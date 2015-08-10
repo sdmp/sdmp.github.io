@@ -16,18 +16,21 @@ container object `sdmp.schemas` property.
 The following schemas are considered core to the SDMP, and should be supported by
 all implementations:
 
-* **[Resource](#resource) ([schema](schema_resource)):** All published resources
+* **[Resource](#resource) ([schema][schema_resource]):** All published resources
   in the SDMP must conform to this core schema.
-* **[Identity](#identity) ([schema](schema_identity)):** Used to create a user or node.
-* **[Node Information](#node-information) ([schema](schema_node_information)):** Used
+* **[Identity](#identity) ([schema][schema_identity]):** Used to create a user or node.
+* **[Node Information](#node-information) ([schema][schema_node_information]):** Used
   to publish information about a node, particularly the IP address and port used to connect.
-* **[User Information](#user-information) ([schema](schema_user_information)):** Used
+* **[User Information](#user-information) ([schema][schema_user_information]):** Used
   to publish information about a user, such as the name.
-* **[Relationship](#relationship) ([schema](schema_relationship)):** Indicates relationships
+* **[Relationship](#relationship) ([schema][schema_relationship]):** Indicates relationships
   between users, and between users and nodes.
-* **[Post](#post) ([schema](schema_post)):** A simple schema used to publish public posts
+* **[Post](#post) ([schema][schema_post]):** A simple schema used to publish public posts
   using [markdown](http://commonmark.org/).
-* **[Encrypted](#encrypted) ([schema](schema_encrypted)):** Stores information in a strongly
+* **[Message](#message) ([schema][schema_message]):** Used to send message to another user.
+* **[Message Receipt](#message-receipt) ([schema][schema_message_receipt]):** Used to confirm
+  delivery of a message.
+* **[Encrypted](#encrypted) ([schema][schema_encrypted]):** Stores information in a strongly
   secure manner. The encrypted data must also be a valid [SDMP container](../container/).
 
 ---
@@ -153,7 +156,7 @@ sdmp://GlvAre...U91A8Q/h6FWg...jgusYA
 
 ---
 
-### Resource
+### Resource ([schema: `resource`][schema_resource])
 
 Contains metadata about the resource. All resources published in the SDMP contain
 the following additional properties:
@@ -203,7 +206,7 @@ A resource containing two updates and no additional data would look something li
 
 ---
 
-### Identity
+### Identity ([schema: `identity`][schema_identity])
 
 This resource holds the public key of a user or node, establishing their identity.
 
@@ -260,7 +263,7 @@ would be the string `node` instead.
 
 ---
 
-### Node Information
+### Node Information ([schema: `node_information`][schema_node_information])
 
 Information about the node is *not* published in the [identity](#identity) resource, it is
 published in this object. Primarily, this information holds the IP and port used to connect
@@ -309,7 +312,7 @@ A resource published containing node information might look like this:
 
 ---
 
-### User Information
+### User Information ([schema: `user_information`][schema_user_information])
 
 Information about the user is *not* published in the [identity](#identity) resource, it is
 published in this object.
@@ -352,7 +355,7 @@ A resource published containing user information might look like this:
 
 ---
 
-### Relationship
+### Relationship ([schema: `relationship`][schema_relationship])
 
 Indicating a relationship between two users, or between a node and a user, is a core aspect
 of the protocol. There are three defined relationship types:
@@ -406,7 +409,7 @@ that `relationship.type` would be the string `publisher` or `host` instead.
 
 ---
 
-### Post
+### Post ([schema: `post`][schema_post])
 
 For convenience, the SDMP defines a simple "post" schema, which is intended to be
 used for things such as blog posts, tweets, and the like.
@@ -452,7 +455,33 @@ A resource published containing a post might look like this:
 
 ---
 
-### Encrypted
+### Message ([schema: `message`][schema_message])
+
+For convenience, the SDMP defines a simple "message" schema, which must be used inside
+encrypted containers as messages between users.
+
+Message resources reserve the following properties:
+
+###### `message` *(string, required)*
+
+The message content, which *must* be formatted as [markdown](http://commonmark.org/).
+
+---
+
+### Message Receipt ([schema: `message_receipt`][schema_message_receipt])
+
+When a user receives a message, they *should* send back a message receipt to the original sender,
+notifying them that the message was received. This receipt must be used inside an encrypted container.
+
+Message receipt resources reserve the following properties:
+
+###### `receipt` *(string, required)*
+
+The [resource identifier](#resource-identifier) of the [message](#message) received.
+
+---
+
+### Encrypted ([schema: `encrypted`][schema_encrypted])
 
 Encrypted content in a resource is stored inside the root property `encrypted`, and must
 be a JSON object conforming to the
@@ -521,4 +550,6 @@ Contains the recipient encrypted key whose octets are
 [schema_user_information]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/user_information.json
 [schema_relationship]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/relationship.json
 [schema_post]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/post.json
+[schema_message]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/message.json
+[schema_message_receipt]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/message_receipt.json
 [schema_encrypted]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/encrypted.json
