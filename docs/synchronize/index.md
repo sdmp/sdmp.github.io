@@ -44,17 +44,17 @@ object `sdmp.schemas` property:
 ## Node Journal States
 
 In addition to the [node's journal](../journal/), each node maintains a *last known* and
-*last transmitted* line number for each connection's known nodes.
+*last transmitted* line identifier for each connection's known nodes.
 
 For example, if a user has a single node and 10 connections, and if each connection has
 2 nodes, the user's node would maintain the *last known* and *last transmitted* line
-number for a total of 20 nodes.
+identifier for a total of 20 nodes.
 
 Each time a node receives a journal update from another node, it updates the *last known*
-line number to the last line number of the received journal update.
+line identifier to the last line identifier of the received journal update.
 
 Each time a node transmits a journal update to another node, it updates the *last transmitted*
-line number to the last line number of the transmitted journal update.
+line identifier to the last line identifier of the transmitted journal update.
 
 ---
 
@@ -76,13 +76,13 @@ Indicates the request type. For the journal request schema, this must be the str
 
 ###### `request.since` *(string, required)*
 
-This property is the *last known* [journal line number](../journal/#journal-line-number) of
+This property is the *last known* [journal line identifier](../journal/#journal-line-identifier) of
 the requesting node. A successful response to this request would have the journal entries
-immediately after this entry, and would not include this line number.
+immediately after this entry, and would not include this line identifier.
 
 ###### `request.limit` *(integer, optional)*
 
-The *maximum* number of journal line number entries to include in the response. The
+The *maximum* number of journal line identifier entries to include in the response. The
 responding node may not exceed this limit, but if this value is not defined in the
 request, the responding node may choose whatever limit it decides is appropriate.
 
@@ -105,11 +105,11 @@ Indicates the data type. For the journal update schema, this must be the string 
 
 ###### `data.since` *(string, required)*
 
-This property is the [journal line number](../journal/#journal-line-number) of the line
+This property is the [journal line identifier](../journal/#journal-line-identifier) of the line
 immediately preceding the first entry in the journal entries list of this object.
 
 (E.g., if the first entry of the journal entry list in this object were line
-number `n`, this value would be `n-1`.)
+identifier `n`, this value would be `n-1`.)
 
 ###### `data.entries` *(ordered string list, required)*
 

@@ -45,6 +45,9 @@ header.docs {
 		font-size: 2em;
 		margin: 0;
 	}
+	h2 code {
+		font-size: 2em;
+	}
 	h2, p {
 		text-align: center;
 	}
@@ -70,7 +73,7 @@ article code {
 	padding: 0.1em 0.2em;
 	font-size: 90%;
 	color: #c7254e;
-	background-color: #f9f2f4;
+	background-color: #f0e8ea;
 	border-radius: 0.2em;
 }
 article pre {

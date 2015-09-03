@@ -17,7 +17,7 @@ The first line of the node journal is always the [key fingerprint](../cryptograp
 of the node, and each following line of the node journal is constructed by appending:
 
 * a single newline character (`\n`), then
-* the *journal line number*, then
+* the *journal line identifier*, then
 * a single `@` character, then
 * the key fingerprint of the node publishing the resource, then
 * a single forward slash character (`/`), then
@@ -25,10 +25,10 @@ of the node, and each following line of the node journal is constructed by appen
 
 ---
 
-## Journal line number
+## Journal line identifier
 
 Except for the very first line of the journal, the first hash for each entry in the
-node journal is the *journal line number*.
+node journal is the *journal line identifier*.
 
 This hash is the [hash](../cryptography/#hashing) of the previous line's characters, excluding any
 newline characters, whose octets are [unpadded base64url](https://tools.ietf.org/html/rfc4648#section-5)
@@ -56,7 +56,7 @@ the resource identifier for that resource is added to the *end* of the journal.
 ## Connection node journal status
 
 For the purposes of synchronization, each node must maintain knowledge of each connection's
-nodes. This is done by maintaining a list which contains the most recent journal line number
+nodes. This is done by maintaining a list which contains the most recent journal line identifier
 for every node of every connection.
 
 The node will periodically connect to each known node and [request](../communication/) that
