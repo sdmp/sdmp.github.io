@@ -55,6 +55,24 @@ header.docs {
 		text-align: center;
 	}
 }
+header.article {
+	svg {
+		width: 10%;
+	}
+	h1 {
+		margin-bottom: 0;
+	}
+	.page-title {
+		position: relative;
+		top: -0.4em;
+		padding-left: 0.6em;
+	}
+	p {
+		margin-top: 0;
+		text-align: center;
+		color: #858585;
+	}
+}
 h1, h2, h3, h4, h5, h6 {
 	font-weight: 500;
 }
