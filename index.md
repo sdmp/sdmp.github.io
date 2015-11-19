@@ -8,7 +8,7 @@ peer-to-peer network.
 
 ---
 
-# Purpose
+## Purpose
 
 At its heart the SDMP is just a way for machines to communicate messages to each
 other in a secure way that humans can understand.
@@ -17,15 +17,29 @@ If humans can understand it, it's easier to make sure the secure part is actuall
 
 ---
 
-# Documentation
+## Documentation
 
-* [Cryptography](/docs/cryptography/): Cryptographic standards used in the protocol.
-* [Container](/docs/container/): Containers used to publish resources and communicate between nodes.
-* [Resource](/docs/resource/): Resources passed between nodes and how to interpret them.
-* [Node Journal](/docs/journal/): Each node maintains a journal of resources.
-* [Synchronization](/docs/synchronization/): How nodes publish, request, and respond with resources.
-* [Session Keys](/docs/session/): Establishing a session key for network communications.
-* [TCP Network](/docs/tcp/): Specifications for a synchronization implementation over TCP.
+* [Cryptography](/cryptography): Cryptographic standards used in the protocol.
+* [Container](/container): Containers used to publish resources and communicate between nodes.
+* [Resource](/resource): Resources passed between nodes and how to interpret them.
+
+* [Schema](/schema): Extensions of the container object which are core to this protocol.
+* [Node Journal](/journal): Each node maintains a journal of resources.
+* [Synchronization](/synchronization): How nodes publish, request, and respond with resources.
+* [Session Keys](/session): Establishing a session key for network communications.
+* [TCP Network](/tcp): Specifications for a synchronization implementation over TCP.
+
+---
+
+## Articles
+
+A few articles which might be useful to you:
+
+* [Introduction to SDMP](/article/introduction): An informal overview of the
+	entire protocol. Starting here might be best if you're new to the project.
+* [Diffie-Helman](/article/diffie-helman): Discussion on why the DH was used.
+* [Journal Heartbeat](/article/journal-heartbeat): A less formal description of
+	the synchronization process.
 
 ---
 

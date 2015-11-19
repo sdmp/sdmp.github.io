@@ -1,6 +1,6 @@
 ---
 layout: schema
-title: connection
+title: session_key
 subtitle: Used to establish a symmetric key for encrypting network traffic.
 ---
 

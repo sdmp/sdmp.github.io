@@ -1,48 +1,20 @@
 ---
-layout: index
+layout: article
+title: Intro to the SDMP
+subtitle: A birds eye view of what makes the SDMP tick.
 ---
 
 
-A protocol for distributing cryptographically secure messages across an encrypted
-peer-to-peer network.
+If you are looking for a less formal overview of the SDMP, this
+is probably where you should start.
+
+Please note that, although this article will be kept up to date
+as much as possible, it may not match the actual specifications
+exactly. If you see any conflicts, please let us know by
+[filing an issue](https://github.com/sdmp/sdmp.github.io/issues)
+and we'll fix it as soon as we can!
 
 ---
-
-# Purpose
-
-At its heart the SDMP is just a way for machines to communicate messages to each
-other in a secure way that humans can understand.
-
-If humans can understand it, it's easier to make sure the secure part is actually secure.
-
----
-
-## Get Involved
-
-* Read through this entire document and make sure it is human-readable, consistent, and sane.
-* [File issues][issues] if you find anything wrong or questionable and just want to let us know.
-* Create [pull requests][pullrequest] if you want to propose a fix. Spelling and grammar
-  corrections are welcome!
-* If you have questions, you can even [file issues][issues] for those, too!
-
----
-
-## Release Cycle
-
-Updates to the specifications will follow the [Semantic Versioning 2.0.0][semver] approach:
-
-* Major: Changes which are not backwards compatible.
-* Minor: Changes which are fully backwards compatible.
-* Patch: Changes which do not affect functionality.
-
-Note from the semver specs:
-
-> Major version zero (`0.y.z`) is for initial development. Anything may change at any
-> time. The public API should not be considered stable.
-
----
-
-# Table of Contents
 
 * [Overview](#overview)
 	- [What are nodes and users?](#nodes-and-users)
@@ -59,16 +31,7 @@ Note from the semver specs:
 	- [Hashes are with SHA-512](#hashing)
 	- [Encryption is with AES](#aes-encryption)
 	- [Padding uses null-bytes](#padding)
-* Network Topography
-	- Nodes connect to other nodes
-	- They periodically send out journal updates
-	- They can request journal updates
-	- And they can request specific resources
-* Relationships
-	- Users to other users
-	- Users to nodes
-	- Nodes to other nodes
-* Container Object
+* [Container Object](#container)
 	- Most things use the container object
 	- The container object is a defined JSON object
 	- You can specify other schemas for the container
@@ -98,6 +61,15 @@ Note from the semver specs:
 * The Journal
 	- The node keeps a list of resources it knows about
 	- The node keeps that list synchronized with other nodes
+* [Communication Overview](#communication-overview)
+	- [Nodes connect to other nodes](#node-to-node-connection)
+	- [They periodically send out journal updates](#nodes-send-journal-updates)
+	- [They can request journal updates](#nodes-request-journal-updates)
+	- [And they can request specific resources](#nodes-request-resources)
+* Relationships
+	- Users to other users
+	- Users to nodes
+	- Nodes to other nodes
 * Sending Messages
 	- You write to your own journal
 	- Then you broadcast that journal update to everyone listening
@@ -162,14 +134,15 @@ identity resource for another user can theoretically be found "in the wild".
 A user authorizes a node to publish content on the users behalf, or the user
 authorizes a node to host other content on the users behalf.
 
-For example, I would authorize the node application installed on my laptop
-to publish content, thus allowing me to not need my master key pair to be
-installed on the laptop, which is a security concern.
+For example, a person would authorize the node application installed on
+their laptop to publish content, thus the master key pair does not need
+to be installed on the laptop, which is a security concern.
 
-Alternately, I could authorize a node application installed on a remote
-server to only host content, which would be encrypted in such a way that
-the host node could not read the content. This would allow an always-on
-server to speed up synchronization, much like an IMAP server.
+Alternately, a person could authorize a node application installed on a
+remote server to only host content, which would be encrypted in such a
+way that the host node could not read the content. This would allow an
+always-on server to speed up synchronization, much like an IMAP server
+or XMPP server.
 
 ## Node Behaviour
 
@@ -234,163 +207,3 @@ Since the authorization for nodes to publish or host content for a user is
 synchronized to other nodes, two nodes connect if 
 
 Nodes message other nodes if their users know each other
-
----
-
-# Cryptography
-
-Industry-standard cryptographic techniques are used to keep the network traffic
-secure, to encrypt messages, and to verify users and nodes identities.
-
-## RSA Keys
-
-Where the phrase `public key`, `private key`, `key pair`, or `RSA key pair` is used, it
-is meant that section or set of an asymmetric [RSA][w_rsa] key pair.
-
-The length of the RSA key must be at least 2048 bits.
-
-## Signature
-
-Where the phrase `signature` is used, it is meant the string representation of the
-RSA signature of the hash of the document, using the private key of the kay pair
-specified.
-
-## Hashing
-
-Where the phrase `hash` or `digest` is used, it is meant the [SHA-512][w_sha2]
-hashing algorithm as specified in [FIPS PUB 180-2][fips180].
-
-Where a string representation of a hash is used or specified, it is meant the output of
-the SHA-512 hashing algorithm, whose octets are [unpadded base64url][base64] encoded.
-
-## Key Hash
-
-Where the phrase `key hash` is used, it is meant the hash of the raw component of the
-public section of the RSA key pair.
-
-## Key Fingerprint
-
-Where the phrase `key fingerprint` is used, it is meant the key hash of the public key.
-
-## AES Encryption
-
-Where the phrase `session key` or `token key` is used, it is meant an [AES][w_aes]
-compatible key.
-
-The bit length of the session key must be at least 256 bits.
-
-## Padding
-
-When padding is specified, it is meant that the data must be padded with null bytes.
-This is also often referred to as zero-byte padding.
-
-That is, the hexadecimal encoded value of the bytes is simply `00`.
-
----
-
-
-
-
-
-
-
-
-
-
-
-
-
-
----
-
-# Relationships
-## Users to other users
-## Users to nodes
-## Nodes to other nodes
-
----
-
-# Container Object
-## Most things use the container object
-## The container object is a defined JSON object
-## You can specify other schemas for the container
-## The SDMP specifies a number of core schemas:
-### connection: establish a session key for communication
-### container: the core JSON object
-### encrypted: basically just a JWE object
-### identity: creates a user or node
-### information_node: describes a node
-### information_user: describes a user
-### journal: the resources that a node knows
-### message: private messages between users
-### receipt: let a user know you received a message
-### relationship: describe relationships between users and nodes
-### request_journal: request a journal update
-### request_resource: request a specific resource
-### resource: published to the journal
-### response: response to a request
-
----
-
-# Resources
-## These are basically just containers that are "published"
-## To be published it must be signed
-## Signed with the user or node key
-## The container is basically just a JWS object
-## The JWS object goes inside a container object
-## That container object is the "resource"
-## You can link to a resource with a URI
-
----
-
-# The Journal
-## The node keeps a list of resources it knows about
-## The node keeps that list synchronized with other nodes
-
----
-
-# Sending Messages
-## You write to your own journal
-## Then you broadcast that journal update to everyone listening
-## The listening node can request the message at some point in the future
-
----
-
-# Requesting Things
-## You ask a node for a resource or journal list
-## They respond with the data or some error
-## Requests and responses are linked with an identifier
-
----
-
-# Session Keys
-## When to create and use a session key
-## The Diffie-Helman is used for creating session keys
-## The session key is signed with the known node key
-
----
-
-# TCP Implementation
-## Connect using session keys
-## Traffic uses the session key
-## Packet size is padded to 16kib
-## Between nodes it's basically a base64 encoded JWE object
-## But when decrypted it's a JWS object
-## And the payload of the JWS object is a container
-
----
-
-
-
-[sdmprepo]: https://github.com/sdmp
-[issues]: https://github.com/sdmp/sdmp.github.io/issues
-[pullrequest]: https://github.com/sdmp/sdmp.github.io/pulls
-[vol]: http://veryopenlicense.com/
-[semver]: http://semver.org/
-[mit_key_server]: https://pgp.mit.edu/
-[fips180]: http://csrc.nist.gov/publications/fips/fips180-2/fips180-2.pdf
-[base64]: https://tools.ietf.org/html/rfc4648#section-5
-
-[w_rsa]: https://en.wikipedia.org/wiki/RSA_(cryptosystem)
-[w_sha2]: https://en.wikipedia.org/wiki/SHA-2
-[w_aes]: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
