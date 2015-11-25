@@ -5,6 +5,14 @@ subtitle: Indicates a trust level between nodes and users.
 ---
 
 
+A trusted node is a node trusted by a trusted user.
+
+
+
+
+
+
+
 Relationships between users and between nodes is at the heart of any key
 sharing system. In the SDMP, relationships are established and updated
 using the `relationship` schema, which indicates the user-to-user or

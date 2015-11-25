@@ -28,7 +28,7 @@ secure, to strongly encrypt messages, and to verify users and nodes identities.
 
 ---
 
-## RSA public/private keys
+## Keys
 
 Where the phrase `public key`, `private key`, `key pair`, or `RSA key pair` is used, it
 is meant that section or set of an asymmetric [RSA][w_rsa] key pair.

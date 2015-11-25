@@ -1,26 +1,26 @@
 ---
 layout: docs
-title: resource
+title: Resource
 subtitle: Published objects are called resources.
 ---
 
 
 Within the SDMP, a *"resource"* or *"resource object"* is a
 [JSON object](http://json.org/) which is an
-[extension](/container/#container-extension) of an
-[SDMP container](/container/) object. Every message published and
+[extension](/container#container-extension) of an
+[SDMP container](/container) object. Every message published and
 available within the SDMP must be a valid *resource* object.
 
 The resource object is essentially a [JWS (JSON Web Signature)][jws]
 object, with certain properties defined. The JWS payload is a
-[container](/container/) object, and is called *"child container"*.
+[container](/container) object, and is called *"child container"*.
 
 ---
 
 ## Definition
 
 Where the term *"resource"* or *"resource object"* is used, it is meant a valid
-[SDMP container](/container/) with only a single entry in the `schemas` property,
+[SDMP container](/container) with only a single entry in the `schemas` property,
 which is the URI to the SDMP *resource* schema defined
 [near the end](#json-schema) of this document.
 
@@ -30,12 +30,12 @@ it is meant the JSON object which has been stringified and
 
 ---
 
-## Payload
+## JWS Payload
 
-The *payload* of the resource is a [base64url][base64] encoded
-representation of an [SDMP container](/container/) object, whose
-bytes have been [UTF-8](http://www.utf-8.com/) encoded and *then*
-base64url encoded.
+The *JWS payload*, or simply *payload*, of the resource is a
+[base64url][base64] encoded representation of an [SDMP container](/container)
+object, whose bytes have been [UTF-8](http://www.utf-8.com/)
+encoded and *then* base64url encoded.
 
 This inner container is called the *child container*, or
 the *"resource child container"*.
@@ -44,10 +44,10 @@ E.g. for the container `SDMP Container`, the output of
 `BASE64URL(UTF8(JSON.stringify(SDMP Container)))` is
 the *payload* and `SDMP Container` is the *child container*.
 
-The resource child container *must* be a valid [SDMP container](/container/).
+The resource child container *must* be a valid [SDMP container](/container).
 
 > Note: The resource child container *may* be any valid SDMP container,
-> but the SDMP also specifies several [core schemas](/schema/).
+> but the SDMP also specifies several [core schemas](/schema).
 
 ---
 
@@ -70,7 +70,7 @@ All resources published within the SDMP *may* be referenced using a
 *host*, and *path* are allowed:
 
 * The *scheme name* is `sdmp`.
-* The *host* is the [key fingerprint](/cryptography/#key-fingerprint)
+* The *host* is the [key fingerprint](/cryptography#key-fingerprint)
   of the *user* who published the resource.
 * The *path* is the *resource identifier* of the resource.
 
@@ -93,13 +93,13 @@ be a reference to the resource published by the user identified by `<HOST>`
 and having a [resource identifier](#resource-identifier) of `<PATH>`.
 
 References of the form `sdmp://<HOST>` should be interpreted to be a
-reference to the [identity resource](/schema/identity/) of the user identified by
+reference to the [identity resource](/schema/identity) of the user identified by
 the `<HOST>` value.
 
 Note that this is equivalent to a request of the form `sdmp://<HOST>/<PATH>`
 where `<PATH>` is the resource identifier of the identity resource.
 
-E.g., if `h6FWg...jgusYA` references the [identity resource](/schema/identity/)
+E.g., if `h6FWg...jgusYA` references the [identity resource](/schema/identity)
 for the user `GlvAre...U91A8Q`, the following URIs would be equivalent:
 
     sdmp://GlvAre...U91A8Q/
@@ -109,13 +109,13 @@ for the user `GlvAre...U91A8Q`, the following URIs would be equivalent:
 
 ## Resource Properties
 
-In *addition* to the properties required by the [container](/container/)
+In *addition* to the properties required by the [container](/container)
 specifications, the JSON object of the resource object has the following
 required properties:
 
 ###### `sdmp` *(object, required)*
 
-This root property of the object is part of the [container](/container/)
+This root property of the object is part of the [container](/container)
 schema, and is extended by this schema.
 
 ###### `sdmp.identifier` *(string, required)*
@@ -143,7 +143,7 @@ The SDMP *requires* the following header values, and does *not*
 allow additional values:
 
 * `alg` : Must be *exactly* `HS256`
-* `kid` : The [key fingerprint](/cryptography/#key-fingerprint) of the
+* `kid` : The [key fingerprint](/cryptography#key-fingerprint) of the
   user or node which generated this signature.
 
 ###### `sdmp.signatures[].signature` *(string, required)*

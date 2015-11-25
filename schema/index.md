@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: schema
+title: Schema
 subtitle: Schemas for container extensions which are part of the SDMP core.
 ---
 

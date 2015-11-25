@@ -22,11 +22,15 @@ If humans can understand it, it's easier to make sure the secure part is actuall
 * [Cryptography](/cryptography): Cryptographic standards used in the protocol.
 * [Container](/container): Containers used to publish resources and communicate between nodes.
 * [Resource](/resource): Resources passed between nodes and how to interpret them.
-
 * [Schema](/schema): Extensions of the container object which are core to this protocol.
 * [Node Journal](/journal): Each node maintains a journal of resources.
 * [Synchronization](/synchronization): How nodes publish, request, and respond with resources.
-* [Session Keys](/session): Establishing a session key for network communications.
+* [Network](/network): Handshake to establish a session key for network communications.
+
+---
+
+## Implementations
+
 * [TCP Network](/tcp): Specifications for a synchronization implementation over TCP.
 
 ---

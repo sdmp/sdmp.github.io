@@ -15,6 +15,11 @@ TODO: if using elliptic curves, there's a DH method
 
 
 
+Another benefit of the DH is that, even if another node is using
+poorly generated random numbers, the initiating node can have some
+bit of assurance that the session token is still strong-ish if
+its own numbers are good.
+
 
 
 

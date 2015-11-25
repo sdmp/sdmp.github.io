@@ -28,6 +28,9 @@ may contain only up to 40 ASCII characters. Primarily useful for debugging purpo
 
 ###### `response.status` *(number)*
 
+TODO there's no particular reason this should be integer status codes
+instead of, say, a enum string or some such
+
 This property must be a valid status code. (These are similar to HTTP status codes, in
 that they indicates the status of the response.) Valid status codes are:
 
@@ -35,6 +38,13 @@ that they indicates the status of the response.) Valid status codes are:
 * `400` **"Bad request"** - Used to indicate that a received request was not interpretable.
 * `404` **"Not found"** - This status is used in all cases where a requested resource
   is unavailable or when the resource has been deleted.
+
+
+TODO add in the session/network connection responses in here
+
+
+
+
 
 Note: If you want additional status codes for your application and want more widespread
 adoption, please make a request by [filing an "issue" on Github][issue] and your custom

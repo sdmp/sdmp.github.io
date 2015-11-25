@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: container
+title: Container
 subtitle: JSON object with schemas.
 ---
 
