@@ -7,6 +7,26 @@ subtitle: Used to establish a symmetric key for encrypting network traffic.
 The SDMP uses the [Diffie-Helman][w_diffiehelman] key exchange as the way to
 establish session keys for [forward secrecy][w_forward] of network traffic.
 
+
+
+
+
+TODO
+
+this needs to be changed so the diffie-helman key properties are inside
+a JWS or whatever that gets hashed independent of the public/private keys
+
+that way on the network connection, it can just send a signature of the
+hash of the properties, instead of sending the signed object all over again
+
+when you update this, be sure to update `/network` as well
+
+
+
+
+
+
+
 ---
 
 ## Diffie-Helman Key Exchange
