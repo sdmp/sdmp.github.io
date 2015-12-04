@@ -5,13 +5,12 @@ subtitle: Used to notify another user that a message or resource was received.
 ---
 
 
-When a user receives a message from another user, they *should* send back a
-receipt to the original sender. Also, a user may wish to signal that they
-received a resource. Both are acheived using a receipt object.
+When a user receives a message or resource from another user, they
+should send back a receipt of delivery to the original sender.
 
 ---
 
-## Schema: `receipt` ([JSON Schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/receipt.json))
+## Description
 
 Used to notify another user that a message or resource was received.
 
@@ -19,5 +18,20 @@ This object contains the following properties:
 
 ###### `receipt` *(string, required)*
 
-The [resource identifier](/resource/#resource-identifier) of the [message](/schema/message/)
-or [resource](/resource/) received.
+The [resource identifier](/resource#resource-identifier) of the
+[message](/schema/message) or [resource](/resource) received.
+
+---
+
+## Schema
+
+	{
+	  "$schema": "http://json-schema.org/draft-04/schema#",
+	  "type": "object",
+	  "properties": {
+	    "receipt": {
+	      "type": "string"
+	    }
+	  },
+	  "required": [ "receipt" ]
+	}

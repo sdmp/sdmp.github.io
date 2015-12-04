@@ -5,24 +5,6 @@ subtitle: Cryptographic standards used in the protocol.
 ---
 
 
-TODO: define the values used in the [JWS Protected Header](http://self-issued.info/docs/draft-ietf-jose-json-web-signature.html#CompactSerializationOverview)
-
-
-
-
-> Note: If any of the definitions for the `jws` object are found to contradict
-> the [JWS][jws] specifications, it should be considered an error and
-> [filed as a bug](https://github.com/sdmp/sdmp.github.io/issues).
-
-
-
-
-
-
-
-
-
-
 The SDMP uses industry-standard cryptographic techniques to keep the network traffic
 secure, to strongly encrypt messages, and to verify users and nodes identities.
 
@@ -57,6 +39,10 @@ public section of the RSA key pair.
 ## Key fingerprint
 
 Where the phrase `key fingerprint` is used, it is meant the key hash of the public key.
+
+E.g. a key fingerprint might look like:
+
+	GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q
 
 ---
 

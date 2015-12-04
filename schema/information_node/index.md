@@ -12,7 +12,7 @@ information necessary to connect two nodes together.
 
 ---
 
-## Schema: `information_node` ([JSON Schema][schema])
+## Description
 
 Information about the node is not published in the [identity](/schema/identity)
 resource, it is published in this object. Primarily, this object holds the
@@ -39,5 +39,25 @@ node is reachable.
 
 This address may be IPv4 or IPv6, and the port is **required**.
 
+---
 
-[schema]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/information_node.json
+## Schema
+
+	{
+	  "$schema": "http://json-schema.org/draft-04/schema#",
+	  "type": "object",
+	  "properties": {
+	    "node": {
+	      "type": "object",
+	      "properties": {
+	        "name": { "type": "string" },
+	        "ips": {
+	          "type": "array",
+	          "items": { "type": "string" }
+	        }
+	      },
+	      "required": [ "name", "ips" ]
+	    }
+	  },
+	  "required": [ "node" ]
+	}

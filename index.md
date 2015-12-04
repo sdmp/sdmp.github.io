@@ -27,6 +27,8 @@ If humans can understand it, it's easier to make sure the secure part is actuall
 * [Synchronization](/synchronization): How nodes publish, request, and respond with resources.
 * [Network](/network): Handshake to establish a session key for network communications.
 
+<!--
+
 ---
 
 ## Implementations
@@ -44,6 +46,8 @@ A few articles which might be useful to you:
 * [Diffie-Helman](/article/diffie-helman): Discussion on why the DH was used.
 * [Journal Heartbeat](/article/journal-heartbeat): A less formal description of
 	the synchronization process.
+
+-->
 
 ---
 

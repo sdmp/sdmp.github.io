@@ -5,17 +5,16 @@ subtitle: Requesting blocks of journal entries.
 ---
 
 
-[Synchronization](/synchronize/) between nodes is done by transmitting
-[journal lists](/journal/). However, if a node is offline or has other
+[Synchronization](/synchronize) between nodes is done by transmitting
+[journal updates](/journal). However, if a node is offline or has other
 reason to suspect a desynchronization has occured, the node may request
-the journal entries of another node.
+the journal entries of another node. This schema defines the request.
 
 ---
 
-## Schema: `request_journal` ([JSON Schema][schema])
+## Description
 
-Nodes may request journal entries from other nodes. This may be done if a node
-has been offline for a while, or other technical reasons.
+Nodes may request journal entries from other nodes.
 
 This object contains the following properties:
 
@@ -25,10 +24,10 @@ Holds the request properties.
 
 ###### `request.identifier` *(string, required)*
 
-Responses to this resource request will include this identifier in the response object. The
-string may contain up to 40 ASCII characters (inclusive).
-
-Implementations of the SDMP should attempt to make this property unique per request and per node.
+Responses to this resource request will include this identifier in the response
+object. Implementations of the SDMP should attempt to make this property unique
+per request and per node, and should keep the value within reasonable limits, such
+as under 128 characters.
 
 ###### `request.type` *(string, required)*
 
@@ -46,5 +45,34 @@ The *maximum* number of journal line identifier entries to include in the respon
 responding node may not exceed this limit, but if this value is not defined in the
 request, the responding node may choose whatever limit it decides is appropriate.
 
+---
 
-[schema]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/request_journal.json
+## Schema
+
+	{
+	  "$schema": "http://json-schema.org/draft-04/schema#",
+	  "type": "object",
+	  "properties": {
+	    "request": {
+	      "type": "object",
+	      "properties": {
+	        "identifier": {
+	          "type": "string"
+	        },
+	        "type": {
+	          "type": "string",
+	          "pattern": "^journal$"
+	        },
+	        "since": {
+	          "type": "string"
+	        },
+	        "limit": {
+	          "type": "integer",
+	          "minimum": 1
+	        }
+	      },
+	      "required": [ "identifier", "type", "since" ]
+	    }
+	  },
+	  "required": [ "request" ]
+	}

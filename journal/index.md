@@ -29,6 +29,8 @@ journal is constructed by concatenating:
 * the [resource identifier](/resource#resource-identifier) of the
 	resource being published.
 
+View example journal entries [here](#example-journal).
+
 ---
 
 ## Journal Line Identifier

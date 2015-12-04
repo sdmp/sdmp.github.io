@@ -5,19 +5,31 @@ subtitle: Text messages passed between users.
 ---
 
 
-This is a very small schema, it is used in the case of two users communicating.
-Message objects are typically inside an [encrypted container](/schema/encrypted/).
+This schema is a simple schema to hold a human-readable message,
+sent between two users.
 
 ---
 
-## Schema: `message` ([JSON Schema][https://github.com/sdmp/sdmp-schema/blob/master/schemas/message.json])
+## Description
 
-For convenience, the SDMP defines this simple message schema, which is typically
-used inside [encrypted containers](/schema/encrypted/) as messages between users.
-
-This object contains the following properties:
+This object contains the following property:
 
 ###### `message` *(string, required)*
 
-The message content, which *must* be formatted as
+The message content, which *must* be interpreted as
 [MultiMarkdown](https://en.wikipedia.org/wiki/MultiMarkdown).
+
+---
+
+## Schema
+
+	{
+	  "$schema": "http://json-schema.org/draft-04/schema#",
+	  "type": "object",
+	  "properties": {
+	    "message": {
+	      "type": "string"
+	    }
+	  },
+	  "required": [ "message" ]
+	}

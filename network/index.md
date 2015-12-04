@@ -35,10 +35,11 @@ key calculation; the following objects must be sent as
 [encrypted network objects](#network-communication), encrypted
 using this calculated key.
 
-1. The initiating node sends a [session signature object](#session-signature)
-	to the receiving node, inside an encrypted network object.
-4. If the receiving node trusts the initiating node, it sends a session
-	signature object to the initiating node, inside an encrypted network
+1. The initiating node sends its session creation object inside
+	a signed [resource](/resource) object to the receiving node,
+	inside an encrypted network object.
+4. If the receiving node trusts the initiating node, it sends its session
+	creation object to the initiating node, inside an encrypted network
 	object. (If not, it will respond with an appropriate
 	[response object](#session-response), also inside an encrypted
 	network object.)
@@ -83,18 +84,13 @@ exposed in this object.
 
 ## Session Signature
 
-The *session signature object* is a [container](/container) object where
-the **only** specified schema is the...
+In order to establish the originator of the session key, after the
+session connection objects are exchanged, they are re-sent inside
+a [resource object](/resource) signed by the originating node.
 
-TODO waiting on an update to the `/schema/session_key` docs first
-
-Maybe need to make a new schema for this one, since it is just
-a signature object
-
-I think this can be a resource object with the payload being the session
-creation object
-
-it'd be more efficient to not resend the session creation object all over again
+This information allows the receiving node to verify that the
+sending node actually sent the session connection, removing the
+possibility of man-in-the-middle attacks.
 
 ---
 

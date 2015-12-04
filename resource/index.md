@@ -46,9 +46,6 @@ the *payload* and `SDMP Container` is the *child container*.
 
 The resource child container *must* be a valid [SDMP container](/container).
 
-> Note: The resource child container *may* be any valid SDMP container,
-> but the SDMP also specifies several [core schemas](/schema).
-
 ---
 
 ## Resource Identifier
@@ -107,50 +104,103 @@ for the user `GlvAre...U91A8Q`, the following URIs would be equivalent:
 
 ---
 
-## Resource Properties
+## Description
 
-In *addition* to the properties required by the [container](/container)
-specifications, the JSON object of the resource object has the following
-required properties:
+This object holds a signed string, which is the string representation
+of a valid [container](/container) object.
 
-###### `sdmp` *(object, required)*
+This object contains the following properties:
 
-This root property of the object is part of the [container](/container)
-schema, and is extended by this schema.
+###### `resource` *(object)*
 
-###### `sdmp.identifier` *(string, required)*
+Holds the resource properties. This contains the following reserved properties:
+
+###### `resource.identifier` *(string, required)*
 
 The [resource identifier](#resource-identifier) of this resource.
 
-###### `sdmp.payload` *(string, required)*
+###### `resource.payload` *(string, required)*
 
-The resource [payload](#payload) string.
+The resource [payload](#jws-payload) string.
 
-###### `sdmp.signatures` *(array of objects, required)*
+###### `resource.signatures` *(array of objects, required)*
 
 Each object of this array must be a [JWS signature][jws_json_serialize] object.
 
 Note that, unlike the JWS specifications, JWS objects containing a single
 signature *must* still use this array.
 
-###### `sdmp.signatures[].protected` *(string, required)*
+###### `resource.signatures[].protected` *(string, required)*
 
 Valid [JWS **protected** headers][jws_headers] for this signature. (Protected
-headers are headers which have been [base64url][base64] encoded. See the end
-of this document for examples.)
+headers are headers which have been [base64url][base64] encoded.)
 
-The SDMP *requires* the following header values, and does *not*
+The SDMP requires the following header values, and does not
 allow additional values:
 
-* `alg` : Must be *exactly* `HS256`
+* `alg` : Must be exactly `HS512`
 * `kid` : The [key fingerprint](/cryptography#key-fingerprint) of the
   user or node which generated this signature.
 
-###### `sdmp.signatures[].signature` *(string, required)*
+For example, if the key fingerprint of the node generating the signature is:
 
-A valid JWS signature. This is the [HMAC SHA-256][hmac_sha2] hash, with
+	GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q
+
+Than the header *object* would look like (newlines added for readability only):
+
+	{
+		"alg": "HS512",
+		"kid": "GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q"
+	}
+
+And the protected header string would be:
+
+	und63q6WhN8Q3v9_mGoIy66f70Nq21jMoBwAD4W5oxuxMth8L-nN2GKeV6XjBAE_KbrNs7_MdegCNOD8uUSqJw
+
+###### `resource.signatures[].signature` *(string, required)*
+
+A valid JWS signature. This is the [HMAC SHA-512][hmac_sha2] hash, with
 the bytes [base64url][base64] encoded, having been generated using the
 key of the user or node signing the resource.
+
+---
+
+## Schema
+
+	{
+	  "$schema": "http://json-schema.org/draft-04/schema#",
+	  "type": "object",
+	  "properties": {
+	    "resource": {
+	      "type": "object",
+	      "properties": {
+	        "identifier": {
+	          "type": "string"
+	        },
+	        "payload": {
+	          "type": "string"
+	        },
+	        "signatures": {
+	          "type": "array",
+	          "items": {
+	            "type": "object",
+	            "properties": {
+	              "protected": {
+	                "type": "string"
+	              },
+	              "signature": {
+	                "type": "string"
+	              }
+	            },
+	            "required": [ "protected", "signature" ]
+	          }
+	        }
+	      },
+	      "required": [ "identifier", "payload", "signatures" ]
+	    }
+	  },
+	  "required": [ "resource" ]
+	}
 
 
 [jws]: http://self-issued.info/docs/draft-ietf-jose-json-web-signature.html

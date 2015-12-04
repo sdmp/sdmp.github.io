@@ -5,37 +5,49 @@ subtitle: Indicates a trust level between nodes and users.
 ---
 
 
-A trusted node is a node trusted by a trusted user.
-
-
-
-
-
-
-
-Relationships between users and between nodes is at the heart of any key
-sharing system. In the SDMP, relationships are established and updated
-using the `relationship` schema, which indicates the user-to-user or
-user-to-node relationship.
+The trust relationship between users and between nodes is established
+using the *relationship* schema. A trusted user is one for which you
+have published a relationship resource indicating a trust. A
+trusted node is a node that is trusted by a trusted user.
 
 ---
 
 ## Relationship Types
 
-The SDMP core has three defined relationship types:
+Three relationship types are defined:
 
-* **`connection` (user to user):** A user indicating that another user is known to them. This
-	indicates to other nodes that resources between those users may be [synchronized](/synchronize/).
-* **`publisher` (user to node):** A user indicating that the node may publish resources on
-	behalf of the user. Typical use is that a user authorizes a node as a publisher when
-	that node is running on a computer operated by that user, such as a laptop or smartphone.
-* **`host` (user to node):** A user indicates that the node may send and receive resources
-	for the user, but may *not* publish new resources. This is similar to resources being
-	[synchronized](/synchronize/) between users.
+### Connection *(user to user)*
+
+When a user indicates that a second user is a "connection", it means
+that the second user may receive requested resources.
+
+For example: If Bob makes Alice a connection, than if Alice requests
+a resource published by Bob from Jane, than Jane should respond with
+that resource.
+
+### Publisher *(user to node)*
+
+When a user indicates that a node is a "publisher", it means that the
+node may publish resources on behalf of the user.
+
+For example: a user might install an app on their smart phone and then
+indicate that this app operates as a publisher node, meaning that the
+user does not need their main key-pair to be accesible on that device
+to publish resources.
+
+### Host *(user to node)*
+
+When a user indicates that a node is a "host", it means that the node
+may send and request resources on behalf of the user, but it may not
+publish new resources on behalf of the user.
+
+This would be useful for shared hosting always-on computers or servers,
+which are trusted enough to synchronize encrypted messages, but not
+trusted enough to publish messages on a users behalf.
 
 ---
 
-## Schema: `relationship` ([JSON Schema](https://github.com/sdmp/sdmp-schema/blob/master/schemas/relationship.json))
+## Description
 
 This object contains the following properties:
 
@@ -45,14 +57,35 @@ Object holding information about the relationship.
 
 ###### `relationship.type` *(string, required)*
 
-Defines the type of relationship. Must be one of the following: `connection`, `publisher`, `host`.
+Defines the type of relationship.
+
+Must be one of the following: `connection`, `publisher`, `host`.
 
 ###### `relationship.identity` *(string, required)*
 
-The [key fingerprint](/cryptography/#key-fingerprint) of the user or node to
-which the relationship is being created. (In summary, this is equivalent to
-the SHA-512 hash of the public key, whose octets are
-[unpadded base64url][base64] encoded.)
+The [key fingerprint](/cryptography#key-fingerprint) of the user or node to
+which the relationship is being created.
 
+---
 
-[base64]: https://tools.ietf.org/html/rfc4648#section-5
+## Schema
+
+	{
+	  "$schema": "http://json-schema.org/draft-04/schema#",
+	  "type": "object",
+	  "properties": {
+	    "relationship": {
+	      "type": "object",
+	      "properties": {
+	        "type": {
+	          "enum": [ "connection", "host", "publisher" ]
+	        },
+	        "identity": {
+	          "type": "string",
+	          "pattern": "^[a-zA-Z0-9_-]+$"
+	        }
+	      }
+	    }
+	  },
+	  "required": [ "relationship" ]
+	}

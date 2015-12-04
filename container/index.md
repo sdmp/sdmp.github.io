@@ -22,7 +22,8 @@ A container object is "extended" by specifying a valid
 property). The additional JSON Schema specified by the `schema` property
 entry is called the "container extension".
 
-Every schema entry must be a valid [SDMP resource URI](/resource/#resource-uri).
+Every schema entry must be a valid [SDMP resource URI](/resource#resource-uri)
+or one of the strings of the [core schemas](/schema).
 
 ---
 
@@ -36,9 +37,9 @@ against any other schemas specified, *in the order* in which they are listed.
 
 If any of the following are true, the container object must be considered invalid:
 
-* The container is considered invalid according to the container schema
+* The container itself is considered invalid according to the container schema
 	specified in this document (see [here](#json-schema)).
-* Any entry in the schema array is an invalid [SDMP resource URI](/resource/#resource-uri).
+* Any entry in the schema array is an invalid [SDMP resource URI](/resource#resource-uri).
 * Any schema URI specified within the container schema list cannot be resolved by
 	the application validating the container.
 * The container is considered invalid according to any schema specified
@@ -70,17 +71,13 @@ Each array element of this property must be a [UTF-8](http://www.utf-8.com/)
 encoded string which is a valid [SDMP resource URI](/resource/#resource-uri),
 and which must resolve to a valid [JSON schema](http://json-schema.org/).
 
-Example:
-
-	"sdmp://GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/"
-
 ---
 
 ## Example
 
 Consider this example SDMP [resource URI](/resource/#resource-uri):
 
-	sdmp://GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/
+	sdmp://GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/h6FWguOHjaB5eUCsjeSIUGxA6p2abtY6HmaUin0F_9INc60VT3IELkP-q7IuWEwBCA8SpIbkfO9ZAIj5jgusYA
 
 If this example URI yields a valid [JSON schema](http://json-schema.org/):
 
@@ -100,7 +97,7 @@ Then an example valid container might look like this:
 	{
 		"sdmp": {
 			"version": "0.10.6",
-			"schemas": "sdmp://GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/"
+			"schemas": "sdmp://GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/h6FWguOHjaB5eUCsjeSIUGxA6p2abtY6HmaUin0F_9INc60VT3IELkP-q7IuWEwBCA8SpIbkfO9ZAIj5jgusYA"
 		},
 		"hello": "world"
 	}
@@ -110,7 +107,7 @@ An example **invalid** container might look like this:
 	{
 		"sdmp": {
 			"version": "0.10.6",
-			"schemas": "sdmp://GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q"
+			"schemas": "sdmp://GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/h6FWguOHjaB5eUCsjeSIUGxA6p2abtY6HmaUin0F_9INc60VT3IELkP-q7IuWEwBCA8SpIbkfO9ZAIj5jgusYA"
 		},
 		"hello": 123
 	}
@@ -123,7 +120,7 @@ And another example **invalid** container might look like this:
 	{
 		"sdmp": {
 			"version": "0.10.6",
-			"schemas": "sdmp://GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/"
+			"schemas": "sdmp://GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/h6FWguOHjaB5eUCsjeSIUGxA6p2abtY6HmaUin0F_9INc60VT3IELkP-q7IuWEwBCA8SpIbkfO9ZAIj5jgusYA"
 		}
 	}
 

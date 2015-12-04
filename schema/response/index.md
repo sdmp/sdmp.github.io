@@ -4,16 +4,16 @@ title: response
 subtitle: Response to a received request object.
 ---
 
-
-When a node requests a specific resource or a journal list update, the
-response is returned inside a response object.
+When a node requests a [resource request](/schema/request_resource)
+or a [journal update request](/schema/request_journal), the response
+is returned inside a response object.
 
 ---
 
-## Schema: `response` ([JSON Schema][schema])
+## Description
 
-Used when a node responds to a [resource request](/schema/request_resource/) or
-a [journal list request](/schema/request_journal/).
+Used when a node responds to a [resource request](/schema/request_resource)
+or a [journal update request](/schema/request_journal).
 
 This object contains the following properties:
 
@@ -21,47 +21,58 @@ This object contains the following properties:
 
 Holds the data properties. This contains the following reserved properties:
 
-###### `response.description` *(string, optional)*
+###### `response.status` *(string, required)*
 
-An optional string to hold a human-readable description of the data object. The string
-may contain only up to 40 ASCII characters. Primarily useful for debugging purposes.
+This property must be a valid status string which indicates the status
+of the response. Valid status strings are:
 
-###### `response.status` *(number)*
+* `ok` - Used to indicate a response object containing a valid object.
+* `bad_request` - Used to indicate that a received request could not
+	be interpreted by the receiver.
+* `not_found` - This status is used in all cases where a request is
+  unavailable, for any reason.
 
-TODO there's no particular reason this should be integer status codes
-instead of, say, a enum string or some such
+> Note: If you want additional status strings for your application
+> and want more widespread adoption, please make a request by filing
+> an [issue](https://github.com/sdmp/sdmp.github.io/issues) on Github
+> and your custom status code may make it into the specs!
 
-This property must be a valid status code. (These are similar to HTTP status codes, in
-that they indicates the status of the response.) Valid status codes are:
+###### `response.request` *(string, required)*
 
-* `200` **"OK"** - Used to indicate a response object containing a valid resource.
-* `400` **"Bad request"** - Used to indicate that a received request was not interpretable.
-* `404` **"Not found"** - This status is used in all cases where a requested resource
-  is unavailable or when the resource has been deleted.
-
-
-TODO add in the session/network connection responses in here
-
-
-
-
-
-Note: If you want additional status codes for your application and want more widespread
-adoption, please make a request by [filing an "issue" on Github][issue] and your custom
-status code may make it into the specs!
-
-###### `response.request` *(string)*
-
-This property must be the exact value of the `request.identifier` found in the
-request object.
+This property *must* be the exact value of the `request.identifier` found
+in the request object.
 
 ###### `response.data` *(object)*
 
-If the object contains a valid [resource object](/resource/), or if it contains a
-valid [journal list](/journal/), this object is the [signed SDMP container](TODO).
+If the value `response.status` is `ok`, this object must be the requested
+[resource object](/resource) or the requested [journal update](/journal).
+
 In all other cases, this property must not be set.
 
+---
 
-[w_forward]: https://en.wikipedia.org/wiki/Forward_secrecy
-[schema]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/response.json
-[issue]: https://github.com/sdmp/sdmp.github.io/issues
+## Schema
+
+	{
+	  "$schema": "http://json-schema.org/draft-04/schema#",
+	  "type": "object",
+	  "properties": {
+	    "response": {
+	      "type": "object",
+	      "properties": {
+	        "status": {
+	          "type": "string",
+	          "pattern": "^(ok|bad_request|not_found)$"
+	        },
+	        "request": {
+	          "type": "string"
+	        },
+	        "data": {
+	          "type": "object"
+	        }
+	      },
+	      "required": [ "status", "request" ]
+	    }
+	  },
+	  "required": [ "response" ]
+	}

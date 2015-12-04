@@ -9,8 +9,9 @@ Within the SDMP, a [container](/container/) object is "extended"
 by specifying a [JSON Schema](http://json-schema.org/) within the
 object (see [here](/container/#container-extension) for more details).
 
-Several schema are specified as part of the core SDMP implementation,
-and these schema are listed here.
+The schema entry for a container extension must be a valid
+[SDMP resource URI](/resource#resource-uri) or it may be the
+exact string of any of the core schemas on this page.
 
 ---
 
@@ -87,9 +88,10 @@ another node.
 
 ---
 
-## [resource_response](/schema/response)
+## [response](/schema/response)
 
-When a node responds to a resource request, it does so using this schema.
+When a node responds to a resource request or a journal update
+request, it does so using this schema.
 
 ---
 
