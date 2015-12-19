@@ -1,20 +1,28 @@
 ---
-layout: schema
-title: request_journal
-subtitle: Requesting blocks of journal entries.
+layout: docs
+title: request journal
+subtitle: Requesting lists of journal entries.
 ---
 
 
-[Synchronization](/synchronize) between nodes is done by transmitting
-[journal updates](/journal). However, if a node is offline or has other
-reason to suspect a desynchronization has occured, the node may request
-the journal entries of another node. This schema defines the request.
+Nodes transmit their own state to other [trusted](/trust) nodes
+in the form of [journal updates](/journal/broadcast). However, the
+node may also request the journal entries of another node.
+
+---
+
+## Request Object
+
+When a journal update request is transmitted, it must be sent inside
+of a valid [resource](/journal/resource) object, which must be signed
+by the node sending the request.
 
 ---
 
 ## Description
 
-Nodes may request journal entries from other nodes.
+Nodes request [journal entries](/journal/structure#journal-entries)
+from other nodes.
 
 This object contains the following properties:
 
@@ -24,10 +32,10 @@ Holds the request properties.
 
 ###### `request.identifier` *(string, required)*
 
-Responses to this resource request will include this identifier in the response
-object. Implementations of the SDMP should attempt to make this property unique
-per request and per node, and should keep the value within reasonable limits, such
-as under 128 characters.
+Responses to this request will include this identifier in the response
+object. Implementations of this protocol should attempt to make this
+property unique per request and per node, and should keep the value
+within reasonable limits, such as under 128 characters.
 
 ###### `request.type` *(string, required)*
 
@@ -35,9 +43,11 @@ Indicates the request type. This must be the string `journal`.
 
 ###### `request.since` *(string, required)*
 
-This property is the *last known* [journal line identifier](/journal/#journal-line-identifier) of
-the requesting node. A successful response to this request would have the journal entries
-immediately after this entry, and would not include this line identifier.
+This property is the *last known*
+[journal line identifier](/journal/structure#journal-line-identifier)
+of the requesting node. A successful response to this request would have
+the journal entries immediately after this entry, and would not include
+this line identifier.
 
 ###### `request.limit` *(integer, optional)*
 

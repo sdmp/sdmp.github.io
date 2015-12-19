@@ -5,19 +5,36 @@ subtitle: Store private data in a <a href="/container">container</a> object.
 ---
 
 
-This document describes a JSON object which extends an SDMP
-[container object](/container/) by adding properties to the object.
-
-Private data is added to an SDMP container using the
-JSON Web Encryption ([JWE][jwe]) specifications. Decryption of
-the JWE object ciphertext must produce a valid container object.
+Private data is added to an SDMP container using the JSON Web
+Encryption ([JWE][jwe]) specifications. Decryption of the JWE
+object ciphertext must produce a valid container object.
 
 ---
 
-## JSON Properties
+## Encryption
 
-Since the object is an extension of the [SDMP container object](/container/),
-it must have all properties required in the container object specifications.
+Encrypting an object is done by generating an [AES][aes] key, encrypting
+the data to that key, and then encrypting the AES key to the public key of
+all recipients.
+
+The AES encrypted content is held in the `encrypted.ciphertext` property,
+while the RSA encrypted key is held in the `key` property of the recipient
+object.
+
+---
+
+## Decryption
+
+The RSA encrypted key is decrypted using the recipient's private key,
+and this key is used to decrypt the AES encrypted content.
+
+---
+
+## Description
+
+This object is an extension of the [container object](/core/container),
+so it must also have all properties required in the container object
+specifications.
 
 In addition, the object also has the following properties:
 
@@ -57,7 +74,7 @@ Authentication tag contents.
 
 The encrypted content, whose octets are [unpadded base64url][base64] encoded.
 
-The encrypted content *must* be the `JSON.stringify` of a fully valid
+The encrypted content *must* be the `JSON.stringify` output of a fully valid
 [container object](/schema/container/).
 
 ###### `encrypted.recipients` *(array of objects, required)*
@@ -68,7 +85,7 @@ Contains per-recipient information.
 
 Contains additional per-recipient unprotected header information.
 
-###### `encrypted.recipients[].encrypted_key` *(string, required)*
+###### `encrypted.recipients[].key` *(string, required)*
 
 Contains the recipient encrypted key whose octets are
 [unpadded base64url][base64] encoded.
@@ -83,3 +100,4 @@ Describe crypto requirements for JWE object here.
 [schema]: https://github.com/sdmp/sdmp-schema/blob/master/schemas/encrypted.json
 [jwe]: http://self-issued.info/docs/draft-ietf-jose-json-web-encryption.htm
 [jwe_serialize]: http://self-issued.info/docs/draft-ietf-jose-json-web-encryption.html#rfc.section.7.2
+[aes]: https://en.wikipedia.org/wiki/Advanced_Encryption_Standard

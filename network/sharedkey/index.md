@@ -1,7 +1,7 @@
 ---
-layout: schema
-title: session_key
-subtitle: Used to establish a symmetric key for encrypting network traffic.
+layout: docs
+title: shared key
+subtitle: Generate a shared symmetric key.
 ---
 
 The SDMP uses the [Diffie-Helman][w_diffiehelman] key exchange as the way to

@@ -15,7 +15,7 @@ secure, to strongly encrypt messages, and to verify users and nodes identities.
 Where the phrase `public key`, `private key`, `key pair`, or `RSA key pair` is used, it
 is meant that section or set of an asymmetric [RSA][w_rsa] key pair.
 
-The bit length of the RSA key must be at least 2048 bits.
+The bit length of the RSA key must be *at least* 2048 bits.
 
 ---
 
@@ -27,18 +27,22 @@ the [SHA-512][w_sha2] hashing algorithm as specified in [FIPS PUB 180-2][fips180
 Where a string representation of a hash is used or specified, it is meant the output of
 the SHA-512 hashing algorithm, whose octets are [unpadded base64url][base64] encoded.
 
+The hashing of keys is done by hashing the string value of the `identity.key`
+property of the [identity](/core/identity) resource.
+
 ---
 
 ## Key hashing
 
 Where the phrase `key hash` is used, it is meant the hash of the raw component of the
-public section of the RSA key pair.
+*public* section of the RSA key pair.
 
 ---
 
 ## Key fingerprint
 
-Where the phrase `key fingerprint` is used, it is meant the key hash of the public key.
+Where the phrase `key fingerprint` is used, it is meant the key hash of the public
+key, encoded to [base64url][base64].
 
 E.g. a key fingerprint might look like:
 
@@ -60,6 +64,12 @@ The bit length of the session key must be at least 256 bits.
 When padding is specified, it is meant that the data must be padded with null bytes. This
 is also often referred to as zero-byte padding. That is, the hexadecimal encoded value
 of the bytes is simply `00`.
+
+---
+
+## Padding Length
+
+When padding an encrypted object, it must be padded to the nearest `8192` bytes.
 
 
 [w_rsa]: https://en.wikipedia.org/wiki/RSA_(cryptosystem)

@@ -1,19 +1,27 @@
 ---
-layout: schema
+layout: docs
 title: response
 subtitle: Response to a received request object.
 ---
 
-When a node requests a [resource request](/schema/request_resource)
-or a [journal update request](/schema/request_journal), the response
-is returned inside a response object.
+When a node requests a [resource](/journal/request_resource) or a
+[journal update](/journal/request_journal), the response is returned
+inside a response object.
+
+---
+
+## Response Object
+
+When a response is transmitted, it must be sent inside of a valid
+[resource](/journal/resource) object, which must be signed by the
+node sending the resource.
 
 ---
 
 ## Description
 
-Used when a node responds to a [resource request](/schema/request_resource)
-or a [journal update request](/schema/request_journal).
+Used when a node responds to a [resource request](/journal/request_resource)
+or a [journal update request](/journal/request_journal).
 
 This object contains the following properties:
 
@@ -37,15 +45,15 @@ of the response. Valid status strings are:
 > an [issue](https://github.com/sdmp/sdmp.github.io/issues) on Github
 > and your custom status code may make it into the specs!
 
-###### `response.request` *(string, required)*
+###### `response.identifier` *(string, required)*
 
 This property *must* be the exact value of the `request.identifier` found
-in the request object.
+in the [request object](/journal/request_resource).
 
 ###### `response.data` *(object)*
 
 If the value `response.status` is `ok`, this object must be the requested
-[resource object](/resource) or the requested [journal update](/journal).
+[resource object](/journal/resource) or the requested [journal update](/journal/broadcast).
 
 In all other cases, this property must not be set.
 
@@ -64,14 +72,14 @@ In all other cases, this property must not be set.
 	          "type": "string",
 	          "pattern": "^(ok|bad_request|not_found)$"
 	        },
-	        "request": {
+	        "identifier": {
 	          "type": "string"
 	        },
 	        "data": {
 	          "type": "object"
 	        }
 	      },
-	      "required": [ "status", "request" ]
+	      "required": [ "status", "identifier" ]
 	    }
 	  },
 	  "required": [ "response" ]

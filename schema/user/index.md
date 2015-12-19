@@ -5,9 +5,9 @@ subtitle: Published information about a user, such as a name.
 ---
 
 
-The [identity object](/schema/identity) is used only for publishing
-a public key. The information_user object is used as a public-facing
-way to easily distinguish users.
+The [identity object](/core/identity) is used only for publishing
+a public key. This object holds the personally identifiable
+information about a user.
 
 ---
 
@@ -17,22 +17,18 @@ This JSON object holds information about the user.
 
 This object contains the following properties:
 
-###### `information` *(object)*
+###### `user` *(object)*
 
 Contains information about the user.
 
-###### `information.type` *(string)*
-
-Must be the exact string: `user`
-
-###### `information.name` *(string)*
+###### `user.name` *(string)*
 
 A human-readable name for the user.
 
-###### `information.about` *(string)*
+###### `user.about` *(string)*
 
-A human-readable description of the user. Meant to assiste users in differentiating between
-known users with similar names.
+A human-readable description of the user. Meant to assist users in
+differentiating between known users with similar names.
 
 ---
 
