@@ -15,7 +15,7 @@ this is called the "payload") is the string representation of a container.
 ## Payload
 
 The *JWS payload* (or simply *payload*) is an encoded representation
-of another [container](/container) object.
+of another [container](/core/container) object.
 
 Specifically, the payload is the output of the following function:
 

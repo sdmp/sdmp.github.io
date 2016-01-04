@@ -53,9 +53,9 @@ E.g. a key fingerprint might look like:
 ## AES encryption
 
 Where the phrase `session key` or `token key` is used, it is meant
-an [AES][w_aes] compatible key.
+an [AES][w_aes] compatible key. Encryption must use the AES-CBC algorithm.
 
-The bit length of the session key must be at least 256 bits.
+The bit length of the session key must be 256 bits.
 
 ---
 

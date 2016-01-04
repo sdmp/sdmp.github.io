@@ -24,11 +24,11 @@ This object contains the following properties:
 
 Object containing information about the node.
 
-###### `information.type` *(string)*
+###### `information.type` *(string, required)*
 
 Must be the exact string: `node`
 
-###### `information.name` *(string)*
+###### `information.name` *(string, optional)*
 
 A human-readable description of the node.
 
