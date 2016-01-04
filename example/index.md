@@ -1,0 +1,692 @@
+---
+layout: docs
+title: example
+subtitle: Complete examples of all resources and actions.
+---
+
+This document shows the manual creation of all resources.
+
+These examples are generated manually using the following command
+line tools:
+
+* [OpenSSL](http://openssl.org): Core cryptography functionality.
+* [pipetransform](https://github.com/tobiaslabs/pipe-transform-cli): Transform
+	streams to different encodings.
+* [keytransform](https://github.com/sdmp/pem-key-transform-cli): Transform the
+	OpenSSL key to an SDMP formatted key.
+
+Long streams of characters are truncated in the middle
+using `...`, to improve readability.
+
+If you want to read the files referenced in these examples, they are all
+[available here](https://github.com/sdmp/sdmp.github.io/tree/master/example/files).
+
+---
+
+## Table of Contents
+
+* [Commands](#commands): Command line commands used in these examples
+* [Create User Identity](#creating-a-user-identity): Create an SDMP user identity
+* [Create Node Identity](#creating-a-node-identity): Create an SDMP node identity
+* [Create Trust](#create-a-trust): Authorize that node on behalf of the user
+* [Start Journal](#starting-a-journal): Start a journal for that node
+* [Publish "Public" Resource](#publish-public-resource): Publish a resource
+	with contents visible to all nodes
+* [Publish "Private" Resource](#publish-private-resource): Publish a resource
+	with contents encrypted to a user/node
+
+---
+
+## Commands
+
+The following commands are used in this example:
+
+Generate a private and public key:
+
+	openssl genrsa -out private.pem 2056
+	openssl rsa -in private.pem -pubout -out public.pem
+
+Make the public key formatted for the SDMP:
+
+	cat public.pem | keytransform remove > public.sdmp
+
+Encrypt/decrypt a file using a public RSA key:
+
+	openssl rsautl -encrypt -pubin -inkey public.pem -in aes256.key -out aes256.enc
+	openssl rsautl -decrypt -inkey private.pem -in aes256.enc
+
+Sign/verify some file using the SHA512 hash and RSA keys:
+
+	openssl dgst -sha512 -sign private.pem -out file.txt.sha file.txt
+	openssl dgst -sha512 -verify public.pem -signature file.txt.sha file.txt
+
+Generate AES keys or IV values:
+
+	openssl rand 32 > aes256.key
+	openssl rand 16 > iv.key
+
+Encrypt/decrypt using AES CBC:
+
+	openssl enc -aes-256-cbc -salt -in file.txt -out file.enc -K $KEY$ -iv $IV$
+	openssl enc -d -aes-256-cbc -in file.enc -K $KEY$ -iv $IV$
+
+(Note: The values `$KEY$` and `$IV$` must be valid hex encoded key
+and initialization vector values.)
+
+Encode files to some other encoding (e.g. hex):
+
+	cat iv.key | pipetransform binary hex
+
+Generate the SHA512 hash for some file:
+
+	openssl dgst -sha512 file.txt
+
+Alternate method which also encodes to base64url:
+
+	cat file.txt | openssl dgst -sha512 -binary | pipetransform binary base64url
+
+---
+
+## Creating a [User Identity](/core/identity)
+
+Generating [compliant keys](/core/cryptography) using OpenSSL
+is done with the command:
+
+	openssl genrsa -out private.pem 2056
+
+Generating the public key is done with the command:
+
+	openssl rsa -in private.pem -pubout -out public.pem
+
+And turning those keys into SDMP formatted keys is done
+with the command:
+
+	cat public.pem | keytransform remove > public.sdmp
+
+We'll start by creating a private/public key and identity
+for a user named *Bob*.
+
+	openssl genrsa -out bob-private.pem 2056
+	openssl rsa -in bob-private.pem -pubout -out bob-public.pem
+	cat bob-public.pem | keytransform remove > bob-public.sdmp
+
+These files are available here:
+
+* [bob-private.pem](./files/bob-private.pem)
+* [bob-public.pem](./files/bob-public.pem)
+* [bob-public.sdmp](./files/bob-public.sdmp)
+
+A complete [identity](/core/identity) [container](/core/container)
+looks like this:
+
+	{
+		"sdmp": {
+			"version": "0.11.0",
+			"schemas": [ "identity" ]
+		},
+		"identity": {
+			"type": "user",
+			"expires": "2020-01-01T00:00:00.000Z",
+			"key": "$PUBLIC_KEY$"
+		}
+	}
+
+Bob's formatted public key (`bob-public.sdmp`) looks like:
+
+	MIIBIzANBgkqhki...MMZ1cLakCAwEAAQ==
+
+So the identity container would look like this:
+
+	{
+		"sdmp": {
+			"version": "0.11.0",
+			"schemas": [ "identity" ]
+		},
+		"identity": {
+			"type": "user",
+			"expires": "2020-01-01T00:00:00.000Z",
+			"key": "MIIBIzANBgkqhki...MMZ1cLakCAwEAAQ=="
+		}
+	}
+
+The complete identity container is available here:
+
+* [bob-identity.json](./files/bob-identity.json)
+
+To publish the identity, it must first be placed inside a
+[signature](/core/signature) object, which looks like:
+
+	{
+		"sdmp": {
+			"version": "0.11.0",
+			"schemas": [ "signature" ]
+		},
+		"signature": {
+			"identifier": "$IDENTIFIER$",
+			"payload": "$PAYLOAD$",
+			"signatures": [{
+				"protected": "$PROTECTED_HEADER$",
+				"signature": "$SIGNATURE$"
+			}]
+		}
+	}
+
+The `signature.identifier` property (which is also the
+[resource identifier](/journal/resource#resource-identifier))
+is generated by hashing the payload, which is the
+`bob-identity.json` file. This is done using the
+OpenSSL command:
+
+	openssl dgst -sha512 -binary bob-identity.json | pipetransform binary base64url
+
+Which outputs the value (used as the `signature.identifier`):
+
+	5w4IzlVU2d6KxWFhNF2hUW-rECxS6Kbi4PJ2B2z0-6n243MfYr0iPlF06S35Usd_zMPemVmPcI2WrifStdlN4A
+
+The [payload](/core/signature#payload) is the identity JSON object,
+encoded to base64url. To do this, we can use the pipetransform tool:
+
+	cat bob-identity.json | pipetransform utf8 base64url > bob-identity.encoded
+
+Which outputs the following (truncated with ellipsis for
+readability), used as the `signature.payload` property:
+
+	eyJzZG1wIjp7InZl...DQXdFQUFRPT0ifX0
+
+The encoded payload is available here:
+
+* [bob-identity.encoded](./files/bob-identity.encoded)
+
+The `protected` property is the base64url encoded JSON object:
+
+	{
+		"alg": "HS512",
+		"kid": "$KEY_FINGERPRINT$"
+	}
+
+The `kid` value (the [key fingerprint](/core/cryptography#key-fingerprint))
+is the hash of the `identity.key` value. This is generated using the command:
+
+	openssl dgst -sha512 -binary bob-public.sdmp | pipetransform binary base64url
+
+Which outputs the key fingerprint (used as the `kid` property):
+
+	1Zy3eUBJAAYwfvfmO8uOYFKHY54fIz_jkOzBddcTb-IXlhos_LJcMlMafHABimG0_afp_gc9fNEcfDVM_y-o7A
+
+Which means that the JSON object would be:
+
+	{
+		"alg": "HS512",
+		"kid": "1Zy3eUBJAAYwfvfmO8uOYFKHY54fIz_jkOzBddcTb-IXlhos_LJcMlMafHABimG0_afp_gc9fNEcfDVM_y-o7A"
+	}
+
+The JSON header is available here:
+
+* [bob-identity-protected.json](./files/bob-identity-protected.json)
+
+The protected header is generated by encoding this JSON header
+as base64url:
+
+	cat bob-identity-protected.json | pipetransform utf8 base64url > bob-identity-protected.encoded
+
+Which outputs the value:
+
+	eyJhbGciOiJIUzUx...mRFZNX3ktbzdBIn0
+
+The complete value is available here:
+
+* [bob-identity-protected.encoded](./files/bob-identity-protected.encoded)
+
+The `signature` property is the signature of the payload, and is
+generated using the following command:
+
+	openssl dgst -sha512 -sign bob-private.pem bob-identity.encoded | pipetransform binary base64url > bob-identity-signature.encoded
+
+Which outputs the value:
+
+	cp1okHSfgQWajNp9...M76pYlMG8qp8Q4xk
+
+The complete value is available here:
+
+* [bob-identity-signature.encoded](./files/bob-identity-signature.encoded)
+
+Finally, the assembled signature object would look like this:
+
+	{
+		"sdmp": {
+			"version": "0.11.0",
+			"schemas": [ "signature" ]
+		},
+		"signature": {
+			"identifier": "5w4IzlVU2d6KxWFhNF2hUW-rECxS6Kbi4PJ2B2z0-6n243MfYr0iPlF06S35Usd_zMPemVmPcI2WrifStdlN4A",
+			"payload": "eyJzZG1wIjp7InZl...DQXdFQUFRPT0ifX0",
+			"signatures": [{
+				"protected": "eyJhbGciOiJIUzUx...mRFZNX3ktbzdBIn0",
+				"signature": "cp1okHSfgQWajNp9...M76pYlMG8qp8Q4xk"
+			}]
+		}
+	}
+
+The full signature object is available here:
+
+* [bob-identity-signature.json](./files/bob-identity-signature.json)
+
+**This file is the *user identity resource*.**
+
+The important parts are:
+
+* The key fingerprint of the user is: `1Zy3eUBJAAYwfvfmO8uOYFKHY54fIz_jkOzBddcTb-IXlhos_LJcMlMafHABimG0_afp_gc9fNEcfDVM_y-o7A`
+* The resource identifier is: `5w4IzlVU2d6KxWFhNF2hUW-rECxS6Kbi4PJ2B2z0-6n243MfYr0iPlF06S35Usd_zMPemVmPcI2WrifStdlN4A`
+
+---
+
+## Creating a [Node Identity](/core/identity)
+
+The same process is followed to create a `node` identity, except
+that the node [identity](/core/identity) [container](/core/container)
+looks like this:
+
+	{
+		"sdmp": {
+			"version": "0.11.0",
+			"schemas": [ "identity" ]
+		},
+		"identity": {
+			"type": "node",
+			"expires": "2020-01-01T00:00:00.000Z",
+			"key": "$PUBLIC_KEY$"
+		}
+	}
+
+Using the above steps, we generate the following files:
+
+* [node-private.pem](./files/node-private.pem)
+* [node-public.pem](./files/node-public.pem)
+* [node-public.sdmp](./files/node-public.sdmp)
+* [node-identity.json](./files/node-identity.json)
+* [node-identity.encoded](./files/node-identity.encoded)
+* [node-identity-protected.json](./files/node-identity-protected.json)
+* [node-identity-protected.encoded](./files/node-identity-protected.encoded)
+* [node-identity-signature.json](./files/node-identity-signature.json)
+
+And the important parts are:
+
+* The key fingerprint of the node is: `IMJ--MJJMtV9PVsR82vKWaJaj7P0TB6tJVB9i5aAcQzuy6I6x4S3tDLHN6lJ2_m6U_bo9SClnsqotGBnalyPYw`
+* The resource identifier is: `6ECGQ9anD4milwgB-tixENh6_SHpVtzsgdL9vqZ85_XOgXG525poxQlpH1WIuJg7jbS0nwPgie-xiMM9U9PFqA`
+
+---
+
+## Create a Trust
+
+In order for the node to publish resources on behalf of the user, the
+user must [create a trust](/schema/trust) authorizing the node.
+
+Assuming that the user is giving the node normal read/write access, the
+trust container would look like this:
+
+
+	{
+		"sdmp": {
+			"version": "0.11.0",
+			"schemas": [ "trust" ]
+		},
+		"trust": {
+			"trustee": "IMJ--MJJMtV9PVsR82vKWaJaj7P0TB6tJVB9i5aAcQzuy6I6x4S3tDLHN6lJ2_m6U_bo9SClnsqotGBnalyPYw",
+			"expires": "2020-01-01T00:00:00.000Z",
+			"authorization": [
+				"read_encrypted",
+				"publish_resource",
+				"revoke"
+			]
+		}
+	}
+
+This container is available here:
+
+* [trust-container.json](./files/trust-container.json)
+* [trust-container.encoded](./files/trust-container.encoded)
+
+The user must then generate a resource with this container.
+
+The SHA512 of the trust container is:
+
+	GpUTDufRSi-nLwCX7kjmFbn-_xO7m-XtNG7FVFtwBk4vl8oE8e4jJzMs_eDlvrZ0mQqeZ8B1he9BaLYGlAvdUQ
+
+Note that the `protected` property of the resource `signatures`
+object is the same for the user, since it is the same key
+identifier. The `protected` property is available here:
+
+* [bob-identity-protected.json](./files/bob-identity-protected.json)
+* [bob-identity-protected.encoded](./files/bob-identity-protected.encoded)
+
+And the signature property is available here:
+
+* [trust-container-signature.encoded](./files/trust-container-signature.encoded)
+
+Which makes the resource object this:
+
+	{
+		"sdmp": {
+			"version": "0.11.0",
+			"schemas": [ "signature" ]
+		},
+		"resource": {
+			"user": 
+		},
+		"signature": {
+			"identifier": "GpUTDufRSi-nLwCX7kjmFbn-_xO7m-XtNG7FVFtwBk4vl8oE8e4jJzMs_eDlvrZ0mQqeZ8B1he9BaLYGlAvdUQ",
+			"payload": "eyJzZG1wIjp7InZl...LCJyZXZva2UiXX19",
+			"signatures": [{
+				"protected": "eyJhbGciOiJIUzUx...mRFZNX3ktbzdBIn0",
+				"signature": "vxjZrnb1kklSfcsE...CH1P-7qk77TmtdPU"
+			}]
+		}
+	}
+
+This resource is available here:
+
+* [trust-resource.json](./files/trust-resource.json)
+
+---
+
+## Starting a Journal
+
+Each node maintains a journal. For this example we will use
+a flat text file to store the journal entries.
+
+The node initializes the journal to be exactly this:
+
+	IMJ--MJJMtV9PVsR82vKWaJaj7P0TB6tJVB9i5aAcQzuy6I6x4S3tDLHN6lJ2_m6U_bo9SClnsqotGBnalyPYw
+
+(See the node journal at step 1 [here](./files/journal-start.txt).)
+
+The [second entry](/journal/structure) is the identity resource
+of the user authorizing the node. The properties of the second
+entry are:
+
+* Line identifier: `2YLFjtSFIFYviDLjt8PbLsrRApuYZCk2mgnT8t07AidsuOODTZMUP5hL7iQKeNxJ8uwlEygLCmiEuXOFyJliQw`
+* Key fingerprint: `1Zy3eUBJAAYwfvfmO8uOYFKHY54fIz_jkOzBddcTb-IXlhos_LJcMlMafHABimG0_afp_gc9fNEcfDVM_y-o7A`
+* Resource identifier: `5w4IzlVU2d6KxWFhNF2hUW-rECxS6Kbi4PJ2B2z0-6n243MfYr0iPlF06S35Usd_zMPemVmPcI2WrifStdlN4A`
+
+Which makes the journal to be exactly this:
+
+	IMJ--MJJMtV9PVsR82vKWaJaj7P0TB6tJVB9i5aAcQzuy6I6x4S3tDLHN6lJ2_m6U_bo9SClnsqotGBnalyPYw
+	2YLFjtSFIFYviDLjt8PbLsrRApuYZCk2mgnT8t07AidsuOODTZMUP5hL7iQKeNxJ8uwlEygLCmiEuXOFyJliQw@1Zy3eUBJAAYwfvfmO8uOYFKHY54fIz_jkOzBddcTb-IXlhos_LJcMlMafHABimG0_afp_gc9fNEcfDVM_y-o7A/5w4IzlVU2d6KxWFhNF2hUW-rECxS6Kbi4PJ2B2z0-6n243MfYr0iPlF06S35Usd_zMPemVmPcI2WrifStdlN4A
+
+(See the node journal at step 2 [here](./files/journal-user-identity.txt).)
+
+The [third entry](/journal/structure) is the trust resource we
+created earlier. The properties of this entry are:
+
+* Line identifier: `7lly-uncz6Y1QP8JJSlYJKUchKnsAYXaWqUVbY1x3SVcmgpiJM1UdnWAC9XazSzbMSGsYjsIS-NlRblIXplsXQ`
+* Key fingerprint: `1Zy3eUBJAAYwfvfmO8uOYFKHY54fIz_jkOzBddcTb-IXlhos_LJcMlMafHABimG0_afp_gc9fNEcfDVM_y-o7A`
+* Resource identifier: `GpUTDufRSi-nLwCX7kjmFbn-_xO7m-XtNG7FVFtwBk4vl8oE8e4jJzMs_eDlvrZ0mQqeZ8B1he9BaLYGlAvdUQ`
+
+Which makes the journal to be exactly this:
+
+	IMJ--MJJMtV9PVsR82vKWaJaj7P0TB6tJVB9i5aAcQzuy6I6x4S3tDLHN6lJ2_m6U_bo9SClnsqotGBnalyPYw
+	2YLFjtSFIFYviDLjt8PbLsrRApuYZCk2mgnT8t07AidsuOODTZMUP5hL7iQKeNxJ8uwlEygLCmiEuXOFyJliQw@1Zy3eUBJAAYwfvfmO8uOYFKHY54fIz_jkOzBddcTb-IXlhos_LJcMlMafHABimG0_afp_gc9fNEcfDVM_y-o7A/5w4IzlVU2d6KxWFhNF2hUW-rECxS6Kbi4PJ2B2z0-6n243MfYr0iPlF06S35Usd_zMPemVmPcI2WrifStdlN4A
+	7lly-uncz6Y1QP8JJSlYJKUchKnsAYXaWqUVbY1x3SVcmgpiJM1UdnWAC9XazSzbMSGsYjsIS-NlRblIXplsXQ@1Zy3eUBJAAYwfvfmO8uOYFKHY54fIz_jkOzBddcTb-IXlhos_LJcMlMafHABimG0_afp_gc9fNEcfDVM_y-o7A/GpUTDufRSi-nLwCX7kjmFbn-_xO7m-XtNG7FVFtwBk4vl8oE8e4jJzMs_eDlvrZ0mQqeZ8B1he9BaLYGlAvdUQ
+
+(See the node journal at step 3 [here](./files/journal-user-trust.txt).)
+
+---
+
+## Publish "Public" Resource
+
+Suppose now that the user wishes to publish a resource
+using the node. We will use a [node](/schema/user)
+resource, to publish additional information about the
+user, and we won't encrypt it to a specific user.
+
+	{
+		"sdmp": {
+			"version": "0.11.0",
+			"schemas": [ "user" ]
+		},
+		"user": {
+			"name": "Bob Smith",
+			"about": "Works for the man."
+		}
+	}
+
+This file is available here:
+
+* [resource-user.json](./files/resource-user.json)
+* [resource-user.encoded](./files/resource-user.encoded)
+* [resource-user-signature.encoded](./files/resource-user-signature.encoded)
+
+The `protected` header of the resource object will be different
+than previously, because it will be generated using the key
+fingerprint of the node instead of the user:
+
+	{
+		"alg": "HS512",
+		"kid": "IMJ--MJJMtV9PVsR82vKWaJaj7P0TB6tJVB9i5aAcQzuy6I6x4S3tDLHN6lJ2_m6U_bo9SClnsqotGBnalyPYw"
+	}
+
+These files are available here:
+
+* [node-protected-header.json](./files/node-protected-header.json)
+* [node-protected-header.encoded](./files/node-protected-header.encoded)
+
+Together, this makes the resource look like this:
+
+	{
+		"sdmp": {
+			"version": "0.11.0",
+			"schemas": [ "signature" ]
+		},
+		"resource": {
+			"user": "IMJ--MJJMtV9PVsR82vKWaJaj7P0TB6tJVB9i5aAcQzuy6I6x4S3tDLHN6lJ2_m6U_bo9SClnsqotGBnalyPYw"
+		},
+		"signature": {
+			"identifier": "aXGppFC6WWoSwx61Fs0bAHLij38_AWVRNDupbUC1sQti9ToT1VKs_zoxoMG-Gb66OHVcwIOdKooRYLPn_4-J9g",
+			"payload": "eyJzZG1wIjp7InZl...IHRoZSBtYW4uIn19",
+			"signatures": [{
+				"protected": "eyJhbGciOiJIUzUx...0R0JuYWx5UFl3In0",
+				"signature": "BJePo0l_-mitxKy9...b69_Sqpd7P9brbK4"
+			}]
+		}
+	}
+
+This complete file is available here:
+
+* [resource-user-published.json](./files/resource-user-published.json)
+
+Publishing this entry to the node's journal gives the following properties:
+
+* Line identifier: `FTwNvVSwKrW16wFBKgEsRiyfgrysoR4mJtJBC1hECfWTonQ0lHoaavJHJUdUEsWyc9t5bgq3rFNwiaUjK3jDiw`
+* Key fingerprint: `IMJ--MJJMtV9PVsR82vKWaJaj7P0TB6tJVB9i5aAcQzuy6I6x4S3tDLHN6lJ2_m6U_bo9SClnsqotGBnalyPYw`
+* Resource identifier: `aXGppFC6WWoSwx61Fs0bAHLij38_AWVRNDupbUC1sQti9ToT1VKs_zoxoMG-Gb66OHVcwIOdKooRYLPn_4-J9g`
+
+Which makes the journal to be exactly this:
+
+	IMJ--MJJMtV9PVsR82vKWaJaj7P0TB6tJVB9i5aAcQzuy6I6x4S3tDLHN6lJ2_m6U_bo9SClnsqotGBnalyPYw
+	2YLFjtSFIFYviDLjt8PbLsrRApuYZCk2mgnT8t07AidsuOODTZMUP5hL7iQKeNxJ8uwlEygLCmiEuXOFyJliQw@1Zy3eUBJAAYwfvfmO8uOYFKHY54fIz_jkOzBddcTb-IXlhos_LJcMlMafHABimG0_afp_gc9fNEcfDVM_y-o7A/5w4IzlVU2d6KxWFhNF2hUW-rECxS6Kbi4PJ2B2z0-6n243MfYr0iPlF06S35Usd_zMPemVmPcI2WrifStdlN4A
+	7lly-uncz6Y1QP8JJSlYJKUchKnsAYXaWqUVbY1x3SVcmgpiJM1UdnWAC9XazSzbMSGsYjsIS-NlRblIXplsXQ@1Zy3eUBJAAYwfvfmO8uOYFKHY54fIz_jkOzBddcTb-IXlhos_LJcMlMafHABimG0_afp_gc9fNEcfDVM_y-o7A/GpUTDufRSi-nLwCX7kjmFbn-_xO7m-XtNG7FVFtwBk4vl8oE8e4jJzMs_eDlvrZ0mQqeZ8B1he9BaLYGlAvdUQ
+	FTwNvVSwKrW16wFBKgEsRiyfgrysoR4mJtJBC1hECfWTonQ0lHoaavJHJUdUEsWyc9t5bgq3rFNwiaUjK3jDiw@IMJ--MJJMtV9PVsR82vKWaJaj7P0TB6tJVB9i5aAcQzuy6I6x4S3tDLHN6lJ2_m6U_bo9SClnsqotGBnalyPYw/aXGppFC6WWoSwx61Fs0bAHLij38_AWVRNDupbUC1sQti9ToT1VKs_zoxoMG-Gb66OHVcwIOdKooRYLPn_4-J9g
+
+(See the node journal at this step [here](./files/journal-user-resource.txt).)
+
+---
+
+## Publish "Private" Resource
+
+Suppose now that the user wishes to publish a resource
+using the node. We will publish a [node](/schema/node)
+resource, to publish additional information about the
+node, and we will encrypt it to a specific user.
+
+The final object will be the result of this pseudo-function:
+
+	RESOURCE(SIGN(ENCRYPT(Node Schema Object)))
+
+Suppose that we have previously obtained and verified
+the public key of Alice:
+
+	openssl genrsa -out alice-private.pem 2056
+	openssl rsa -in alice-private.pem -pubout -out alice-public.pem
+
+And suppose that we have also previously obtained and verified
+the public key of a node. Also assume that we have previously
+verified that Alice has published a [trust](/schema/trust)
+giving this node `read_encrypted` authorization:
+
+	openssl genrsa -out alice-node-private.pem 2056
+	openssl rsa -in alice-node-private.pem -pubout -out alice-node-public.pem
+
+These files are available here:
+
+* [alice-private.pem](./files/alice-private.pem)
+* [alice-public.pem](./files/alice-public.pem)
+* [alice-node-private.pem](./files/alice-node-private.pem)
+* [alice-node-public.pem](./files/alice-node-public.pem)
+
+The [encrypted payload](/core/encrypted) must be a container, so
+we first generate the [node](/schema/node) resource like so:
+
+	{
+		"sdmp": {
+			"version": "0.11.0",
+			"schemas": [ "node" ]
+		},
+		"information": {
+			"type": "node",
+			"name": "Bob's Laptop",
+			"ips": [
+				"123.456.789.012:34567",
+				"[2001:db8:85a3:0:0:8a2e:370:7334]:50123"
+			]
+		}
+	}
+
+This file is available here:
+
+* [resource-node.json](./files/resource-node.json)
+
+The [encrypted container](/core/encrypted) is the container which
+we will publish. Since we are sending a private message to Alice,
+we must encrypt the message to Alice's key and to the key of the
+node given `read_encrypted` authorization. Therefore, the container
+looks like this:
+
+	{
+		"sdmp": {
+			"version": "0.11.0",
+			"schemas": [ "encrypted" ]
+		},
+		"encrypted": {
+			"protected": "$PROTECTED_HEADERS$",
+			"iv": "$INITIALIZATION_VECTOR$",
+			"payload": "$PAYLOAD$",
+			"recipients": [{
+				"key": "$KEY_ALICE$"
+			},{
+				"key": "$KEY_ALICE_NODE$"
+			}]
+		}
+	}
+
+First we need to generate a shared [AES key](/core/cryptography)
+and an initialization vector:
+
+	openssl rand 32 > resource-node-aes256.key
+	openssl rand 16 > resource-node-iv.key
+
+These files are available here:
+
+* [resource-node-aes256.key](./files/resource-node-aes256.key)
+* [resource-node-iv.key](./files/resource-node-iv.key)
+
+We can convert it to hexadecimal for use with the OpenSSL command
+line using the [pipetransform](https://github.com/tobiaslabs/pipe-transform-cli)
+command:
+
+	cat resource-node-aes256.key | pipetransform binary hex
+	cat resource-node-iv.key | pipetransform binary hex
+
+Which output the following hex values:
+
+* `4040c2bcfedcf3ac6f4e5294c10da29bbed91f6b37c205bb90ddbf4aa8485b6c`
+* `d0ee0ccf1ce1969b37d6db6d3b8e4345`
+
+We can then encrypt the JSON file using this key:
+
+	openssl enc -aes-256-cbc -salt -in resource-node.json -out resource-node.json.encrypted -K 4040c2bcfedcf3ac6f4e5294c10da29bbed91f6b37c205bb90ddbf4aa8485b6c -iv d0ee0ccf1ce1969b37d6db6d3b8e4345
+
+This encrypted file is available here:
+
+* [resource-node.json.encrypted](./files/resource-node.json.encrypted)
+
+The `encrypted.payload` property must be stored in base64url encoding,
+therefore we encode the encrypted file:
+
+	cat resource-node.json.encrypted | pipetransform binary base64url > resource-node.json.encrypted.encoded
+
+Which outputs the following:
+
+	pgo30jyrPCyMK09M...XexJt8w6TF0BnueU
+
+This value is available in the file:
+
+* [resource-node.json.encrypted.encoded](./files/resource-node.json.encrypted.encoded)
+
+The `encrypted.iv` property must also be stored in base64url encoding,
+therefore:
+
+	cat resource-node-iv.key | pipetransform binary base64url
+
+Which outputs the following:
+
+	0O4Mzxzhlps31tttO45DRQ
+
+We need to encrypt the shared key to the two public keys. This is
+done using the OpenSSL commands:
+
+	openssl rsautl -encrypt -pubin -inkey alice-public.pem -in resource-node-aes256.key -out resource-node-aes256-alice.key.encrypted
+	openssl rsautl -encrypt -pubin -inkey alice-node-public.pem -in resource-node-aes256.key -out resource-node-aes256-node.key.encrypted
+
+And these encrypted values must be base64url encoded:
+
+	cat resource-node-aes256-alice.key.encrypted | pipetransform binary base64url > resource-node-aes256-alice.key.encrypted.encoded
+	cat resource-node-aes256-node.key.encrypted | pipetransform binary base64url > resource-node-aes256-node.key.encrypted.encoded
+
+The output of these looks like:
+
+* Encrypted for Alice: `HwbM20QZipPO4-cv...QGs6qQnklxcyQmXg`
+* Encrypted for Alice's node: `QxC8ipIofCKWVNAd...MWUCz6ZInW6jADYY`
+
+These files are available here:
+
+* [resource-node-aes256-alice.key.encrypted](./files/resource-node-aes256-alice.key.encrypted)
+* [resource-node-aes256-node.key.encrypted](./files/resource-node-aes256-node.key.encrypted)
+* [resource-node-aes256-alice.key.encrypted.encoded](./files/resource-node-aes256-alice.key.encrypted.encoded)
+* [resource-node-aes256-node.key.encrypted.encoded](./files/resource-node-aes256-node.key.encrypted.encoded)
+
+This means the final encrypted container will look like this:
+
+	{
+		"sdmp": {
+			"version": "0.11.0",
+			"schemas": [ "encrypted" ]
+		},
+		"encrypted": {
+			"protected": "$PROTECTED_HEADERS$",
+			"iv": "0O4Mzxzhlps31tttO45DRQ",
+			"payload": "pgo30jyrPCyMK09M...XexJt8w6TF0BnueU",
+			"recipients": [{
+				"key": "HwbM20QZipPO4-cv...QGs6qQnklxcyQmXg"
+			},{
+				"key": "QxC8ipIofCKWVNAd...MWUCz6ZInW6jADYY"
+			}]
+		}
+	}
+
+The full file is available here:
+
+* [resource-node-encrypted.json](./files/resource-node-encrypted.json)
+
+The rest of the process is the same as the
+["Publish Public Resource"](#publish-public-resource) section,
+except that the file `resource-node-encrypted.json` is the payload.
