@@ -21,10 +21,5 @@ Create the shared key and verify the author.
 All network traffic uses the established shared key to
 encrypt data in the form of [encrypted container](/core/encrypted).
 
-## [TCP](./tcp)
-
-Although the protocol is generally network agnostic, a TCP
-implementation is available. It is very simple.
-
 
 [w_diffiehelman]: https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange

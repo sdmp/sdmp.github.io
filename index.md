@@ -41,6 +41,10 @@ If humans can understand it, it's easier to make sure the secure part is actuall
 	- [Message](/schema/message): A [MultiMarkdown][multimark] formatted personal message.
 	- [Receipt](/schema/receipt): Signal to a user or node when a private message
 		or other resource is finally acquired.
+* [Network](/network): Network agnostic connection details.
+	- [Shared Key](/network/sharedkey): Creating a shared, signed, symmetric key.
+	- [Handshake](/network/handshake): Establishing a secure network connection.
+	- [Traffic](/network/traffic): Rules for network traffic.
 * [Example](/example): Step by step example using command line tools.
 
 ---
