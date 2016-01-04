@@ -1,13 +1,13 @@
 ---
 layout: docs
 title: encrypted
-subtitle: Store private data in a <a href="/container">container</a> object.
+subtitle: Store private data in a container object.
 ---
 
 
-Private data is added to an SDMP container using the JSON Web
-Encryption ([JWE][jwe]) specifications. Decryption of the JWE
-object ciphertext must produce a valid container object.
+Private data is added to an SDMP container using well known
+encryption techniques. Decryption of the payload must produce
+a valid container object.
 
 ---
 
@@ -17,9 +17,24 @@ Encrypting an object is done by generating an [AES][aes] key, encrypting
 the data to that key, and then encrypting the AES key to the public key of
 all recipients.
 
-The AES encrypted content is held in the `encrypted.ciphertext` property,
+The AES encrypted content is held in the `encrypted.payload` property,
 while the RSA encrypted key is held in the `key` property of the recipient
 object.
+
+---
+
+## Payload
+
+The *payload* is an encoded representation of another
+[container](/core/container) object.
+
+Specifically, the payload is the output of the following function:
+
+	BASE64URL(ENCRYPT(UTF8(JSON.stringify(SDMP Container))))
+
+The child container is converted to a string, then [UTF-8](http://www.utf-8.com/)
+encoded, then encrypted using the AES key, and then
+[base64url][base64] encoded.
 
 ---
 
@@ -40,54 +55,29 @@ In addition, the object also has the following properties:
 
 ###### `encrypted` *(object, required)*
 
-This root property contains a valid [JWE][jwe] object. The properties of this
-object are defined using the JWE [JSON Serialization][jwe_serialize] method.
+This object holds a signed string, which is the string representation
+of a valid [container](/core/container) object.
 
-> Note: Defining the complete JWE is outside the scope of this document, but the
-> required properties are listed here to summarize the JWE specifications. Any
-> difference between the JWE and the following summary should be considered an
-> error, and should be filed as [a bug](https://github.com/sdmp/sdmp.github.io/issues).
+This object contains the following properties:
 
-###### `encrypted.protected` *(string, required)*
-
-Integrity protected shared header contents. This is equivalent to a `JSON.stringify`
-of the header contents, whose octets are [unpadded base64url][base64] encoded.
-
-###### `encrypted.unprotected` *(object, required)*
-
-Shared header contents indicating the type of encryption. See the JWE
-specifications for details.
-
-###### `encrypted.aad` *(string)*
-
-Additional authenticated data contents.
-
-###### `encrypted.iv` *(string)*
+###### `encrypted.iv` *(string, required)*
 
 Initialization vector whose octets are [unpadded base64url][base64] encoded.
 
-###### `encrypted.tag` *(string)*
-
-Authentication tag contents.
-
-###### `encrypted.ciphertext` *(string)*
+###### `encrypted.payload` *(string)*
 
 The encrypted content, whose octets are [unpadded base64url][base64] encoded.
 
 The encrypted content *must* be the `JSON.stringify` output of a fully valid
-[container object](/schema/container/).
+[container object](/core/container).
 
 ###### `encrypted.recipients` *(array of objects, required)*
 
 Contains per-recipient information.
 
-###### `encrypted.recipients[].header` *(object)*
-
-Contains additional per-recipient unprotected header information.
-
 ###### `encrypted.recipients[].key` *(string, required)*
 
-Contains the recipient encrypted key whose octets are
+Contains the key, encrypted to the recipient's public key, whose octets are
 [unpadded base64url][base64] encoded.
 
 ---
