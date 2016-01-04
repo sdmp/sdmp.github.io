@@ -64,6 +64,24 @@ resource, and verified its signature.
 
 ---
 
+## First Three Entries
+
+The first line of the journal must be the
+[key fingerprint](/core/cryptography#key-fingerprint)
+of the node.
+
+The second line of the journal must be calculated using the
+[resource identifier](/journal/resource#resource-identifier)
+of the[identity resource](/core/identity) of the user
+authorizing the node.
+
+The third line of the journal must be calculated the
+[resource identifier](/journal/resource#resource-identifier)
+of the [trust resource](/schema/trust) authorizing the node
+on behalf of some user.
+
+---
+
 ## Example Journal
 
 For a user with a key fingerprint of:
@@ -74,7 +92,12 @@ And a node with a key fingerprint of:
 
 	0lCSyum7GlvAreToWzh8pzhxgO2N95AAYOOu-gMIwAGP6-nR0t9rF_ZZ8xCvWvIWfpCY_fDVU91A8Q38JDFKaO
 
-If the node starts by publishing two resources from that user, and those resource identifiers were:
+And the resource identifier of the [trust resource](/schema/trust) authorizing
+the node is:
+
+	QqsKcr29oKYsY8a4-asK5NT7dQXQ1_BG1b4MbvdXDPLM786YMlrFJdxQy8M2kjzCqzm3tvzQeQptEr_u-fkX_g
+
+If the node then publishes two resources from that user, and those resource identifiers were:
 
 	reTo0GlvAlCSyzh8pum7WzhxYgMIgOOu-O2N9AGP65AAw-nR8vIW0xCvWt9rFpCY__ZZffDVJOU91DFKaA8Q38
 	vAlCSyzreTo0Glh8pum7WgOOu-O2zhxYgMIN9AGP65vIW0xCvAAw-nR8Wt9rFpCDVJOU91Y__ZZffDFK38aA8Q
@@ -83,5 +106,6 @@ The complete node journal would look like this (view the raw text
 file [here](./example-journal.txt)):
 
 	0lCSyum7GlvAreToWzh8pzhxgO2N95AAYOOu-gMIwAGP6-nR0t9rF_ZZ8xCvWvIWfpCY_fDVU91A8Q38JDFKaO
-	22tfYa3Xy3-G2vbAh4vxiJPqJk4iLU6FBmqx5Tsw7rGgEWxEHmocPhRZ2s-6Ww1na3DV6JdwU22OJukbtfDXDw@GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/reTo0GlvAlCSyzh8pum7WzhxYgMIgOOu-O2N9AGP65AAw-nR8vIW0xCvWt9rFpCY__ZZffDVJOU91DFKaA8Q38
-	MQhBjDUYMP5GsykDDlUQbSabPZ7U2dY-VqxKTghDSfFlLQAW0Y-tuaHD-GgeyxGOnYFkNXW_5bP0T6TG4vSl5w@GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/vAlCSyzreTo0Glh8pum7WgOOu-O2zhxYgMIN9AGP65vIW0xCvAAw-nR8Wt9rFpCDVJOU91Y__ZZffDFK38aA8Q
+	22tfYa3Xy3-G2vbAh4vxiJPqJk4iLU6FBmqx5Tsw7rGgEWxEHmocPhRZ2s-6Ww1na3DV6JdwU22OJukbtfDXDw@GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/QqsKcr29oKYsY8a4-asK5NT7dQXQ1_BG1b4MbvdXDPLM786YMlrFJdxQy8M2kjzCqzm3tvzQeQptEr_u-fkX_g
+	HXv3ogo2IMA9XETtzZUdOfdTzfrYJNOlYf9NncMHORqWwLiCbMnYy6CVGepdEVlUI5O3AmL57CwZGeXuBSaSk@GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/reTo0GlvAlCSyzh8pum7WzhxYgMIgOOu-O2N9AGP65AAw-nR8vIW0xCvWt9rFpCY__ZZffDVJOU91DFKaA8Q38
+	d5Rk2hM6KGcO9x-bgDPpEnp07euiIK7cDiDlgDN2nH_AuWJQHQqF7KVqRrRomZWhmm4t75s7_Eqb6HIGQUxCCw@GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q/vAlCSyzreTo0Glh8pum7WgOOu-O2zhxYgMIN9AGP65vIW0xCvAAw-nR8Wt9rFpCDVJOU91Y__ZZffDFK38aA8Q
