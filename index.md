@@ -19,35 +19,29 @@ If humans can understand it, it's easier to make sure the secure part is actuall
 
 ## Documentation
 
-* [Cryptography](/cryptography): Cryptographic standards used in the protocol.
-* [Container](/container): Containers used to publish resources and communicate between nodes.
-* [Resource](/resource): Resources passed between nodes and how to interpret them.
-* [Schema](/schema): Extensions of the container object which are core to this protocol.
-* [Node Journal](/journal): Each node maintains a journal of resources.
-* [Synchronization](/synchronization): How nodes publish, request, and respond with resources.
-* [Network](/network): Handshake to establish a session key for network communications.
-
-<!--
-
----
-
-## Implementations
-
-* [TCP Network](/tcp): Specifications for a synchronization implementation over TCP.
-
----
-
-## Articles
-
-A few articles which might be useful to you:
-
-* [Introduction to SDMP](/article/introduction): An informal overview of the
-	entire protocol. Starting here might be best if you're new to the project.
-* [Diffie-Helman](/article/diffie-helman): Discussion on why the DH was used.
-* [Journal Heartbeat](/article/journal-heartbeat): A less formal description of
-	the synchronization process.
-
--->
+* [Introduction](/introduction): A less formal summarization of the protocol.
+* [Core](/core): The core technology used by this protocol.
+	- [Cryptography](/core/cryptography): Key sizes and algorithms used.
+	- [Container](/core/container): Extendable, definable JSON object.
+	- [Identity](/core/identity): Public keys used to identify users or nodes.
+	- [Encrypted](/core/container): A container holding encrypted data.
+	- [Signature](/core/signature): A container holding signed data.
+* [Journal](/journal): Publishing resources to other users or nodes.
+	- [Resource](/journal/resource): The thing published is a signature container.
+	- [Structure](/journal/structure): Each node maintains its own journal.
+	- [Broadcast](/journal/broadcast): How the resources get published.
+	- [Request Journal](/journal/request_journal): Nodes request updated journal lists.
+	- [Request Resource](/journal/request_resource): Nodes request individual resources.
+	- [Response](/journal/response): Nodes respond with signature containers.
+* [Schema](/schema): Other container extensions core to the protocol.
+	- [Trust](/schema/trust): Users and nodes indicate trust chains.
+	- [Revoke](/schema/revoke): Revoke any published resource.
+	- [Node](/schema/node): Information about a node.
+	- [User](/schema/user): Information about a user.
+	- [Message](/schema/message): A [MultiMarkdown][multimark] formatted personal message.
+	- [Receipt](/schema/receipt): Signal to a user or node when a private message
+		or other resource is finally acquired.
+* [Example](/example): Step by step example using command line tools.
 
 ---
 
@@ -80,3 +74,4 @@ Note from the semver specs:
 [semver]: http://semver.org/
 [issues]: https://github.com/sdmp/sdmp.github.io/issues
 [pullrequest]: https://github.com/sdmp/sdmp.github.io/pulls
+[multimark]: https://en.wikipedia.org/wiki/MultiMarkdown
