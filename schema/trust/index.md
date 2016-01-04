@@ -31,8 +31,8 @@ The following trust actions may be given to any trust:
 ### `read_resource`
 
 When a node requests a resource published by another user,
-that resource should only be given if the node has been given
-the `read_resource` authorization by the user.
+that resource should only be given if the node or user has
+been given the `read_resource` authorization by the user.
 
 ### `publish_resource`
 
