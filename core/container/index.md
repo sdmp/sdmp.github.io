@@ -68,8 +68,26 @@ Example: `0.10.6`
 ###### `sdmp.schemas` *(array, required)*
 
 Each array element of this property must be a [UTF-8](http://www.utf-8.com/)
-encoded string which is a valid [SDMP resource URI](/resource/#resource-uri),
-and which must resolve to a valid [JSON schema](http://json-schema.org/).
+encoded string which must be either:
+
+1. a valid [SDMP resource URI](/resource/#resource-uri), which must
+	resolve to a valid [JSON schema](http://json-schema.org/), or
+2. one of the following string values, which are schemas core to the SDMP:
+	- [identity](/core/identity)
+	- [encrypted](/core/encrypted)
+	- [signature](/core/signature)
+	- [sharedkey](/network/sharedkey)
+	- [resource](/journal/resource)
+	- [broadcast](/journal/broadcast)
+	- [request_journal](/journal/request_journal)
+	- [request_resource](/journal/request_resource)
+	- [response](/journal/response)
+	- [message](/schema/message)
+	- [receipt](/schema/receipt)
+	- [node](/schema/node)
+	- [user](/schema/user)
+	- [trust](/schema/trust)
+	- [revoke](/schema/revoke)
 
 ---
 
