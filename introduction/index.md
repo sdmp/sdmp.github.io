@@ -56,7 +56,10 @@ for readability):
 	{
 		"sdmp": {
 			"version": "0.11.0",
-			"schemas": [ "signature" ]
+			"schemas": [
+				"signature",
+				"resource"
+			]
 		},
 		"signature": {
 			"identifier": "5w4IzlVU...fStdlN4A",
@@ -65,6 +68,10 @@ for readability):
 				"protected": "OiJIUzUx...mRFZNX3k",
 				"signature": "cp1okHSf...8qp8Q4xk"
 			}]
+		},
+		"resource": {
+			"user": "6n243MfY...r0iPlF06",
+			"trust": "S35Usd_z...MPemVmPc"
 		}
 	}
 
