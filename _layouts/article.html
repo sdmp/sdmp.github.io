@@ -1,0 +1,18 @@
+{% include header.html %}
+
+<header class="article">
+	<div>
+		<h1>
+			<a href="/">{% include mesh.svg %}</a>
+			<span class="page-title">{{page.title}}</span>
+		</h1>
+		<p>{{page.subtitle}}</p>
+	</div>
+	<hr>
+</header>
+
+<section>
+	<article>{{content}}</article>
+</section>
+
+{% include footer.html %}

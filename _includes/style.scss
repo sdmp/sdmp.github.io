@@ -10,6 +10,9 @@ body {
 	font-size: 1.3em;
 	font-weight: 200;
 }
+.muted {
+	color: #858585;
+}
 header.index {
 	text-align: center;
 	svg {
@@ -45,8 +48,29 @@ header.docs {
 		font-size: 2em;
 		margin: 0;
 	}
+	h2 code {
+		font-size: 2em;
+	}
 	h2, p {
 		text-align: center;
+	}
+}
+header.article {
+	svg {
+		width: 10%;
+	}
+	h1 {
+		margin-bottom: 0;
+	}
+	.page-title {
+		position: relative;
+		top: -0.4em;
+		padding-left: 0.6em;
+	}
+	p {
+		margin-top: 0;
+		text-align: center;
+		color: #858585;
 	}
 }
 h1, h2, h3, h4, h5, h6 {
@@ -70,21 +94,27 @@ article code {
 	padding: 0.1em 0.2em;
 	font-size: 90%;
 	color: #c7254e;
-	background-color: #f9f2f4;
+	background-color: #f0e8ea;
 	border-radius: 0.2em;
 }
 article pre {
-	background-color: #f9f2f4;
+	background-color: #f0e8ea;
 	overflow-x: scroll;
 	-moz-tab-size: 2;
 	-o-tab-size: 2;
 	tab-size: 2;
 	line-height: 1.4em;
+	padding: 0.8em;
+	border-radius: 0.2em;
 }
 blockquote {
-	padding: 0.1em 1.5em;
+	margin: 1.2em 0;
+	padding: 0.1em 1em;
 	border-left: 0.2em solid #eeeeee;
 	font-style: italic;
+}
+blockquote em, blockquote code {
+	font-style: normal;
 }
 footer {
 	text-align: center;

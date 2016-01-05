@@ -8,7 +8,7 @@ peer-to-peer network.
 
 ---
 
-# Purpose
+## Purpose
 
 At its heart the SDMP is just a way for machines to communicate messages to each
 other in a secure way that humans can understand.
@@ -17,15 +17,35 @@ If humans can understand it, it's easier to make sure the secure part is actuall
 
 ---
 
-# Documentation
+## Documentation
 
-* [Cryptography](/docs/cryptography/): Cryptographic standards used in the protocol.
-* [Container](/docs/container/): Containers used to publish resources and communicate between nodes.
-* [Resource](/docs/resource/): Resources passed between nodes and how to interpret them.
-* [Node Journal](/docs/journal/): Each node maintains a journal of resources.
-* [Synchronization](/docs/synchronization/): How nodes publish, request, and respond with resources.
-* [Session Keys](/docs/session/): Establishing a session key for network communications.
-* [TCP Network](/docs/tcp/): Specifications for a synchronization implementation over TCP.
+* [Introduction](/introduction): A less formal summarization of the protocol.
+* [Core](/core): The core technology used by this protocol.
+	- [Cryptography](/core/cryptography): Key sizes and algorithms used.
+	- [Container](/core/container): Extendable, definable JSON object.
+	- [Identity](/core/identity): Public keys used to identify users or nodes.
+	- [Encrypted](/core/container): A container holding encrypted data.
+	- [Signature](/core/signature): A container holding signed data.
+* [Journal](/journal): Publishing resources to other users or nodes.
+	- [Resource](/journal/resource): The thing published is a signature container.
+	- [Structure](/journal/structure): Each node maintains its own journal.
+	- [Broadcast](/journal/broadcast): How the resources get published.
+	- [Request Journal](/journal/request_journal): Nodes request updated journal lists.
+	- [Request Resource](/journal/request_resource): Nodes request individual resources.
+	- [Response](/journal/response): Nodes respond with signature containers.
+* [Schema](/schema): Other container extensions core to the protocol.
+	- [Trust](/schema/trust): Users and nodes indicate trust chains.
+	- [Revoke](/schema/revoke): Revoke any published resource.
+	- [Node](/schema/node): Information about a node.
+	- [User](/schema/user): Information about a user.
+	- [Message](/schema/message): A [MultiMarkdown][multimark] formatted personal message.
+	- [Receipt](/schema/receipt): Signal to a user or node when a private message
+		or other resource is finally acquired.
+* [Network](/network): Network agnostic connection details.
+	- [Shared Key](/network/sharedkey): Creating a shared, signed, symmetric key.
+	- [Handshake](/network/handshake): Establishing a secure network connection.
+	- [Traffic](/network/traffic): Rules for network traffic.
+* [Example](/example): Step by step example using command line tools.
 
 ---
 
@@ -58,3 +78,4 @@ Note from the semver specs:
 [semver]: http://semver.org/
 [issues]: https://github.com/sdmp/sdmp.github.io/issues
 [pullrequest]: https://github.com/sdmp/sdmp.github.io/pulls
+[multimark]: https://en.wikipedia.org/wiki/MultiMarkdown
