@@ -39,3 +39,8 @@ This object defines simple human-readable messages.
 
 When sending a resource across the network, this schema offers a secure
 way to let the sender know the message was received.
+
+## [Private Key](./private_key)
+
+This object contains the private section of an identity key pair. It
+must be guarded using the specified encryption mechanism at all times.
