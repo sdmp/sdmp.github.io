@@ -12,8 +12,8 @@ secure, to strongly encrypt messages, and to verify users and nodes identities.
 
 ## Keys
 
-Where the phrase `public key`, `private key`, `key pair`, or `RSA key pair` is used, it
-is meant that section or set of an asymmetric [RSA][w_rsa] key pair.
+Where the phrase `public key`, `private key`, `key pair`, or `RSA key pair` is
+used, it is meant that section or set of an asymmetric [RSA][w_rsa] key pair.
 
 The bit length of the RSA key must be *at least* 2048 bits.
 
@@ -32,21 +32,37 @@ property of the [identity](/core/identity) resource.
 
 ---
 
-## Key hashing
-
-Where the phrase `key hash` is used, it is meant the hash of the raw component of the
-*public* section of the RSA key pair.
-
----
-
 ## Key fingerprint
 
 Where the phrase `key fingerprint` is used, it is meant the key hash of the public
 key, encoded to [base64url][base64].
 
-E.g. a key fingerprint might look like:
+---
 
-	GlvAreTo0lCSyum7Wzh8pzhxYOOu-gMIgO2N95AAwAGP6-nR8xCvWvIW0t9rF_ZZfpCY_fDV38JDFKaOU91A8Q
+## Key hashing
+
+Where the phrase `key hash` is used, it is meant the generated from the UTF-8
+encoded `identity.key` property of the [identity](/core/identity) resource.
+
+E.g., for this example public key:
+
+	-----BEGIN PUBLIC KEY-----
+	MIIBIzANBgkqhkiG9w0BAQEFAAOCARAAMIIBCwKCAQIA2IxlYprmk/QpH1Rsz+WQ
+	m+WUYqR2xlV+xXDDOesMkwja32aUsjYe1kCS6nTqazEdy4m9utF3Eb3K5i8crTeg
+	g3GE+iJvYAgGXvMLiAb/Vrj0OqKv8m0BoZnxW7AjCURZ/tDn/YxNk5qnzhZLLMIT
+	zHQlZsKmBp/ZlrhTr4VgKxKlT4z/NNTPMnLHyFB4XVR6ge20nNWN6RJ03kk85+QI
+	mCGPU9Us70H6FQYI/e0Iq+64gw8PgpDZP+RSzYvpAr7alCj4/f0jeFzrz+lpsIzY
+	95bk2ucfasPYkH7m6UP1EmBfZJUn+pnX3CPpeex1h5RCKw4DoMSRgXrfoVjYv80w
+	QfUCAwEAAQ==
+	-----END PUBLIC KEY-----
+
+The property of `identity.key` would be:
+
+	-----BEGIN PUBLIC KEY-----\nMIIBIzANBgkqhkiG9w0BAQEFAAOCARAAMIIBCwKCAQIA2IxlYprmk/QpH1Rsz+WQ\nm+WUYqR2xlV+xXDDOesMkwja32aUsjYe1kCS6nTqazEdy4m9utF3Eb3K5i8crTeg\ng3GE+iJvYAgGXvMLiAb/Vrj0OqKv8m0BoZnxW7AjCURZ/tDn/YxNk5qnzhZLLMIT\nzHQlZsKmBp/ZlrhTr4VgKxKlT4z/NNTPMnLHyFB4XVR6ge20nNWN6RJ03kk85+QI\nmCGPU9Us70H6FQYI/e0Iq+64gw8PgpDZP+RSzYvpAr7alCj4/f0jeFzrz+lpsIzY\n95bk2ucfasPYkH7m6UP1EmBfZJUn+pnX3CPpeex1h5RCKw4DoMSRgXrfoVjYv80w\nQfUCAwEAAQ==\n-----END PUBLIC KEY-----
+
+And the hash (encoded to base64url) would be:
+
+	B_3ji9cDp1SJTyPnxuslQ66IT3zwEf4TvTEnGo60_2KGANVfhRY0XA2crFKIfq6edYcexkMYzfz6y3UsPZZLtw
 
 ---
 

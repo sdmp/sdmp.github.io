@@ -39,34 +39,24 @@ be generated after this date.
 
 ###### `identity.key` *(string, required)*
 
-The public key of a [globally](https://en.wikipedia.org/wiki/Earth) unique
-[key-pair](/core/cryptography#keys), which is equivalent to a normal OpenSSL
-PEM encoded key with the headers and newlines removed.
+The public key of a unique [key-pair](/core/cryptography#keys), which is
+equivalent to a normal OpenSSL PEM encoded key.
 
-For example, for a given PEM encoded key:
+For example, given a PEM encoded key (truncated with ellipsis
+for readability):
 
 	-----BEGIN PUBLIC KEY-----
-	MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxlDbEgpMlAm5LimQabMj
-	q8VPCbHlmFd6k/pTLAtF8YavVngSIByVQy+ozbIhksTTQkHpS/hxz5BpnqrziZ1b
-	ACbYNtjvF9qHnxrM6gqaoZE6bOqqKb2ZrSoWJW1rHy+3H7DVQ22H8SseDlma3K+a
-	WrVftkhMSPLQhNbqB8UYvP5i5gbkVzhVnZHBvsr41npQxImhMyMtS/olrSPAJqrl
-	dAZ9Km5edT3JpAjc9rPPoRWJSnzCBF4f/h28l9uVeljYUgvt+ZCPEz7SpjQN5dC6
-	NQ7BZIqPgiTfVcdCsDEti6bX2fFw7y3hMg9G4g7lLCwNCkRmLjZ1/7Zmabps0hc9
-	9wIDAQAB
+	MIIBIjAN...9wIDAQAB
 	-----END PUBLIC KEY-----
 
 The string stored in `identity.key` would be:
 
-	MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxlDbEgpMlAm5LimQabMjq8VPCbHlmFd6k/pTLAtF8YavVngSIByVQy+ozbIhksTTQkHpS/hxz5BpnqrziZ1bACbYNtjvF9qHnxrM6gqaoZE6bOqqKb2ZrSoWJW1rHy+3H7DVQ22H8SseDlma3K+aWrVftkhMSPLQhNbqB8UYvP5i5gbkVzhVnZHBvsr41npQxImhMyMtS/olrSPAJqrldAZ9Km5edT3JpAjc9rPPoRWJSnzCBF4f/h28l9uVeljYUgvt+ZCPEz7SpjQN5dC6NQ7BZIqPgiTfVcdCsDEti6bX2fFw7y3hMg9G4g7lLCwNCkRmLjZ1/7Zmabps0hc99wIDAQAB
+	-----BEGIN PUBLIC KEY-----\nMIIBIjAN...9wIDAQAB\n-----END PUBLIC KEY-----
 
 ###### `identity.fingerprint` *(string, required)*
 
 The [key fingerprint](/core/cryptography#key-fingerprint) of the public key
-in this object, whose octets are encoded as [unpadded base64url][base64].
-
-For example, for the above example key, the key fingerprint would be:
-
-	76gRSs9MkErqk89E7C6JNGaLnQThCBJMMU8qBrZof7ITwxkFVUyml1SgdIwhcLE4M9aJBB3fmjlqVHWJfwAWGw
+in this object.
 
 ---
 
