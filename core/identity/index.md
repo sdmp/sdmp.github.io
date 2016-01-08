@@ -56,7 +56,7 @@ The string stored in `identity.key` would be:
 ###### `identity.fingerprint` *(string, required)*
 
 The [key fingerprint](/core/cryptography#key-fingerprint) of the public key
-in this object, whose octets are encoded as [unpadded base64url][base64].
+in this object.
 
 ---
 
