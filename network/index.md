@@ -7,7 +7,7 @@ subtitle: Establishing and using a session key for network communications.
 Network traffic is sent in an [encrypted](/core/encrypted) object,
 using a shared key established during the connection handshake.
 
-## [Shared Key](./sharedkey)
+## [Shared Key](./shared_key)
 
 Establish a shared key for encrypting network traffic, using
 the [Diffie-Helman][w_diffiehelman]

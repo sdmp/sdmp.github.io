@@ -76,7 +76,7 @@ encoded string which must be either:
 	- [identity](/core/identity)
 	- [encrypted](/core/encrypted)
 	- [signature](/core/signature)
-	- [sharedkey](/network/sharedkey)
+	- [shared_key](/network/shared_key)
 	- [resource](/journal/resource)
 	- [broadcast](/journal/broadcast)
 	- [request_journal](/journal/request_journal)

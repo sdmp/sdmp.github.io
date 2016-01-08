@@ -1,6 +1,6 @@
 ---
-layout: schema
-title: information_node
+layout: docs
+title: node
 subtitle: Published information about a node, such as name and IP address.
 ---
 

@@ -7,7 +7,7 @@ subtitle: Network communication uses shared keys.
 
 Communication over a network is done by sending
 [encrypted containers](/core/encrypted), which are
-encrypted using the [shared key](/network/sharedkey)
+encrypted using the [shared key](/network/shared_key)
 established during the [connection handshake](/network/handshake).
 
 ---

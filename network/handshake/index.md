@@ -54,7 +54,7 @@ using the shared key.
 ## Session Creation
 
 The *session creation object* is a [container](/core/container) object where
-the **only** specified schema is the [shared key](/network/sharedkey)
+the **only** specified schema is the [shared key](/network/shared_key)
 schema, and **no** other metadata is allowed.
 
 Specifically, the [key fingerprint](/core/cryptography#key-fingerprint)
