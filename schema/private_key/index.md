@@ -13,8 +13,9 @@ specified to hold the private section of the identity key pair.
 
 ## Publishing Not Allowed
 
-Private keys **must not** be published as resources, and applications
-should not allow private keys to be published.
+Private keys **must not** be published as resources, even if those
+private keys are password protected, and implementations should not
+allow private keys to be published.
 
 ---
 
