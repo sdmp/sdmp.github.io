@@ -104,6 +104,7 @@ Lists the authorizations given to the trust. Must have at least one entry.
 Each entry of this array must be one of the supported trust authorizations:
 
 * `read_encrypted`
+* `read_resource`
 * `publish_resource`
 * `create_trust`
 * `revoke`
