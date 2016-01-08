@@ -1,5 +1,5 @@
 ---
-layout: schema
+layout: docs
 title: message
 subtitle: Text messages passed between users.
 ---

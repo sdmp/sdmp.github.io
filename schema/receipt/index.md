@@ -1,5 +1,5 @@
 ---
-layout: schema
+layout: docs
 title: receipt
 subtitle: Used to notify another user that a message or resource was received.
 ---

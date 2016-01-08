@@ -1,6 +1,6 @@
 ---
 layout: schema
-title: information_user
+title: user
 subtitle: Published information about a user, such as a name.
 ---
 
