@@ -5,6 +5,19 @@ subtitle: Where this is going and how it will get there.
 ---
 
 
+## Versioning
+
+Updates to the specifications will follow
+[Semantic Versioning 2.0.0](http://semver.org/).
+
+> **Note:**
+>
+> Major version zero (`0.y.z`) is for initial development.
+> Anything may change at any time. The public API should
+> not be considered stable.
+
+---
+
 ## Overview
 
 * `0.x`: Development stage. *In progress!*
