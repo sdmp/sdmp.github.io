@@ -56,6 +56,26 @@ because they start with software, not with specifications.
 
 ---
 
+## IMAP
+
+As far as existing technology goes, IMAP is undoubtedly
+the most well known messaging protocol.
+
+However, IMAP messaging is very much unsecure: users
+typically send messages in unencrypted plaintext, and
+even if the message itself is encrypted, metadata is
+attached to the sent data, potentially exposing private
+information from the sender.
+
+Although many attempts have been made to modify the
+protocol to be more secure, it still relies on "central"
+servers.
+
+The SDMP makes peer-to-peer the default, and always-on
+servers unnecessary.
+
+---
+
 ## [Keybase](https://keybase.io/)
 
 Keybase has similar goals of making it easier to find
@@ -69,5 +89,24 @@ find their [account on Keybase](https://keybase.io/saibotsivad),
 and have a reasonable assurance that the public key obtained
 there is secure.
 
-Keybase is really cool, and highly recommended, but it is
-not a secure messaging protocol.
+Keybase is really cool, and I highly recommend checking
+it out, but it is not a secure messaging protocol.
+
+---
+
+## [Secure Scutttlebutt](https://ssbc.github.io/)
+
+Scuttlebutt shares many similar goals: it uses p2p to
+distribute data, it has concepts of users vs application,
+and it uses solid cryptography underneath.
+
+Unfortunately, it appears that Scuttlebutt has also
+started with a whitepaper-to-software approach, and
+does not have clear specifications for implementation
+in other languages.
+
+This means that implementing Scuttlebutt in some other
+language, e.g. C#, will require reverse engineering.
+
+I'll be reading up on this project more, but for now
+it does not meet the requirements of the SDMP.
