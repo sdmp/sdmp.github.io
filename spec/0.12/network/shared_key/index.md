@@ -6,14 +6,14 @@ title: shared key
 subtitle: Generate a shared symmetric key.
 ---
 
-The SDMP uses the [Diffie-Helman][w_diffiehelman] key exchange as the way to
+The SDMP uses the [Diffie-Hellman][w_dh] key exchange as the way to
 establish session keys for [forward secrecy][w_forward] of network traffic.
 
 ---
 
-## Diffie-Helman Key Exchange
+## Diffie-Hellman Key Exchange
 
-Recall that the generalized [Diffie-Helman][w_diffiehelman] key exchange looks like:
+Recall that the generalized [Diffie-Hellman][w_dh] key exchange looks like:
 
 1. Alice and Bob agree to use the values `p` and `g`
 2. Alice chooses secret `a` and sends Bob `A`, where `A=(g^a)%p`
@@ -26,7 +26,7 @@ Recall that the generalized [Diffie-Helman][w_diffiehelman] key exchange looks l
 
 ## Description
 
-This object contains the values necessary to establish a [Diffie-Helman][w_diffiehelman]
+This object contains the values necessary to establish a [Diffie-Hellman][w_dh]
 key exchange.
 
 The object contains the following properties:
@@ -45,20 +45,20 @@ and `connection` schema is considered an error.
 
 ###### `connection` *(object, required)*
 
-Holds the parameters used in the Diffie-Helman key exchange.
+Holds the parameters used in the Diffie-Hellman key exchange.
 
 ###### `connection.g` *(integer, required)*
 
-The value `g` from the Diffie-Helman key exchange.
+The value `g` from the Diffie-Hellman key exchange.
 
 ###### `connection.p` *(string, required)*
 
-The value `p` from the Diffie-Helman key exchange, whose octets are
+The value `p` from the Diffie-Hellman key exchange, whose octets are
 [unpadded base64url][base64] encoded.
 
 ###### `connection.N` *(string, required)*
 
-The value `N` from the Diffie-Helman key exchange (where `N=(g^n)%p`) whose
+The value `N` from the Diffie-Hellman key exchange (where `N=(g^n)%p`) whose
 octets are [unpadded base64url][base64] encoded.
 
 ---
@@ -102,6 +102,6 @@ octets are [unpadded base64url][base64] encoded.
 	}
 
 
-[w_diffiehelman]: https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange
+[w_dh]: https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange
 [w_forward]: https://en.wikipedia.org/wiki/Forward_secrecy
 [base64]: https://tools.ietf.org/html/rfc4648#section-5

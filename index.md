@@ -37,6 +37,7 @@ Versions ([see all](/spec)):
 
 ## Articles
 
+* [Introduction to the protocol](/article/introduction)
 * [Comparisons to other, similar projects](/article/similar-projects)
 
 <!-- * [Informal discussion of network synchronization](/article/synchronization) -->

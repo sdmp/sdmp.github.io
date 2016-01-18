@@ -47,7 +47,7 @@ between versions is not guaranteed.
 
 * Crypto specs have been written and validated as usable in multiple languages.
 * Crypto specs need to be clear enough to be implemented in any language.
-* Possible defense of RSA and Diffie-Helman?
+* Possible defense of RSA and Diffie-Hellman?
 
 ### `0.14`
 
