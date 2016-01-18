@@ -1,0 +1,27 @@
+{% include header.html %}
+
+<header class="spec">
+	<div>
+		<a href="/">{% include mesh.svg %}</a>
+		<h1><a href="/"><code>SDMP</code></a></h1>
+		<h2>&#8627; <a href="/spec">specification</a></h2>
+		{% if page.version %}
+			<h3>&#8627; <a href="/spec/{{page.version}}">version {{page.version}}</a></h3>
+			{% if page.parent %}
+				<h4>&#8627; <a href="/spec/{{page.version}}/{{page.parent}}">{{page.parent}}</a></h4>
+			{% endif %}
+		{% endif %}
+	</div>
+	<hr>
+	{% if page.title %}
+		<h2>{{page.title}}</h2>
+		<p>{{page.subtitle}}</p>
+		<hr>
+	{% endif %}
+</header>
+
+<section>
+	<article>{{content}}</article>
+</section>
+
+{% include footer.html %}
