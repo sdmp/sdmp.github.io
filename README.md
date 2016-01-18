@@ -1,6 +1,4 @@
-# SDMP 0.10 ([Albacore](https://en.wikipedia.org/wiki/Albacore))
-
-## Secure Distributed Messaging Protocol
+# Secure Distributed Messaging Protocol
 
 Read the complete specs online at [sdmp.io](http://sdmp.io)
 or [on GitHub](./index.md).
