@@ -11,7 +11,7 @@ using a shared key established during the connection handshake.
 ## [Shared Key](./shared_key)
 
 Establish a shared key for encrypting network traffic, using
-the [Diffie-Helman][w_diffiehelman]
+the [Diffie-Hellman][dh]
 
 ## [Connection Handshake](./handshake)
 
@@ -23,4 +23,4 @@ All network traffic uses the established shared key to
 encrypt data in the form of [encrypted container](/core/encrypted).
 
 
-[w_diffiehelman]: https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange
+[dh]: https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange

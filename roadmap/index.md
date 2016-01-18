@@ -5,29 +5,60 @@ subtitle: Where this is going and how it will get there.
 ---
 
 
-## Short Term
+## Versioning
 
-* `0.12`: Clear and readable core specs. *Completed!*
-* `0.13`: All crypto specs clear and tested.
-* `0.14`: TCP implementation has been finished.
+Updates to the specifications will follow
+[Semantic Versioning 2.0.0](http://semver.org/).
 
-During beta development, backwards compatability
-between versions is not guaranteed.
+> **Note:**
+>
+> Major version zero (`0.y.z`) is for initial development.
+> Anything may change at any time. The public API should
+> not be considered stable.
 
 ---
 
 ## Overview
 
 * `0.x`: Development stage. *In progress!*
-* `1.0`: First non-beta release.
+* `1.0`: Stable and verified as usable in multiple languages.
 * `2.0`: Changes after real-world users play with it.
 
 ---
 
 ## Details
 
-After the initial beta work is done, the roadmap milestones
-will look like this:
+### `0.x` *In progress!*
+
+During the development stage, backwards compatability
+between versions is not guaranteed.
+
+### `0.12` *Completed!*
+
+* Make the crypto and hashing specs clear and complete.
+* Make the container object clear, and list all extensions.
+* List all extensions and make them standardized.
+* The session key exchange should be clear and complete.
+* Roadmap/Milestones.
+* Contributing guidelines.
+* Discussion of why this protocol and not some other existing protocol.
+
+### `0.13`
+
+* Crypto specs have been written and validated as usable in multiple languages.
+* Crypto specs need to be clear enough to be implemented in any language.
+* Possible defense of RSA and Diffie-Hellman?
+
+### `0.14`
+
+* TCP implementation has been finished.
+* Other possible implementations.
+
+### `0.15`
+
+* Additional polish of the website.
+* Possibly getting a professional designer to help.
+* Any other final issues in prep for `1.0` release.
 
 ### `1.0`
 

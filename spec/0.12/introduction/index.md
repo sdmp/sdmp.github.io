@@ -177,7 +177,7 @@ node should send a receipt to the sender (inside an encrypted resource).
 ## Shared Symmetric Key
 
 In order to establish communication, either over this protocol or
-some other, a handshake protocol is given which uses the Diffie-Helman
+some other, a handshake protocol is given which uses the Diffie-Hellman
 algorithm to establish a shared, signed, symmetric key.
 
 ## Network Connection Handshake

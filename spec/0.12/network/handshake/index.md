@@ -16,7 +16,7 @@ procedure should be supported by all implementations.
 ## Handshake Overview
 
 In order to establish [forward secrecy][w_forward], the SDMP
-uses the following [Diffie-Helman][w_diffiehelman] key exchange
+uses the following [Diffie-Hellman][w_dh] key exchange
 as the preferred way to establish a session key for a connection:
 
 ### Handshake: Send Session Creation Object
@@ -30,7 +30,7 @@ as the preferred way to establish a session key for a connection:
 ### Handshake: Verify Signatures
 
 Since both nodes have each others session creation object, each
-node has enough information to complete the Diffie-Helman shared
+node has enough information to complete the Diffie-Hellman shared
 key calculation; the following objects must be sent as
 [encrypted network objects](../../network/traffic), encrypted
 using this calculated key.
@@ -124,6 +124,6 @@ the following circumstances are detected the connection *must* be rejected:
 		generated the object.
 * If the node does not accept the values of `g`, `p`, or `N` for any reason.
 
-[w_diffiehelman]: https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange
+[w_dh]: https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange
 [w_forward]: https://en.wikipedia.org/wiki/Forward_secrecy
 [w_utf8]: https://en.wikipedia.org/wiki/UTF-8
