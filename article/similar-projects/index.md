@@ -94,7 +94,7 @@ it out, but it is not a secure messaging protocol.
 
 ---
 
-## [Secure Scutttlebutt](https://ssbc.github.io/)
+## [Secure Scuttlebutt](https://ssbc.github.io/)
 
 Scuttlebutt shares many similar goals: it uses p2p to
 distribute data, it has concepts of users vs application,
