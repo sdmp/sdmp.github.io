@@ -64,9 +64,10 @@ rest of the object.
 The version of the SDMP specifications used to define and validate the
 properties of the container object.
 
-This property must be a valid [semver](http://semver.org/) number.
+This property must be a valid [semver](http://semver.org/) number
+containing the major and minor version.
 
-Example: `0.10.6`
+Example: `0.13`
 
 ###### `sdmp.schemas` *(array, required)*
 
