@@ -42,6 +42,8 @@ on how to get involved.
 	- [Message](./schema/message): A [MultiMarkdown][multimark] formatted personal message.
 	- [Receipt](./schema/receipt): Signal to a user or node when a private message
 		or other resource is finally acquired.
+	- [Private Key](./schema/private_key): Convenience container to store private
+		keys, to make cross app/platform use easier.
 * [Network](./network): Network agnostic connection details.
 	- [Shared Key](./network/shared_key): Creating a shared, signed, symmetric key.
 	- [Handshake](./network/handshake): Establishing a secure network connection.
