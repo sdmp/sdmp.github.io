@@ -71,11 +71,6 @@ Or a PEM encoded key without password protection might look like:
 	kL2T0oHxuQseIYMCEEK636MDVkNlrt5VMjLNwZY=
 	-----END RSA PRIVATE KEY-----
 
-###### `private_key.fingerprint` *(string, required)*
-
-The [key fingerprint](../../core/cryptography#key-fingerprint) of the public key
-section of this key, whose octets are encoded as [unpadded base64url][base64].
-
 ---
 
 ## Schema
