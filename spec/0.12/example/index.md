@@ -44,7 +44,7 @@ The following commands are used in this example:
 
 Generate a private and public key:
 
-	openssl genrsa -out private.pem 2056
+	openssl genrsa -out private.pem 2048
 	openssl rsa -in private.pem -pubout -out public.pem
 
 Make the public key formatted for the SDMP:
