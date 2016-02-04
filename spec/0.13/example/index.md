@@ -1,5 +1,5 @@
 ---
-version: 0.12
+version: 0.13
 layout: spec
 title: example
 subtitle: Complete examples of all resources and actions.

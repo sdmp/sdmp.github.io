@@ -1,5 +1,5 @@
 ---
-version: 0.12
+version: 0.13
 layout: spec
 title: core
 subtitle: Core objects and definitions.

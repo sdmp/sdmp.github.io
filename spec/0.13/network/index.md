@@ -1,5 +1,5 @@
 ---
-version: 0.12
+version: 0.13
 layout: spec
 title: Network
 subtitle: Establishing and using a session key for network communications.

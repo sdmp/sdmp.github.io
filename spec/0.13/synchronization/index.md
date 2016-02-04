@@ -1,5 +1,5 @@
 ---
-version: 0.12
+version: 0.13
 layout: spec
 title: Synchronization
 subtitle: How nodes publish journal updates, and request and respond with resources.

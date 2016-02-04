@@ -1,5 +1,5 @@
 ---
-version: 0.12
+version: 0.13
 layout: spec
 title: journal
 subtitle: Nodes create resources and publish them to a journal.

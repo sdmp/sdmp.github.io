@@ -1,5 +1,5 @@
 ---
-version: 0.12
+version: 0.13
 layout: spec
 title: Schema
 subtitle: Schemas for container extensions which are part of the SDMP core.
