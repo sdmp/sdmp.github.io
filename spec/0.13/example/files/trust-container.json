@@ -1,0 +1,1 @@
+{"sdmp":{"version":"0.11.0","schemas":["trust"]},"trust":{"trustee":"IMJ--MJJMtV9PVsR82vKWaJaj7P0TB6tJVB9i5aAcQzuy6I6x4S3tDLHN6lJ2_m6U_bo9SClnsqotGBnalyPYw","expires":"2020-01-01T00:00:00.000Z","authorization":["read_encrypted","publish_resource","revoke"]}}
