@@ -25,7 +25,7 @@ on how to get involved.
 	- [Cryptography](./core/cryptography): Key sizes and algorithms used.
 	- [Container](./core/container): Extendable, definable JSON object.
 	- [Identity](./core/identity): Public keys used to identify users or nodes.
-	- [Encrypted](./core/container): A container holding encrypted data.
+	- [Encrypted](./core/encrypted): A container holding encrypted data.
 	- [Signature](./core/signature): A container holding signed data.
 * [Journal](./journal): Publishing resources to other users or nodes.
 	- [Resource](./journal/resource): The thing published is a signature container.
