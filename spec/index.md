@@ -4,10 +4,11 @@ layout: spec
 
 ## Versions
 
-Latest release: [0.12](./0.12)
+Latest release: [0.13](./0.13)
 
 All versions:
 
+* [0.13](./0.13)
 * [0.12](./0.12)
 * Details from older releases are available [on Github][repo].
 
