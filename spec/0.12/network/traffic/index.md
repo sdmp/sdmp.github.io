@@ -9,8 +9,8 @@ subtitle: Network communication uses shared keys.
 
 Communication over a network is done by sending
 [encrypted containers](../../core/encrypted), which are
-encrypted using the [shared key](./shared_key)
-established during the [connection handshake](./handshake).
+encrypted using the [shared key](../shared_key)
+established during the [connection handshake](../handshake).
 
 ---
 
@@ -51,7 +51,7 @@ be rejected.
 
 ## Network traffic
 
-After both nodes have completed the [handshake](./handshake), they
+After both nodes have completed the [handshake](../handshake), they
 have established a secure shared session key. At this point, all future
 connection network traffic *must* be encrypted using this established key.
 
